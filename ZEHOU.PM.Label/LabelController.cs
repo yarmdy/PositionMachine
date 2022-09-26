@@ -319,7 +319,7 @@ namespace ZEHOU.PM.Label
             {
                 return;
             }
-            var label = Global.BindingInfo.LabelQueue.FirstOrDefault(a => a.TubeLabelStatus >= 0 || a.TubeLabelStatus < 10);
+            var label = Global.BindingInfo.LabelQueue.FirstOrDefault(a => a.TubeLabelStatus >= 0 && a.TubeLabelStatus < 10);
             if (label == null|| Global.BindingInfo.SysInfo.SysStatus<0)
             {
                 CancelLabelList();
