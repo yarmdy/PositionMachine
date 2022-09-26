@@ -1,0 +1,92 @@
+﻿<Page x:Class="ZEHOU.PM.Label.TestLabel"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ZEHOU.PM.Label"
+      xmlns:ui="clr-namespace:ZEHOU.PM.Label.UI"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="800"
+      Title="TestLabel" FontSize="16">
+    <Page.Resources>
+        <local:SysStatus2BtnTxt x:Key="sysstatus2btntxt"></local:SysStatus2BtnTxt>
+        <local:SysStatus2Image x:Key="sysstatus2image"></local:SysStatus2Image>
+    </Page.Resources>
+    <DockPanel LastChildFill="True">
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+            <ui:TopButton Text="{Binding SysInfo.SysStatus,Converter={StaticResource sysstatus2btntxt}}" Ico="{Binding SysInfo.SysStatus,Converter={StaticResource sysstatus2image}}" Width="85" Height="35" Margin="3" x:Name="tbPause" Click="tbPause_Click" ></ui:TopButton>
+            <ui:TopButton Text="关闭" Ico="/Images/工具栏/关闭.ico" Width="85" Height="35" Margin="3" x:Name="tbClose" Click="tbClose_Click" ></ui:TopButton>
+        </StackPanel>
+        <StackPanel>
+            <WrapPanel>
+                <Label Margin="5">料仓</Label>
+                <ComboBox Margin="5" Width="100" ItemsSource="{Binding BinList}" SelectedValue="{Binding BinId}" DisplayMemberPath="Name" SelectedValuePath="Value"></ComboBox>
+            </WrapPanel>
+            <WrapPanel>
+                <WrapPanel.Resources>
+                    <Style TargetType="DockPanel">
+                        <Setter Property="Width" Value="280"></Setter>
+                        <Setter Property="Margin" Value="5"></Setter>
+                    </Style>
+                </WrapPanel.Resources>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left">参数01</Label>
+                    <TextBox Text="{Binding LS01}"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left">参数02</Label>
+                    <TextBox Text="{Binding LS02}"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left">参数03</Label>
+                    <TextBox Text="{Binding LS03}"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left">参数04</Label>
+                    <TextBox Text="{Binding LS04}"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left">参数05</Label>
+                    <TextBox Text="{Binding LS05}"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left">参数06</Label>
+                    <TextBox Text="{Binding LS06}"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left">参数07</Label>
+                    <TextBox Text="{Binding LS07}"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left">参数08</Label>
+                    <TextBox Text="{Binding LS08}"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left">参数09</Label>
+                    <TextBox Text="{Binding LS09}"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left">参数10</Label>
+                    <TextBox Text="{Binding LS10}"></TextBox>
+                </DockPanel>
+            </WrapPanel>
+            <WrapPanel>
+                <WrapPanel.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="5"></Setter>
+                    </Style>
+                    <Style TargetType="DockPanel">
+                        <Setter Property="Margin" Value="5"></Setter>
+                    </Style>
+                </WrapPanel.Resources>
+                <Button x:Name="btnAutoLabel" Click="btnAutoLabel_Click">自动贴标</Button>
+                <Button x:Name="OnlyPrint" Click="OnlyPrint_Click">仅打印</Button>
+                <DockPanel>
+                    <Label>打印数量：</Label>
+                    <ComboBox Width="100" ItemsSource="{Binding NumsList}" SelectedValue="{Binding Nums}" DisplayMemberPath="Name" SelectedValuePath="Value"></ComboBox>
+                </DockPanel>
+                <Button x:Name="btnContinuousPrinting" Click="btnContinuousPrinting_Click">连续打印</Button>
+            </WrapPanel>
+        </StackPanel>
+    </DockPanel>
+</Page>

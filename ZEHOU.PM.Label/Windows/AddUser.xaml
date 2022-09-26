@@ -1,0 +1,92 @@
+﻿<local:ZHWindow x:Class="ZEHOU.PM.Label.AddUser"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ZEHOU.PM.Label"
+        mc:Ignorable="d"
+        Title="添加用户" Height="480" Width="680" FontSize="16" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1.5*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" VerticalContentAlignment="Center">编号</Label>
+        <Label Grid.Row="1" Grid.Column="0" VerticalContentAlignment="Center">用户名</Label>
+        <Label Grid.Row="2" Grid.Column="0" VerticalContentAlignment="Center">部门</Label>
+        <Label Grid.Row="3" Grid.Column="0" VerticalContentAlignment="Center">职务</Label>
+        <Label Grid.Row="4" Grid.Column="0" VerticalContentAlignment="Center">电话</Label>
+        <Label Grid.Row="5" Grid.Column="0" VerticalContentAlignment="Center">密码</Label>
+        <Label Grid.Row="6" Grid.Column="0" VerticalContentAlignment="Center">确认密码</Label>
+        <Label Grid.Row="7" Grid.Column="0" VerticalContentAlignment="Center">备注</Label>
+        
+        <Label Grid.Row="0" Grid.Column="4" VerticalContentAlignment="Center" Grid.ColumnSpan="5" Foreground="Red" >说明：编号不允许重复！</Label>
+
+        <Label Grid.Row="1" Grid.Column="5" VerticalContentAlignment="Center">用户姓名</Label>
+        <Label Grid.Row="2" Grid.Column="5" VerticalContentAlignment="Center">角色</Label>
+        <Label Grid.Row="6" Grid.Column="5" VerticalContentAlignment="Center">启用</Label>
+
+        <TextBox Grid.Row="0" Grid.Column="1" Margin="0,7,7,7" Grid.ColumnSpan="3" Name="txtID" Text="{Binding ID}"></TextBox>
+        <TextBox Grid.Row="1" Grid.Column="1" Margin="0,7,7,7" Grid.ColumnSpan="3" Name="txtLoginName" Text="{Binding LoginName}"></TextBox>
+
+        <ComboBox Grid.Row="2" Grid.Column="1" Margin="0,7,7,7" Grid.ColumnSpan="3" Name="cbDepart" >
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"></TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <ComboBox Grid.Row="3" Grid.Column="1" Margin="0,7,7,7" Grid.ColumnSpan="3" Name="cbPost" >
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"></TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <TextBox Grid.Row="4" Grid.Column="1" Margin="0,7,7,7" Grid.ColumnSpan="3" Name="txtTel" Text="{Binding Tel}"></TextBox>
+        <PasswordBox Grid.Row="5" Grid.Column="1" Margin="0,7,7,7" Grid.ColumnSpan="3" Name="pwdPassword"></PasswordBox>
+        <PasswordBox Grid.Row="6" Grid.Column="1" Margin="0,7,7,7" Grid.ColumnSpan="3" Name="pwdPassword2"></PasswordBox>
+        <TextBox Grid.Row="7" Grid.Column="1" Margin="0,7,7,7" Grid.ColumnSpan="8" Grid.RowSpan="2" Name="txtNote" Text="{Binding Note}"></TextBox>
+
+        <Button Grid.Row="2" Grid.Column="4" Margin="0,7,7,7" Grid.ColumnSpan="1" Grid.RowSpan="1" Name="btnAddDepart" Click="btnAddDepart_Click" >+</Button>
+        <Button Grid.Row="3" Grid.Column="4" Margin="0,7,7,7" Grid.ColumnSpan="1" Grid.RowSpan="1" Name="btnAddPost" Click="btnAddPost_Click" >+</Button>
+
+        <TextBox Grid.Row="1" Grid.Column="6" Margin="0,7,7,7" Grid.ColumnSpan="3" Grid.RowSpan="1" Name="txtTrueName" Text="{Binding TrueName}"></TextBox>
+
+        <TreeView Grid.Row="2" Grid.Column="6" Margin="0,7,7,7" Grid.ColumnSpan="3" Grid.RowSpan="4" Name="trRole">
+            <TreeView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding Path=Select}" VerticalContentAlignment="Center"></CheckBox>
+                        <TextBlock Text="{Binding Path=Role.Name}"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+
+        <CheckBox Grid.Row="6" Grid.Column="6" Margin="0,7,7,7" Grid.ColumnSpan="1" Grid.RowSpan="1" Name="ckUsed" VerticalContentAlignment="Center" IsChecked="{Binding IsUse}"></CheckBox>
+
+        <Button Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="3" Margin="40,12" Background="Transparent" Click="Button_Click_1">添 加</Button>
+        <Button Grid.Row="9" Grid.Column="5" Grid.ColumnSpan="3" Margin="40,12" Background="Transparent" Click="Button_Click">关 闭</Button>
+    </Grid>
+</local:ZHWindow>

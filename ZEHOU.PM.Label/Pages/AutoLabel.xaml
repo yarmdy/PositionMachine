@@ -1,0 +1,219 @@
+﻿<Page x:Class="ZEHOU.PM.Label.AutoLabel"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ZEHOU.PM.Label"
+      xmlns:ui="clr-namespace:ZEHOU.PM.Label.UI"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="800"
+      Title="AutoLabel" FontSize="16">
+    <Page.Resources>
+        <local:BoolFalseConvert x:Key="boolfalseconvert"></local:BoolFalseConvert>
+        <local:SysStatusConvert x:Key="sysstatusconvert"></local:SysStatusConvert>
+        <local:MachineStatusConvert x:Key="machinestatusconvert"></local:MachineStatusConvert>
+        <local:SecondConvert x:Key="secondconvert"></local:SecondConvert>
+        <local:TubeStatusConvert x:Key="tubestatusconvert"></local:TubeStatusConvert>
+        <local:ColorInt2Color x:Key="colorint2color"></local:ColorInt2Color>
+        <local:SysStatus2BtnTxt x:Key="sysstatus2btntxt"></local:SysStatus2BtnTxt>
+        <local:SysStatus2Image x:Key="sysstatus2image"></local:SysStatus2Image>
+    </Page.Resources>
+    <Grid>
+        <DockPanel LastChildFill="True">
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                <ui:TopButton Text="人工输入编号" Ico="/Images/工具栏/读就医卡48.ico" Width="140" Height="35" Margin="3" x:Name="tbInputCode" Click="tbInputCode_Click" ></ui:TopButton>
+                <ui:TopButton Text="{Binding SysInfo.SysStatus,Converter={StaticResource sysstatus2btntxt}}" Ico="{Binding SysInfo.SysStatus,Converter={StaticResource sysstatus2image}}" Width="85" Height="35" Margin="3" x:Name="tbPause" Click="tbPause_Click" ></ui:TopButton>
+                <ui:TopButton Text="补打回执单" Ico="/Images/工具栏/一键贴标48.ico" Width="140" Height="35" Margin="3" x:Name="tbPrintBack2" Click="tbPrintBack2_Click" ></ui:TopButton>
+                <ui:TopButton Text="关闭" Ico="/Images/工具栏/关闭.ico" Width="85" Height="35" Margin="3" x:Name="tbClose" Click="tbClose_Click" ></ui:TopButton>
+            </StackPanel>
+            <DockPanel>
+                <Grid DockPanel.Dock="Top" Height="104" Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        
+                        <ColumnDefinition Width="0.5*"/>
+                        <ColumnDefinition Width="0.5*"/>
+                        
+                        <ColumnDefinition Width="1*"/>
+                        
+                        <ColumnDefinition Width="0.5*"/>
+                        <ColumnDefinition Width="0.5*"/>
+                        
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Column="0" Grid.ColumnSpan="8" Grid.Row="0" Grid.RowSpan="5" BorderThickness="1" BorderBrush="Black" Margin="0,0,2,0"></Border>
+                    
+                    <Border Grid.Column="8" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="1" BorderThickness="1" BorderBrush="Black" Margin="1,0,1,0"></Border>
+                    <Border Grid.Column="10" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="1" BorderThickness="1" BorderBrush="Black" Margin="1,0,1,0"></Border>
+                    <Border Grid.Column="13" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="1" BorderThickness="1" BorderBrush="Black" Margin="1,0,1,0"></Border>
+
+                    <Border Grid.Column="8" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="4" BorderThickness="1,0,1,1" BorderBrush="Black" Margin="1,0,1,0"></Border>
+                    <Border Grid.Column="10" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="4" BorderThickness="1,0,1,1" BorderBrush="Black" Margin="1,0,1,0"></Border>
+                    <Border Grid.Column="13" Grid.ColumnSpan="3" Grid.Row="1" Grid.RowSpan="4" BorderThickness="1,0,1,1" BorderBrush="Black" Margin="1,0,1,0"></Border>
+
+                    <Border Grid.Column="18" Grid.ColumnSpan="6" Grid.Row="1" Grid.RowSpan="2" BorderThickness="1" BorderBrush="Black" Margin="2,0,0,2"></Border>
+                    <Border Grid.Column="18" Grid.ColumnSpan="6" Grid.Row="3" Grid.RowSpan="2" BorderThickness="1" BorderBrush="Black" Margin="2,2,0,0"></Border>
+
+                    <Label VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="0" Grid.RowSpan="2">编号</Label>
+                    <Label VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="4" Grid.ColumnSpan="1" Grid.Row="0" Grid.RowSpan="2">姓名</Label>
+                    <Label VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="2" Grid.RowSpan="3">性别</Label>
+                    <Label VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="4" Grid.ColumnSpan="1" Grid.Row="2" Grid.RowSpan="3">年龄</Label>
+
+                    <TextBox IsReadOnly="True" Margin="10" VerticalAlignment="Center"  Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="2" Height="26" Text="{Binding LocalPatient.ID}"></TextBox>
+                    <TextBox IsReadOnly="True" Margin="10" VerticalAlignment="Center"  Grid.Column="5" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="2" Height="26" Text="{Binding LocalPatient.Name}"></TextBox>
+                    <TextBox IsReadOnly="True" Margin="10" VerticalAlignment="Center"  Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="3" Height="26" Text="{Binding LocalPatient.Gender}"></TextBox>
+                    <TextBox IsReadOnly="True" Margin="10" VerticalAlignment="Center"  Grid.Column="5" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="3" Height="26" Text="{Binding LocalPatient.Age}"></TextBox>
+
+                    <Label VerticalAlignment="Center" HorizontalAlignment="Center"  Grid.Column="8" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="1">工作状态</Label>
+                    <Label VerticalAlignment="Center" HorizontalAlignment="Center"  Grid.Column="8" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="4" Content="{Binding SysInfo.SysStatus,Converter={StaticResource sysstatusconvert}}"></Label>
+
+                    <Label VerticalAlignment="Center" HorizontalAlignment="Center"  Grid.Column="10" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="1">读卡模式</Label>
+
+                    <RadioButton VerticalAlignment="Center" HorizontalAlignment="Center"  Grid.Column="10" Grid.ColumnSpan="1" Grid.Row="1" Grid.RowSpan="2" IsChecked="{Binding SysInfo.AutoReadCard}" GroupName="readmode"></RadioButton>
+                    <RadioButton VerticalAlignment="Center" HorizontalAlignment="Center"  Grid.Column="10" Grid.ColumnSpan="1" Grid.Row="3" Grid.RowSpan="2" IsChecked="{Binding SysInfo.AutoReadCard,Mode=OneWay,Converter={StaticResource boolfalseconvert}}" GroupName="readmode"></RadioButton>
+                    <Label VerticalAlignment="Center" HorizontalAlignment="Left"  Grid.Column="11" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2">自动读卡</Label>
+                    <Label VerticalAlignment="Center" HorizontalAlignment="Left"  Grid.Column="11" Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="2">手动读卡</Label>
+
+                    <Label VerticalAlignment="Center" HorizontalAlignment="Center"  Grid.Column="13" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="1">操作模式</Label>
+
+                    <RadioButton VerticalAlignment="Center" HorizontalAlignment="Center"  Grid.Column="13" Grid.ColumnSpan="1" Grid.Row="1" Grid.RowSpan="2" IsChecked="{Binding SysInfo.PrintAndLabel}" GroupName="actmode"></RadioButton>
+                    <RadioButton VerticalAlignment="Center" HorizontalAlignment="Center"  Grid.Column="13" Grid.ColumnSpan="1" Grid.Row="3" Grid.RowSpan="2" IsChecked="{Binding SysInfo.PrintAndLabel,Mode=OneWay,Converter={StaticResource boolfalseconvert}}" GroupName="actmode"></RadioButton>
+                    <Label VerticalAlignment="Center" HorizontalAlignment="Left"  Grid.Column="14" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2">打印贴标</Label>
+                    <Label VerticalAlignment="Center" HorizontalAlignment="Left"  Grid.Column="14" Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="2">仅打印</Label>
+
+                    <StackPanel  Grid.Column="16" Grid.ColumnSpan="8" Grid.Row="0" Grid.RowSpan="1" Orientation="Horizontal">
+                        <Label>开始时间</Label>
+                        <DatePicker SelectedDate="{Binding SysInfo.StartTime}"></DatePicker>
+                        <Label>到</Label>
+                        <DatePicker SelectedDate="{Binding SysInfo.EndTime}"></DatePicker>
+                    </StackPanel>
+                    <Button Margin="1,0,0,2"  Grid.Column="16" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="2" Background="Transparent" Click="Button_Click">打印贴标所选标签</Button>
+                    <Button Margin="1,2,0,0"  Grid.Column="16" Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="2" Background="Transparent">打印回执单</Button>
+
+                    <Label VerticalAlignment="Center" HorizontalAlignment="Center"  Grid.Column="18" Grid.ColumnSpan="6" Grid.Row="1" Grid.RowSpan="2" Content="{Binding SysInfo.MachineStatus,Converter={StaticResource machinestatusconvert}}"></Label>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"  Grid.Column="18" Grid.ColumnSpan="6" Grid.Row="3" Grid.RowSpan="2">
+                        <Label>排队剩余时间：</Label>
+                        <Label Content="{Binding SysInfo.RemainingTime,Converter={StaticResource secondconvert}}"></Label>
+                    </TextBlock>
+                </Grid>
+                <ListView BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding LocalLabelList}" Name="lvMyTubes">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel></WrapPanel>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel Margin="10">
+                                <DockPanel DockPanel.Dock="Top">
+                                    <DockPanel DockPanel.Dock="Right" Margin="10">
+                                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsChecked}"></CheckBox>
+                                        <Label VerticalAlignment="Center">选取</Label>
+                                    </DockPanel>
+                                    <Grid>
+                                        <Border  Width="128" Height="128" CornerRadius="64" BorderThickness="1" BorderBrush="#550088ff">
+                                            <Border.Background>
+                                                <SolidColorBrush Color="{Binding TubeColor,Mode=OneWay,Converter={StaticResource colorint2color}}"></SolidColorBrush>
+                                            </Border.Background>
+                                            <Image Source="/Images/试管/tube.png"></Image>
+                                        </Border>
+                                    </Grid>
+                                </DockPanel>
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Height="128" Width="200" Margin="0 10 0 0">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="3*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Column="0" Grid.Row="0">项目：</Label>
+                                        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap" Grid.Column="1" Grid.Row="0" Text="{Binding TubeInfo.TestOrder}"></TextBlock>
+                                        <Label Grid.Column="0" Grid.Row="1">ID：</Label>
+                                        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap" Grid.Column="1" Grid.Row="1" Text="{Binding TubeInfo.BarCode}"></TextBlock>
+                                        <Label Grid.Column="0" Grid.Row="2">状态：</Label>
+                                        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap" Grid.Column="1" Grid.Row="2" Text="{Binding TubeLabelStatus,Converter={StaticResource tubestatusconvert}}"></TextBlock>
+                                        <Label Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Content="{Binding BinId}"></Label>
+                                    </Grid>
+                                </ScrollViewer>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </DockPanel>
+        </DockPanel>
+        <Grid Background="#CC000000" Name="gdLayer" Visibility="Collapsed">
+            <Grid Width="512" Height="128" >
+                <Border CornerRadius="5" Background="White"></Border>
+                <DockPanel>
+                    <DockPanel DockPanel.Dock="Top" Height="30">
+                        <DockPanel.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFD8D8D8" Offset="0"/>
+                                <GradientStop Color="#FFF3F3F3" Offset="0.59"/>
+                                <GradientStop Color="Gainsboro" Offset="1"/>
+                            </LinearGradientBrush>
+                        </DockPanel.Background>
+                        <TextBlock Margin="10,0,0,0" DockPanel.Dock="Left" VerticalAlignment="Center" Name="tbLayerTitle">标题</TextBlock>
+                        <Button Visibility="Hidden" DockPanel.Dock="Right" Width="20" Height="20" Content="×" FontSize="10" FontWeight="Bold" Foreground="White" Margin="0,0,10,0" BorderThickness="1" BorderBrush="#ff999999"  Tag="0">
+                            <Button.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Red" Offset="0"/>
+                                    <GradientStop Color="#FFFF7676" Offset="0.597"/>
+                                    <GradientStop Color="Red" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Button.Background>
+                        </Button>
+                        <Label></Label>
+                    </DockPanel>
+                    <!--<Grid DockPanel.Dock="Bottom" Height="40" Background="Gainsboro">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Margin="7" Background="White" Grid.Column="3" Tag="1">确定</Button>
+                        <Button Margin="7" Background="White" Grid.Column="2" Tag="1">确定</Button>
+                        <Button Margin="7" Background="White" Grid.Column="3" Tag="0">取消</Button>
+                        <Button Margin="7" Background="White" Grid.Column="2" Tag="11">是</Button>
+                        <Button Margin="7" Background="White" Grid.Column="3" Tag="10">否</Button>
+                        <Button Margin="7" Background="White" Grid.Column="1" Tag="11">是</Button>
+                        <Button Margin="7" Background="White" Grid.Column="2" Tag="10">否</Button>
+                    </Grid>-->
+                    <Grid>
+                        <TextBlock Name="tbLayerContent" TextWrapping="WrapWithOverflow" Padding="10" HorizontalAlignment="Center" VerticalAlignment="Center">消息消息消息消息消息消息消息消息消息消息消息消息消息消息消息消息消息消息消息消息消息消息</TextBlock>
+                    </Grid>
+                </DockPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

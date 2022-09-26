@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1433
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JSocket", "JSocket\JSocket.csproj", "{E9EEAD7A-1462-4111-AC6E-9D5AFC514F16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JSocketTester", "JSocketTester\JSocketTester.csproj", "{07BF5BA0-9F2B-493C-AD2D-9032DCBC812A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E9EEAD7A-1462-4111-AC6E-9D5AFC514F16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9EEAD7A-1462-4111-AC6E-9D5AFC514F16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9EEAD7A-1462-4111-AC6E-9D5AFC514F16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9EEAD7A-1462-4111-AC6E-9D5AFC514F16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07BF5BA0-9F2B-493C-AD2D-9032DCBC812A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07BF5BA0-9F2B-493C-AD2D-9032DCBC812A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07BF5BA0-9F2B-493C-AD2D-9032DCBC812A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07BF5BA0-9F2B-493C-AD2D-9032DCBC812A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {910BAE3F-70A2-4ECF-9F1F-0520874067CE}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,59 @@
+﻿<local:ZHWindow x:Class="ZEHOU.PM.Label.BatchLabelDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ZEHOU.PM.Label"
+        mc:Ignorable="d"
+        Title="批量生成" Height="700" Width="580" WindowStartupLocation="CenterScreen" FontSize="16">
+    <DockPanel LastChildFill="True">
+        <StackPanel DockPanel.Dock="Top">
+            <Label HorizontalContentAlignment="Center" FontSize="28" Margin="0,10">试管批量贴标</Label>
+            <Grid Margin="0,5">
+                <Label HorizontalAlignment="Left" VerticalAlignment="Center" Width="110" Margin="130,0,0,0">编号开始值：</Label>
+                <TextBox HorizontalAlignment="Left" VerticalAlignment="Center" Width="196" Height="30" Margin="250,0,0,0" Text="{Binding StartNo}"></TextBox>
+                <Label HorizontalAlignment="Left" VerticalAlignment="Center" Width="30" Margin="455,0,0,0" Foreground="Red">*</Label>
+            </Grid>
+            <Grid Margin="0,10">
+                <Label HorizontalAlignment="Left" VerticalAlignment="Center" Width="110" Margin="130,0,0,0">编号结束值：</Label>
+                <TextBox HorizontalAlignment="Left" VerticalAlignment="Center" Width="196" Height="30" Margin="250,0,0,0" Text="{Binding EndNo}"></TextBox>
+                <Label HorizontalAlignment="Left" VerticalAlignment="Center" Width="30" Margin="455,0,0,0" Foreground="Red">*</Label>
+            </Grid>
+            <Grid Margin="0,10">
+                <Label HorizontalAlignment="Left" VerticalAlignment="Center" Width="110" Margin="130,0,0,0">采样类型：</Label>
+                <TextBox HorizontalAlignment="Left" VerticalAlignment="Center" Width="196" Height="30" Margin="250,0,0,0" Text="{Binding TubeColor}"></TextBox>
+                <Label HorizontalAlignment="Left" VerticalAlignment="Center" Width="30" Margin="455,0,0,0" Foreground="Red">*</Label>
+            </Grid>
+            <Grid Margin="0,10">
+                <Label HorizontalAlignment="Left" VerticalAlignment="Center" Width="110" Margin="130,0,0,0">备注：</Label>
+                <TextBox HorizontalAlignment="Left" VerticalAlignment="Center" Width="196" Height="30" Margin="250,0,0,0"  Text="{Binding Remark}"></TextBox>
+            </Grid>
+            <Grid Margin="0,10">
+                <Label HorizontalAlignment="Left" VerticalAlignment="Center" Width="110" Margin="130,0,0,0">姓名：</Label>
+                <TextBox HorizontalAlignment="Left" VerticalAlignment="Center" Width="196" Height="30" Margin="250,0,0,0" Text="{Binding PName}"></TextBox>
+            </Grid>
+            <Grid Margin="0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Width="100" Height="30" Background="White" Click="Button_Click_1">生成</Button>
+                <Button Grid.Column="1" Width="100" Height="30" Background="White" Click="Button_Click">打印</Button>
+
+            </Grid>
+        </StackPanel>
+        <ListView Margin="5,0,5,5" ItemsSource="{Binding Source}">
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn Header="编号" Width="64" DisplayMemberBinding="{Binding Id}"></GridViewColumn>
+                        <GridViewColumn Header="标签号" Width="128" DisplayMemberBinding="{Binding BarCode}"></GridViewColumn>
+                        <GridViewColumn Header="采样类型" Width="96" DisplayMemberBinding="{Binding TubeColor}"></GridViewColumn>
+                        <GridViewColumn Header="姓名" Width="96" DisplayMemberBinding="{Binding PName}"></GridViewColumn>
+                        <GridViewColumn Header="备注" Width="176" DisplayMemberBinding="{Binding Remark}"></GridViewColumn>
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </DockPanel>
+</local:ZHWindow>

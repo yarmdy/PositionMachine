@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32602.215
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JSerialPort", "JSerialPort\JSerialPort.csproj", "{C5038FE7-9B6D-4226-9A8F-6C2DFF717A12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PN532Lib", "PN532Lib\PN532Lib.csproj", "{EBD480BC-1223-4656-A024-94551A1EDB65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PN532", "PN532\PN532.csproj", "{D58802F3-14A4-44CB-B526-656D7879CC85}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C5038FE7-9B6D-4226-9A8F-6C2DFF717A12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5038FE7-9B6D-4226-9A8F-6C2DFF717A12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5038FE7-9B6D-4226-9A8F-6C2DFF717A12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5038FE7-9B6D-4226-9A8F-6C2DFF717A12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBD480BC-1223-4656-A024-94551A1EDB65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBD480BC-1223-4656-A024-94551A1EDB65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBD480BC-1223-4656-A024-94551A1EDB65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBD480BC-1223-4656-A024-94551A1EDB65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D58802F3-14A4-44CB-B526-656D7879CC85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D58802F3-14A4-44CB-B526-656D7879CC85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D58802F3-14A4-44CB-B526-656D7879CC85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D58802F3-14A4-44CB-B526-656D7879CC85}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {53B5385E-4078-4710-AC4E-29F14A6A28CC}
+	EndGlobalSection
+EndGlobal

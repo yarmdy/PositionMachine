@@ -1,0 +1,44 @@
+﻿<local:ZHWindow x:Class="ZEHOU.PM.Label.EditRole"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ZEHOU.PM.Label"
+        mc:Ignorable="d"
+        Title="编辑角色" Height="280" Width="390" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" FontSize="16">
+    <Window.Resources>
+        <local:EditRoleStr2Int x:Key="str2int"></local:EditRoleStr2Int>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1.5*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalContentAlignment="Center">编号</Label>
+        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalContentAlignment="Center">名称</Label>
+        <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalContentAlignment="Center">排序序号</Label>
+        <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" VerticalContentAlignment="Center">启用</Label>
+        <Label Grid.Row="2" Grid.Column="7" Grid.ColumnSpan="1" VerticalContentAlignment="Center">整数</Label>
+
+        <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="5" Margin="10" Padding="2" Text="{Binding ID}" Name="txtID"></TextBox>
+        <TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="5" Margin="10" Padding="2" Text="{Binding Name}"></TextBox>
+        <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="5" Margin="10" Padding="2" Text="{Binding OrderID,Converter={StaticResource str2int}}" PreviewTextInput="TextBox_PreviewTextInput" ></TextBox>
+        <CheckBox Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="1" Margin="10" Padding="2" IsChecked="{Binding IsUse}" VerticalContentAlignment="Center"></CheckBox>
+
+        <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Margin="20,20" Padding="2" Name="btnAdd" Click="btnAdd_Click">添 加</Button>
+        <Button Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="3" Margin="20,20" Padding="2" Name="btnClose" Click="btnClose_Click">关 闭</Button>
+    </Grid>
+</local:ZHWindow>

@@ -1,0 +1,24 @@
+﻿<local:ZHWindow x:Class="ZEHOU.PM.Label.About"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ZEHOU.PM.Label"
+        mc:Ignorable="d"
+        Title="关于" Height="524" Width="577" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Image HorizontalAlignment="Left" Height="280" Margin="20,0,0,10" VerticalAlignment="Bottom" Width="537" Source="/Images/关于/关于.png" Stretch="UniformToFill" StretchDirection="Both" />
+        <Label Content="名称：" HorizontalAlignment="Left" Margin="20,11,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Label Content="公司：" HorizontalAlignment="Left" Margin="20,50,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Label Content="电话：" HorizontalAlignment="Left" Margin="20,89,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Label Content="邮编：" HorizontalAlignment="Left" Margin="20,128,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Label Content="地址：" HorizontalAlignment="Left" Margin="20,167,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Label Content="试管自动贴标系统 Ver" HorizontalAlignment="Left" Margin="83,11,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Label Content="石家庄泽厚科技有限公司" HorizontalAlignment="Left" Margin="83,50,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Label Content="0311-83806655 83839600 83818600" HorizontalAlignment="Left" Margin="83,89,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Label Content="050091" HorizontalAlignment="Left" Margin="83,128,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Label Content="河北省石家庄市新石北路368号金石工业园区创新大厦6层" HorizontalAlignment="Left" Margin="83,167,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Button Content="关闭" HorizontalAlignment="Right" Margin="0,14,14,0" VerticalAlignment="Top" Width="100" Height="40" FontSize="16" Click="Button_Click"/>
+
+    </Grid>
+</local:ZHWindow>
