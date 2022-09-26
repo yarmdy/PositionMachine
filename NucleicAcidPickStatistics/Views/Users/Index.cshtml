@@ -1,0 +1,310 @@
+﻿@{
+    Layout = null;
+    Dictionary<string, ZEHOU.PM.DB.dbLabelInfo.Role> Roles = ViewBag.Roles;
+    Dictionary<string, ZEHOU.PM.DB.dbLabelInfo.Department> Departs = ViewBag.Departs;
+    Dictionary<string, ZEHOU.PM.DB.dbLabelInfo.Post> Posts = ViewBag.Posts;
+}
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="/layui/config/layui/css/layui.css" rel="stylesheet" />
+    @*<script src="/layui/config/lib/admin.js"></script>*@
+    <title></title>
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-card">
+            <!-- 内容区 -->
+            <div class="layui-card-body">
+                <!-- 表格工具栏 -->
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <input type="text" name="user_name" id="user_name" autocomplete="off" placeholder="【名称】" autocomplete="off" class="layui-input" />
+                        </div>
+                    </div>
+
+                    
+
+                    <div class="layui-inline">
+                        <div class="layui-input-inline" style="width: auto;">
+                            <button class="layui-btn" id="search"><i class="layui-icon">&#xe615;</i>查询</button>
+                            <a href="javascript:" class="layui-btn btnOption  layui-btn-small btnAdd" id="add" lay-event="add"><i class="layui-icon layui-icon-add-1"></i>新增</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 数据表格 -->
+                <table class="layui-hide" id="tableList" lay-filter="tableList"></table>
+                <div id="laypage"></div>
+                <!-- 表格操作列 -->
+                <script type="text/html" id="toolBar">
+                    <a class="layui-btn layui-btn-xs btnEdit" lay-event="edit" title="编辑"><i class="layui-icon">&#xe630;</i>编辑</a>
+                    <a class="layui-btn layui-btn-xs btnEdit" lay-event="authorize" title="编辑"><i class="layui-icon">&#xe630;</i>站点</a>
+                    <a class="layui-btn layui-btn-danger layui-btn-xs btnDel" lay-event="del" title="删除"><i class="layui-icon">&#xe630;</i>删除</a>
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <script src="/layui/config/layui/layui.js"></script>
+    <script src="/layui/config/layui/jquery.min.js"></script>
+    <script>
+        var Roles = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Roles,Newtonsoft.Json.Formatting.Indented));
+        var Departs = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Departs,Newtonsoft.Json.Formatting.Indented));
+        var Posts = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Posts,Newtonsoft.Json.Formatting.Indented));
+        var pageIndex = 1;
+        var pageSize = 2000;
+        var tname;
+        var startTime;
+        var endTime;
+
+        page("/users/listjson", pageIndex, pageSize);
+        function page(url, pageIndex, pageSize) {
+            layui.use(['laydate', 'laypage', 'layer', 'table', 'element', 'upload'], function () {
+                var laydate = layui.laydate //日期
+                    , laypage = layui.laypage //分页
+                    , layer = layui.layer //弹层
+                    , table = layui.table //表格
+                    , element = layui.element //元素操作
+                    , form = layui.form
+                //执行一个 table 实例
+                var SL = table.render({
+                    elem: '#tableList'
+                    , method: 'POST'   //laui 修改请求方式
+                    , height: 700
+                    , url: url //数据接口
+                    , title: '设备管理列表'
+                    , page: false //是否分页
+                    , toolbar: 'defaultToolbar' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+                    , loading: true //请求数据时，是否显示loading
+                    , totalRow: true //开启合计行
+                    , cols: [[
+
+                        { type: 'checkbox', fixed: 'left' },
+                        { field: 'ID', title: '编号', width: 100 },
+                        { field: 'LoginName', title: '登录名', width: 100 },
+                        { field: 'TrueName', title: '真实姓名', width: 100 },
+                        {
+                            field: 'IsUse', title: '状态', width: 100, align: 'center',
+                            templet: function (r) {
+                                var html;
+                                if (r.IsUse == 0) {
+                                    html = "禁用";
+                                } else {
+                                    html = "启用";
+                                }
+                                return html;
+                            }
+                        },
+                        {
+                            field: 'ID', title: '所辖采样点', width: 100, align: 'center',
+                            templet: function (r) {
+                                var html;
+                                var count = window.PointsCount[r.ID];
+                                if (count) {
+                                    html = count;
+                                } else {
+                                    html = "0";
+                                }
+                                return html;
+                            }
+                        },
+                        {
+                            field: 'RoleID', title: '角色', width: 100, align: 'center',
+                            templet: function (r) {
+                                var html = r.RoleID;
+                                if (!r.RoleID) {
+                                    return "";
+                                }
+                                var ids = r.RoleID.split(",");
+                                var names = [];
+                                $.each(ids, function (i, a) {
+                                    var role = Roles[a];
+                                    if (role) {
+                                        names.push(role.Name);
+                                    }
+                                });
+                                if (names.length > 0) {
+                                    html = names.join(",");
+                                }
+                                return html;
+                            }
+                        },
+                        {
+                            field: 'DepartmentID', title: '部门', width: 100, align: 'center',
+                            templet: function (r) {
+                                var html = r.DepartmentID;
+                                if (!r.DepartmentID) {
+                                    return "";
+                                }
+                                var ids = r.DepartmentID.split(",");
+                                var names = [];
+                                $.each(ids, function (i, a) {
+                                    var role = Departs[a];
+                                    if (role) {
+                                        names.push(role.Name);
+                                    }
+                                });
+                                if (names.length > 0) {
+                                    html = names.join(",");
+                                }
+                                return html;
+                            }
+                        },
+                        {
+                            field: 'PostID', title: '职位', width: 100, align: 'center',
+                            templet: function (r) {
+                                var html = r.PostID;
+                                if (!r.PostID) {
+                                    return "";
+                                }
+                                var ids = r.PostID.split(",");
+                                var names = [];
+                                $.each(ids, function (i, a) {
+                                    var role = Posts[a];
+                                    if (role) {
+                                        names.push(role.Name);
+                                    }
+                                });
+                                if (names.length > 0) {
+                                    html = names.join(",");
+                                }
+                                return html;
+                            }
+                        },
+                        { field: 'Tel', title: '电话', width: 100 },
+                        { field: 'Note', title: '备注', width: 100 },
+                        { fixed: 'right', title: '功能操作', width: 300, align: 'center', toolbar: '#toolBar' }
+                    ]],
+                    where: {
+                        pageIndex: pageIndex,
+                        pageSize: pageSize,
+                        tname: tname,
+
+
+                    }
+                    , parseData: function (res) {
+                        window.PointsCount = res.PointsCount;
+                        return {
+                            "code": "0",
+                            "msg": "cg",
+                            "count": res.Total,
+                            "data": res.Rows
+                        };
+                    }
+                    , done: function (res, curr, count) {
+                        if (count != 0) {
+                            laypage.render({
+                                elem: 'laypage',
+                                count: count,
+                                curr: pageIndex,
+                                limit: pageSize,
+                                layout: ['prev', 'page', 'next', 'skip', 'count', 'limit'],
+                                jump: function (obj, first) {
+                                    if (!first) {
+                                        pageIndex = obj.curr;
+                                        pageSize = obj.limit;
+                                        page("/users/listjson", pageIndex, pageSize);
+                                    }
+                                }
+                            });
+                        }
+
+
+                    },
+
+                });
+
+                // 工具列点击事件
+                table.on('tool(tableList)', function (obj) {
+                    var data = obj.data; //获得当前行数据
+                    var event = obj.event;
+                    if (event === 'del') {
+                        layer.confirm('真的删除行么', function (index) {
+                            $.ajax({
+                                //几个参数需要注意一下
+                                type: "POST",//方法类型
+
+                                dataType: 'text',//预期服务器返回的数据类型
+                                url: "/users/del",//url
+                                data: { "id": data.ID },
+                                success: function (result) {
+
+                                    if (result.indexOf("code") >= 0) {
+                                        layer.msg('删除成功!', function () {
+                                            layer.close(index); //关闭弹层
+                                            location.reload();
+                                        });
+                                        
+                                    } else {
+
+                                        layer.msg('用户正在使用该角色!');
+                                    }
+
+                                },
+                                error: function () {
+                                    alert("删除数据异常！");
+                                }
+                            });
+                            return false;//只此一句
+                        });
+                    } else if (event === 'edit') {
+                        var id = data.ID;
+                        layer.open({
+                            type: 2,
+                            title: '编辑用户',
+                            content: '/users/edit?id=' + id,
+                            maxmin: true,
+                            area: ['1030px', '620px'],
+                            cancel: function () {
+                                location.reload();
+                            }
+                        });
+                    } else if (event === 'authorize') {
+                        var id = data.ID;
+                        var user_code = data.FunctionID;
+                        layer.open({
+                            type: 2,
+                            title: '站点',
+                            content: "/pickpoints?userid=" + id,
+                            maxmin: true,
+                            area: [$(window).width() + 'px', $(window).height() + 'px'],
+                            cancel: function () {
+                                location.reload();
+                            }
+                        });
+                    }
+                });
+
+            });
+
+            
+        }
+        $(function () {
+            // 搜索
+            $('#search').click(function () {
+                tname = $('#user_name').val();
+                page("/users/listjson", pageIndex, pageSize);
+
+            });
+            $('#add').click(function () {
+                layer.open({
+                    type: 2,
+                    title: '新增',
+                    content: '/users/edit',
+                    maxmin: true,
+                    area: ['1000px', '580px'],
+                    cancel: function () {
+                        location.reload();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

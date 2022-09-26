@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="../script/jquery.js"></script>
+    <script src="../script/jquery.helper.js"></script>
+    <script src="../script/WebServiceHelper.js"></script>
+    <script src="../script/json2.js"></script>
+    <script src="../script/jquery.socket.js"></script>
+    <script>
+        var ip = "newa.gztsny.com.cn";
+        var port = "8088";
+        var msg_data = "";
+        //sentype=group,signal,all
+        var urlParam = "?fuid=A&group=11111&sentype=group";//?fuid=lucy&touid=lily&group=分组编号&sentype=发送类型
+        var websocket = null;
+        $(window).load(function () {
+            websocket = new WebSocketHelper(ip, port,urlParam, open_callback, close_callback, error_callback, msg_callback, msg_data);
+        });
+
+        /*==============start==回掉函数==start===============*/
+        function open_callback()
+        {
+            alert("打开链接");
+        }
+
+        function close_callback()
+        {
+            alert("关闭连接");
+        }
+
+        function error_callback()
+        {
+            alert("连接错误");
+        }
+
+        function msg_callback(msg)
+        {
+            $("#div_msg").append(JSON.stringify(msg.data));
+        }
+        /*=================end==回掉函数==end=================*/
+
+        function SentMsg()
+        {
+            //
+            var msg =
+            {
+                touid:"B",
+                sentType: "group",
+                data: $("#msg").val()
+            };
+            websocket.SentMsg(msg);
+        }
+    </script>
+</head>
+<body>
+    <div>
+    消息: 
+        <textarea id="msg" style="height:50px; width:500px;"></textarea>
+        <input type="button" value="发送" onclick="SentMsg()"/>
+    </div>
+    <div>
+        <div>消息列表:</div>
+        <div id="div_msg"></div>
+    </div>
+</body>
+</html>

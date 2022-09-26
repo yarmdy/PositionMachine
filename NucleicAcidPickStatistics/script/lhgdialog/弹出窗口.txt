@@ -1,0 +1,65 @@
+弹出层：
+引用js；<script src="/script/lhgdialog/lhgdialog/lhgdialog.js?skin=discuz"></script>
+
+弹出加载页面的窗口：
+
+        var obj;
+        function OpenPage(action, id) {
+            var pagams = {
+                title: "新增消息模板",
+                url: "addTemp.aspx"
+            };
+           
+            obj = $.dialog({
+                id: "openpage",
+                title: pagams.title,
+                fixed: true,
+                width: 700,
+                height: 450,
+                content: 'url:' + pagams.url,
+                close: function ()
+                {
+                    //关闭执行的回调函数
+                }
+            });
+            obj.zindex(1000);
+        }
+
+
+
+
+
+
+
+
+
+
+弹出加div的窗口：
+
+      <div id="div_show" style="background-color:red; height:100px;width:200px;">
+           我是div我是div我是div我是div我是div我是div我是div我是div我是div我是div
+        </div>
+
+      var obj;
+        function OpenPage(action, id) {
+            var pagams = {
+                title: "新增消息模板",
+                url: "addTemp.aspx"
+            };
+           
+            obj = $.dialog({
+                id: "openpage",
+                title: pagams.title,
+                fixed: true,
+                width: 700,
+                height: 450,
+                //content: 'url:' + pagams.url,
+                content: div_show,//注意div的id不要加双引号或者单引号
+                close: function ()
+                {
+                    //关闭执行的回调函数
+                }
+            });
+            obj.zindex(1000);
+        }
+

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>gridster.js多列网格式拖动布局演示页面</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="jquery.gridster.css">
+    <script src="../jquery.js"></script>
+    <script src="jquery.gridster.js"></script>
+    <script>
+        $(function () {
+            $(".gridster ul").gridster({
+                widget_margins: [1, 1],
+                widget_base_dimensions: [150, 150],
+                id:"panle_01",
+            });
+
+            $(".gridster ul").gridster({
+                widget_margins: [1, 1],
+                widget_base_dimensions: [200, 200],
+                id: "panle_02",
+            });
+            
+        });
+    </script>
+
+    <style>
+        ul {
+            list-style: none;
+        }
+
+        .s {
+             background-color: #F6F6F6;
+        }
+
+       
+        .panle {
+            margin:5px;
+            border-radius:5px;
+            border:solid 2px #f00;
+            width:1200px;
+        }
+        .tb_operate {
+            width:100%;
+            height:100%;
+            text-align:center;
+              cursor: pointer;
+              vertical-align:bottom;
+        }
+            .tb_operate div {
+                background-color:#ccc;
+                border:1px solid #808080;
+                border-radius:5px;
+                width:120px;
+                height:20px;
+                margin-left:auto;
+                margin-right:auto;
+            }
+        .tb_bottom {
+            height:20px;
+            background-color:#BCBCBC;
+        }
+      
+    </style>
+</head>
+<body>
+
+
+    <div id="panle_01" class="gridster panle"style=" background-color:#b200ff">
+        <ul>
+            <!--
+                data-row:行索引 放在哪一行 从1开始
+                data-col：列索引  放在哪一列 从1开始
+                data-sizex：跨越的列数 类似 colspan
+                data-sizey:跨越的行数 类似 rowspan
+                -->
+           <li class="s" data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+             <table class="tb_operate">
+                 <tr>
+                     <td><div>设置资源</div></td>
+                 </tr>
+                  <tr>
+                     <td class="tb_bottom">关联终端</td>
+                 </tr>
+                 <tr>
+                     <td class="tb_bottom">标题</td>
+                 </tr>
+             </table>
+           </li>
+            <li class="s" data-row="2" data-col="1" data-sizex="1" data-sizey="1"></li>
+            <li class="s" data-row="3" data-col="1" data-sizex="1" data-sizey="1"></li>
+
+            <li class="s" data-row="1" data-col="2" data-sizex="2" data-sizey="1"></li>
+            <li class="s" data-row="2" data-col="2" data-sizex="2" data-sizey="2"></li>
+
+            <li class="s" data-row="1" data-col="4" data-sizex="1" data-sizey="1"></li>
+            <li class="s" data-row="2" data-col="4" data-sizex="2" data-sizey="1"></li>
+            <li class="s" data-row="3" data-col="4" data-sizex="1" data-sizey="1"></li>
+
+            <li class="s" data-row="1" data-col="5" data-sizex="1" data-sizey="1"></li>
+            <li class="s" data-row="3" data-col="5" data-sizex="1" data-sizey="1"></li>
+
+            <li class="s" data-row="1" data-col="6" data-sizex="1" data-sizey="1"></li>
+            <li class="s" data-row="2" data-col="6" data-sizex="1" data-sizey="2"></li>
+         
+        </ul>
+    </div>
+
+
+</body>
+</html>

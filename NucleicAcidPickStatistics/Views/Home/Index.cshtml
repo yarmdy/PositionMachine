@@ -1,0 +1,239 @@
+﻿@using ZEHOU.PM.Config
+@{ 
+    Layout = null;
+
+    ZEHOU.PM.DB.dbLabelInfo.User user = ViewBag.User;
+    List<ZEHOU.PM.DB.dbLabelInfo.Role> roles = ViewBag.Roles;
+    List<FunctionModel> menus = ViewBag.Menus;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@Configs.Settings["Title"]</title>
+    <link rel="stylesheet" href="/layui/config/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/layui/config/style/admin.css" media="all">
+    <style>
+        img {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+</head>
+<body class="layui-layout-body">
+    <div id="LAY_app">
+        <div class="layui-layout layui-layout-admin">
+            <div class="layui-header">
+                <!-- 头部区域 -->
+                <ul class="layui-nav layui-layout-left">
+                    <li class="layui-nav-item layadmin-flexible" lay-unselect>
+                        <a href="javascript:;" layadmin-event="flexible" title="侧边伸缩">
+                            <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
+                        </a>
+                    </li>
+                    
+                    <li class="layui-nav-item" lay-unselect>
+                        <a href="javascript:Refresh()" layadmin-event="refresh" title="刷新">
+                            <i class="layui-icon layui-icon-refresh-3"></i>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
+
+                    <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                        <a href="javascript:;" layadmin-event="theme">
+                            <i class="layui-icon layui-icon-theme"></i>
+                        </a>
+                    </li>
+                    <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                        <a href="javascript:;" layadmin-event="fullscreen">
+                            <i class="layui-icon layui-icon-screen-full"></i>
+                        </a>
+                    </li>
+
+                    <li class="layui-nav-item" lay-unselect>
+                        <a href="javascript:;">
+                            <cite>@user.TrueName</cite>
+                        </a>
+
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:updataPwd()">修改密码</a></dd>
+                            <hr>
+                            <dd style="text-align: center;"><a href="javascript:LoingOut()">退出</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+            <!-- 侧边菜单 -->
+            <div class="layui-side layui-side-menu">
+                <div class="layui-side-scroll">
+                    <div class="layui-logo" lay-href="home/console.html">
+                        <p>@Configs.Settings["Title"]</p>
+                    </div>
+                    <ul class="layui-nav layui-nav-tree" lay-filter="menu">
+                    </ul>
+                </div>
+            </div>
+            <!-- 主体内容 -->
+            <div class="layui-body" style="margin-top: -50px">
+                <div class="layui-tab app-container" lay-allowclose="true" lay-filter="tabs" style="height: 90%">
+                    <ul id="appTabs" class="layui-tab-title custom-tab"></ul>
+                    <div id="appTabPage" class="layui-tab-content">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script src="/layui/config/layui/jquery.min.js"></script>
+<script src="/layui/config/layui/layui.js"></script>
+<script>layui.config({
+        base: '/layui/config/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use('index');</script>
+
+<script type="text/javascript">var data ='@(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(menus)))';
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var $ = layui.jquery;
+        var element = layui.element;
+        //定义ids数组，用来记录已经打开的tab选项卡
+        var ids = [];
+        menulode(data);
+        element.on('nav(menu)', function () {
+            var id = $(this).attr("data-id");
+            var title = $(this).attr("data-title");
+            var url = $(this).attr("data-url");
+
+            //判断是否为一级菜单，如果不是一级菜单则创建tab
+            if (typeof (id) != "undefined" || typeof (id) == "10000") {
+
+                //判断选项卡是否已经被打开 下标为-1则未打开
+                if (ids.indexOf(id) == -1) {
+                    element.tabAdd('tabs', {
+                        title: title
+                        , content: createIframe(url)
+                        , id: id
+                    });
+                    ids.push(id);
+                }
+                //已经打开的tab直接切换
+                element.tabChange('tabs', id);
+
+                //删除tab时，从ids中将该tab的id删除，如果不删除会打不开该tab
+                element.on('tabDelete(tabs)', function (elem) {
+                    var index = elem.index;
+                    ids.splice(index, 1);
+                });
+            }
+
+
+
+            //创建iframe
+
+        });
+        function createIframe(url) {
+            return '<iframe src="' + url + '" frameborder="0" id="myframe" class="layadmin-iframe" style="margin-top:60px;height:93%"></iframe>'
+        }
+        function menulode(data) {
+            index();
+            $.each(eval(data), function (i, obj) {
+                var content = '<li class="layui-nav-item">';
+                content += '<a href="javascript:;"><i class="layui-icon  ' + obj.icon + '"></i>' + obj.title + "</a>";
+                //这里是添加所有的子菜单
+                content += loadchild(obj);
+                content += "</li>";
+                $(".layui-nav-tree").append(content);
+
+            });
+            element.init();
+
+            var id = "10000";
+            var title = "首页";
+            var url = "/home/main";
+
+
+        }
+        //组装子菜单的方法
+        function loadchild(obj) {
+            if (obj == null) {
+                return;
+            }
+            var content = "";
+            if (obj.children != null && obj.children.length > 0) {
+                content += '<dl class="layui-nav-child">';
+            } else {
+                content += '<dl>';
+            }
+
+            if (obj.children != null && obj.children.length > 0) {
+                $.each(obj.children, function (i, note) {
+                    //console.log(note.title);
+                    content += '<dd>';
+                    content += "<a href=\"javascript:;\" data-id=\"" + note.id + "\" data-title=\"" + note.title + "\" data-url=\"" + note.href + "\">" + note.title + "</a>";
+
+                    if (note.children == null) {
+                        return;
+                    }
+                    content += loadchild(note);
+                    content += '</dd>';
+                });
+                content += '</dl>';
+            }
+            return content;
+        }
+        //默认创建首页
+        function index() {
+            var content = '<li class="layui-nav-item  layui-this">';
+            content += '<a href="javascript:;" data-id="10000" data-title="首页" data-url="/home/main"><i class="layui-icon layui-icon-home"></i>首页</a>';
+            content += "</li>";
+            $(".layui-nav-tree").append(content);
+
+            var id = "10000";
+            var title = "首页";
+            var url = "/home/main";
+
+            //判断是否为一级菜单，如果不是一级菜单则创建tab
+            if (ids.indexOf(id) == -1) {
+                element.tabAdd('tabs', {
+                    title: title
+                    , content: createIframe(url)
+                    , id: id
+                });
+                ids.push(id);
+            }
+            //已经打开的tab直接切换
+            element.tabChange('tabs', id);
+
+            //删除tab时，从ids中将该tab的id删除，如果不删除会打不开该tab
+            element.on('tabDelete(tabs)', function (elem) {
+                var index = elem.index;
+                ids.splice(index, 1);
+            });
+        }
+    });
+
+    function LoingOut() {
+        location.href = "/login";
+    }
+    function LoingOuts() {
+        location.href = "/login";
+    }
+    function Refresh()
+    {
+        location.reload();
+    }
+    function updataPwd()
+    {
+        layer.open({
+            type: 2, title: '修改密码', content: '/home/changepassword', maxmin: true, area: ['700px', '400px'], yes: function (index, layero) {
+                var iframeWindow = window['layui-layer-iframe' + index]
+                    , submitID = 'LAY-user-front-submit'
+                    , submit = layero.find('iframe').contents().find('#' + submitID);
+            }
+        });
+    }</script>

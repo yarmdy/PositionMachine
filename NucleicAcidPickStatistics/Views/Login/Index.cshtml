@@ -1,0 +1,106 @@
+﻿@using ZEHOU.PM.Config
+@{
+    Layout = null;
+    if (ViewBag.User == null) {
+        ViewBag.User = new ZEHOU.PM.DB.dbLabelInfo.User { };
+    }
+}
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>@Configs.Settings["Title"]</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0"
+          name="viewport" />
+    <script>
+        if (window != top) {
+            top.location.href = "/";
+        }
+    </script>
+    <script src="/scripts/jquery-3.4.1.min.js"></script>
+    <script src="/script/ban.js"></script>
+    <canvas style="position:absolute;z-index:-1"></canvas>
+    <style>
+        #main {
+            display: flex;
+            display: -webkit-flex;
+            flex-direction: column;
+            webkit-flex-direction: column;
+            height: 100%;
+            position: relative;
+        }
+
+        .logo {
+            width: 300px;
+            height: 100px;
+            padding-top: 8%;
+        }
+
+        .in_txt {
+            font-size: 13px;
+            padding: 7px;
+            border-radius: 3px;
+            border: 1px solid #000;
+        }
+
+        .txt {
+            font-size: 16px;
+            padding: 10px;
+        }
+
+        .login_btn {
+            background-color: #0bbdc0;
+            color: white;
+            width: 75px;
+            height: 35px;
+            font-weight: bold;
+            font-size: 17px;
+            margin-top: 17px;
+            border-radius: 3px;
+            border: 0px solid #000;
+        }
+
+        input:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0px 1000px white inset;
+        }
+
+        .bootom {
+            font-size: 10px;
+            flex-direction: column-resverse;
+            webkit-flex-direction: column-resverse;
+            margin-top: 15%;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" autocomplete="off" method="post">
+        <div id="main" align="center">
+            <canvas style="position:absolute;z-index:-1"></canvas>
+            <div>
+                <h2 style="padding-top:8%">@Configs.Settings["Title"]</h2>
+            </div>
+            <div><hr width="300px" /></div>
+            <div class="txt">用户名</div>
+            <div>
+                <input id="txt_username" class="in_txt" type="text" name="LoginName" value="@ViewBag.User.LoginName" />
+            </div>
+            <div class="txt">密码</div>
+            <div>
+                <input id="txt_pwd" class="in_txt" type="password" name="Password"  value="@ViewBag.User.Password" />
+            </div>
+            <div>
+                <input id="btn_login" class="login_btn" type="submit" value="登 录" />
+            </div>
+            @if (!string.IsNullOrEmpty(ViewBag.ERROR))
+            {
+                <div class="error" style="color:red">@ViewBag.ERROR</div>
+            }
+
+            <div class="bootom" align="center">
+                <div>版权:</div>
+                <div>技术支持:,联系电话:</div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

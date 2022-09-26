@@ -1,0 +1,891 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="dbLabelMidModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="GidRemark">
+          <Key>
+            <PropertyRef Name="gid" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="gid" Type="int" Nullable="false" />
+          <Property Name="remark" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="giditem" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GroupReportTime">
+          <Key>
+            <PropertyRef Name="TEST_GROUP" />
+          </Key>
+          <Property Name="TEST_GROUP" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="REPORT_TIME" Type="nvarchar" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="GroupReportTimeNew">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="testOrder" Type="nvarchar" MaxLength="500" />
+          <Property Name="textGroup" Type="nvarchar" MaxLength="500" />
+          <Property Name="ReciveType" Type="int" />
+          <Property Name="day" Type="int" />
+          <Property Name="hour" Type="int" />
+          <Property Name="min" Type="int" />
+          <Property Name="Remark" Type="nvarchar" MaxLength="500" />
+          <Property Name="startTime" Type="nvarchar" MaxLength="50" />
+          <Property Name="endTime" Type="nvarchar" MaxLength="50" />
+          <Property Name="restDay" Type="nvarchar" MaxLength="500" />
+          <Property Name="restWeek" Type="nvarchar" MaxLength="50" />
+          <Property Name="orderId" Type="nvarchar" MaxLength="50" />
+          <Property Name="Report_Place" Type="nvarchar" MaxLength="500" />
+          <Property Name="fixTime" Type="nvarchar" MaxLength="50" />
+          <Property Name="isEmergen" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Label">
+          <Key>
+            <PropertyRef Name="BarCode" />
+          </Key>
+          <Property Name="BarCode" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="PatientID" Type="nvarchar" MaxLength="20" />
+          <Property Name="DeviceID" Type="nvarchar" MaxLength="20" />
+          <Property Name="Department" Type="nvarchar" MaxLength="40" />
+          <Property Name="Bed" Type="nvarchar" MaxLength="40" />
+          <Property Name="SampleName" Type="nvarchar" MaxLength="40" />
+          <Property Name="LableType" Type="int" />
+          <Property Name="PrintCount" Type="int" />
+          <Property Name="TubeColor" Type="nvarchar" MaxLength="500" />
+          <Property Name="TestGroup" Type="nvarchar(max)" />
+          <Property Name="TestOrder" Type="nvarchar(max)" />
+          <Property Name="EmergenteInfo" Type="nvarchar" MaxLength="40" />
+          <Property Name="BS01" Type="nvarchar" MaxLength="40" />
+          <Property Name="BS02" Type="nvarchar" MaxLength="40" />
+          <Property Name="BS03" Type="nvarchar" MaxLength="40" />
+          <Property Name="BS04" Type="nvarchar" MaxLength="40" />
+          <Property Name="BS05" Type="nvarchar" MaxLength="40" />
+          <Property Name="BS06" Type="nvarchar" MaxLength="40" />
+          <Property Name="BS07" Type="nvarchar" MaxLength="40" />
+          <Property Name="BS08" Type="nvarchar" MaxLength="40" />
+          <Property Name="BS09" Type="nvarchar" MaxLength="40" />
+          <Property Name="BS10" Type="nvarchar" MaxLength="40" />
+          <Property Name="LS01" Type="nvarchar" MaxLength="200" />
+          <Property Name="LS02" Type="nvarchar" MaxLength="200" />
+          <Property Name="LS03" Type="nvarchar" MaxLength="200" />
+          <Property Name="LS04" Type="nvarchar" MaxLength="200" />
+          <Property Name="LS05" Type="nvarchar" MaxLength="200" />
+          <Property Name="LS06" Type="nvarchar" MaxLength="200" />
+          <Property Name="LS07" Type="nvarchar" MaxLength="200" />
+          <Property Name="LS08" Type="nvarchar" MaxLength="200" />
+          <Property Name="LS09" Type="nvarchar" MaxLength="200" />
+          <Property Name="LS10" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="LabelStatus" Type="int" />
+          <Property Name="LabelUserID" Type="nvarchar" MaxLength="20" />
+          <Property Name="LabelTime" Type="datetime" />
+          <Property Name="ResponseStatus" Type="int" />
+          <Property Name="ResponseTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="OperateRequest">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="DeviceID" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="PatientID" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="PatientType" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="RequestFlag" Type="int" Nullable="false" />
+          <Property Name="RequestTime" Type="datetime" Nullable="false" />
+          <Property Name="CompleteTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Patient">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="PatientType" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Age" Type="int" Nullable="false" />
+          <Property Name="AgeUnit" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="PS01" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="PS02" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="PS03" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="PS04" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="PS05" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="PS06" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="PS07" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="PS08" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="PS09" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="PS10" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" Nullable="false" />
+          <Property Name="photo" Type="image" />
+        </EntityType>
+        <EntityType Name="Refund_Label">
+          <Key>
+            <PropertyRef Name="BarCode" />
+          </Key>
+          <Property Name="BarCode" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="PatientID" Type="nvarchar" MaxLength="20" />
+          <Property Name="DeviceID" Type="nvarchar" MaxLength="20" />
+          <Property Name="Department" Type="nvarchar" MaxLength="40" />
+          <Property Name="Bed" Type="nvarchar" MaxLength="40" />
+          <Property Name="SampleName" Type="nvarchar" MaxLength="40" />
+          <Property Name="LableType" Type="int" />
+          <Property Name="PrintCount" Type="int" />
+          <Property Name="TubeColor" Type="nvarchar" MaxLength="500" />
+          <Property Name="TestGroup" Type="nvarchar(max)" />
+          <Property Name="TestOrder" Type="nvarchar(max)" />
+          <Property Name="EmergenteInfo" Type="nvarchar" MaxLength="40" />
+          <Property Name="BS01" Type="nvarchar" MaxLength="40" />
+          <Property Name="BS02" Type="nvarchar" MaxLength="40" />
+          <Property Name="BS03" Type="nvarchar" MaxLength="40" />
+          <Property Name="BS04" Type="nvarchar" MaxLength="40" />
+          <Property Name="BS05" Type="nvarchar" MaxLength="40" />
+          <Property Name="BS06" Type="nvarchar" MaxLength="40" />
+          <Property Name="BS07" Type="nvarchar" MaxLength="40" />
+          <Property Name="BS08" Type="nvarchar" MaxLength="40" />
+          <Property Name="BS09" Type="nvarchar" MaxLength="40" />
+          <Property Name="BS10" Type="nvarchar" MaxLength="40" />
+          <Property Name="LS01" Type="nvarchar" MaxLength="200" />
+          <Property Name="LS02" Type="nvarchar" MaxLength="200" />
+          <Property Name="LS03" Type="nvarchar" MaxLength="200" />
+          <Property Name="LS04" Type="nvarchar" MaxLength="200" />
+          <Property Name="LS05" Type="nvarchar" MaxLength="200" />
+          <Property Name="LS06" Type="nvarchar" MaxLength="200" />
+          <Property Name="LS07" Type="nvarchar" MaxLength="200" />
+          <Property Name="LS08" Type="nvarchar" MaxLength="200" />
+          <Property Name="LS09" Type="nvarchar" MaxLength="200" />
+          <Property Name="LS10" Type="nvarchar" MaxLength="200" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="Refund_LabelStatus" Type="int" />
+          <Property Name="Refund_LabelUserID" Type="nvarchar" MaxLength="20" />
+          <Property Name="Refund_LabelTime" Type="datetime" />
+          <Property Name="ResponseStatus" Type="int" />
+          <Property Name="ResponseTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="RuleReport">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="remark" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Gid" Type="int" Nullable="false" />
+          <Property Name="isTime" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TubeColor">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TubeColor" Type="nvarchar" MaxLength="20" />
+          <Property Name="TestGroup" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="TestOrder" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“dbLabelMid.dbo.upgrade”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="upgrade">
+          <Key>
+            <PropertyRef Name="module" />
+            <PropertyRef Name="date" />
+          </Key>
+          <Property Name="module" Type="int" Nullable="false" />
+          <Property Name="date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6013: 表/视图“dbLabelMid.dbo.V_LABEL_SORTING”未定义主键，并且无法推断有效的主键。已排除了此表/视图。若要使用实体，将需要检查您的架构、添加正确的键并取消对实体的注释。
+        <EntityType Name="V_LABEL_SORTING">
+          <Property Name="barcode" Type="nvarchar" MaxLength="255" />
+          <Property Name="testltem" Type="nvarchar" MaxLength="255" />
+          <Property Name="req_groupid" Type="nvarchar" MaxLength="255" />
+          <Property Name="req_groupna" Type="nvarchar" MaxLength="255" />
+          <Property Name="testgroup" Type="nvarchar" MaxLength="255" />
+          <Property Name="patientid" Type="nvarchar" MaxLength="255" />
+          <Property Name="patientname" Type="nvarchar" MaxLength="255" />
+          <Property Name="patientsex" Type="nvarchar" MaxLength="255" />
+          <Property Name="patientage" Type="nvarchar" MaxLength="255" />
+          <Property Name="patienttype" Type="nvarchar" MaxLength="255" />
+          <Property Name="querystate" Type="nvarchar" MaxLength="255" />
+          <Property Name="issorted" Type="nvarchar" MaxLength="255" />
+          <Property Name="申请科室" Type="nvarchar" MaxLength="255" />
+          <Property Name="申请病区" Type="nvarchar" MaxLength="255" />
+          <Property Name="床号" Type="nvarchar" MaxLength="255" />
+          <Property Name="申请医生" Type="nvarchar" MaxLength="255" />
+          <Property Name="申请时间" Type="datetime" />
+          <Property Name="reserve1" Type="nvarchar" MaxLength="255" />
+          <Property Name="reserve2" Type="nvarchar" MaxLength="255" />
+          <Property Name="reserve3" Type="nvarchar" MaxLength="255" />
+          <Property Name="reserve4" Type="nvarchar" MaxLength="255" />
+          <Property Name="reserve5" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+        <Association Name="FK_Label_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="0..1" />
+          <End Role="Label" Type="Self.Label" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Label">
+              <PropertyRef Name="PatientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_ins_Sorting" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="BARCODE" Type="nvarchar" Mode="In" />
+          <Parameter Name="TESTITEM" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="TESTGROUP" Type="nvarchar" Mode="In" />
+          <Parameter Name="PATIENTID" Type="nvarchar" Mode="In" />
+          <Parameter Name="PATIENTNAME" Type="nvarchar" Mode="In" />
+          <Parameter Name="PATIENTSEX" Type="nvarchar" Mode="In" />
+          <Parameter Name="PATIENTAGE" Type="nvarchar" Mode="In" />
+          <Parameter Name="PATIENTTYPE" Type="nvarchar" Mode="In" />
+          <Parameter Name="DATASOURCE" Type="nvarchar" Mode="In" />
+          <Parameter Name="SORTINGSTATE" Type="int" Mode="In" />
+          <Parameter Name="SignForState" Type="int" Mode="In" />
+          <Parameter Name="RESERVE1" Type="nvarchar" Mode="In" />
+          <Parameter Name="RESERVE2" Type="nvarchar" Mode="In" />
+          <Parameter Name="RESERVE3" Type="nvarchar" Mode="In" />
+          <Parameter Name="RESERVE4" Type="nvarchar" Mode="In" />
+          <Parameter Name="RESERVE5" Type="nvarchar" Mode="In" />
+          <Parameter Name="RESERVE6" Type="nvarchar" Mode="In" />
+          <Parameter Name="RESERVE7" Type="nvarchar" Mode="In" />
+          <Parameter Name="RESERVE8" Type="nvarchar" Mode="In" />
+          <Parameter Name="RESERVE9" Type="nvarchar" Mode="In" />
+          <Parameter Name="RESERVE10" Type="nvarchar" Mode="In" />
+          <Parameter Name="RESERVE11" Type="nvarchar" Mode="In" />
+          <Parameter Name="RESERVE12" Type="nvarchar" Mode="In" />
+          <Parameter Name="RESERVE13" Type="nvarchar" Mode="In" />
+          <Parameter Name="RESERVE14" Type="nvarchar" Mode="In" />
+          <Parameter Name="RESERVE15" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="dbLabelMidModelStoreContainer">
+          <EntitySet Name="GidRemark" EntityType="Self.GidRemark" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GroupReportTime" EntityType="Self.GroupReportTime" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GroupReportTimeNew" EntityType="Self.GroupReportTimeNew" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Label" EntityType="Self.Label" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OperateRequest" EntityType="Self.OperateRequest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Patient" EntityType="Self.Patient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Refund_Label" EntityType="Self.Refund_Label" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RuleReport" EntityType="Self.RuleReport" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TubeColor" EntityType="Self.TubeColor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="upgrade" EntityType="Self.upgrade" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [upgrade].[module] AS [module], 
+    [upgrade].[date] AS [date]
+    FROM [dbo].[upgrade] AS [upgrade]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Label_Patient" Association="Self.FK_Label_Patient">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="Label" EntitySet="Label" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dbLabelMidModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="dbLabelMidEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(dbLabelMidModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(dbLabelMidModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ins_Sorting" ReturnType="Collection(Int32)">
+            <Parameter Name="BARCODE" Mode="In" Type="String" />
+            <Parameter Name="TESTITEM" Mode="In" Type="String" />
+            <Parameter Name="TESTGROUP" Mode="In" Type="String" />
+            <Parameter Name="PATIENTID" Mode="In" Type="String" />
+            <Parameter Name="PATIENTNAME" Mode="In" Type="String" />
+            <Parameter Name="PATIENTSEX" Mode="In" Type="String" />
+            <Parameter Name="PATIENTAGE" Mode="In" Type="String" />
+            <Parameter Name="PATIENTTYPE" Mode="In" Type="String" />
+            <Parameter Name="DATASOURCE" Mode="In" Type="String" />
+            <Parameter Name="SORTINGSTATE" Mode="In" Type="Int32" />
+            <Parameter Name="SignForState" Mode="In" Type="Int32" />
+            <Parameter Name="RESERVE1" Mode="In" Type="String" />
+            <Parameter Name="RESERVE2" Mode="In" Type="String" />
+            <Parameter Name="RESERVE3" Mode="In" Type="String" />
+            <Parameter Name="RESERVE4" Mode="In" Type="String" />
+            <Parameter Name="RESERVE5" Mode="In" Type="String" />
+            <Parameter Name="RESERVE6" Mode="In" Type="String" />
+            <Parameter Name="RESERVE7" Mode="In" Type="String" />
+            <Parameter Name="RESERVE8" Mode="In" Type="String" />
+            <Parameter Name="RESERVE9" Mode="In" Type="String" />
+            <Parameter Name="RESERVE10" Mode="In" Type="String" />
+            <Parameter Name="RESERVE11" Mode="In" Type="String" />
+            <Parameter Name="RESERVE12" Mode="In" Type="String" />
+            <Parameter Name="RESERVE13" Mode="In" Type="String" />
+            <Parameter Name="RESERVE14" Mode="In" Type="String" />
+            <Parameter Name="RESERVE15" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="GidRemarks" EntityType="dbLabelMidModel.GidRemark" />
+          <EntitySet Name="GroupReportTimes" EntityType="dbLabelMidModel.GroupReportTime" />
+          <EntitySet Name="GroupReportTimeNews" EntityType="dbLabelMidModel.GroupReportTimeNew" />
+          <EntitySet Name="Labels" EntityType="dbLabelMidModel.Label" />
+          <EntitySet Name="OperateRequests" EntityType="dbLabelMidModel.OperateRequest" />
+          <EntitySet Name="Patients" EntityType="dbLabelMidModel.Patient" />
+          <EntitySet Name="Refund_Label" EntityType="dbLabelMidModel.Refund_Label" />
+          <EntitySet Name="RuleReports" EntityType="dbLabelMidModel.RuleReport" />
+          <EntitySet Name="sysdiagrams" EntityType="dbLabelMidModel.sysdiagram" />
+          <EntitySet Name="TubeColors" EntityType="dbLabelMidModel.TubeColor" />
+          <EntitySet Name="upgrades" EntityType="dbLabelMidModel.upgrade" />
+          <AssociationSet Name="FK_Label_Patient" Association="dbLabelMidModel.FK_Label_Patient">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="Label" EntitySet="Labels" />
+          </AssociationSet>
+        </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="GidRemark">
+          <Key>
+            <PropertyRef Name="gid" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="gid" Type="Int32" Nullable="false" />
+          <Property Name="remark" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="giditem" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="GroupReportTime">
+          <Key>
+            <PropertyRef Name="TEST_GROUP" />
+          </Key>
+          <Property Name="TEST_GROUP" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="REPORT_TIME" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="GroupReportTimeNew">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="testOrder" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="textGroup" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ReciveType" Type="Int32" />
+          <Property Name="day" Type="Int32" />
+          <Property Name="hour" Type="Int32" />
+          <Property Name="min" Type="Int32" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="startTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="endTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="restDay" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="restWeek" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="orderId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Report_Place" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="fixTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="isEmergen" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Label">
+          <Key>
+            <PropertyRef Name="BarCode" />
+          </Key>
+          <Property Name="BarCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="PatientID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DeviceID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Department" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="Bed" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="SampleName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="LableType" Type="Int32" />
+          <Property Name="PrintCount" Type="Int32" />
+          <Property Name="TubeColor" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TestGroup" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TestOrder" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EmergenteInfo" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="BS01" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="BS02" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="BS03" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="BS04" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="BS05" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="BS06" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="BS07" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="BS08" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="BS09" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="BS10" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="LS01" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LS02" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LS03" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LS04" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LS05" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LS06" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LS07" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LS08" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LS09" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LS10" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="LabelStatus" Type="Int32" />
+          <Property Name="LabelUserID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LabelTime" Type="DateTime" Precision="3" />
+          <Property Name="ResponseStatus" Type="Int32" />
+          <Property Name="ResponseTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Patient" Relationship="dbLabelMidModel.FK_Label_Patient" FromRole="Label" ToRole="Patient" />
+        </EntityType>
+        <EntityType Name="OperateRequest">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DeviceID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="PatientID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="PatientType" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="RequestFlag" Type="Int32" Nullable="false" />
+          <Property Name="RequestTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CompleteTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Patient">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="PatientType" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Age" Type="Int32" Nullable="false" />
+          <Property Name="AgeUnit" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="PS01" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PS02" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PS03" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PS04" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PS05" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PS06" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PS07" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PS08" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PS09" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PS10" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Labels" Relationship="dbLabelMidModel.FK_Label_Patient" FromRole="Patient" ToRole="Label" />
+        </EntityType>
+        <EntityType Name="Refund_Label">
+          <Key>
+            <PropertyRef Name="BarCode" />
+          </Key>
+          <Property Name="BarCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="PatientID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DeviceID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Department" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="Bed" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="SampleName" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="LableType" Type="Int32" />
+          <Property Name="PrintCount" Type="Int32" />
+          <Property Name="TubeColor" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TestGroup" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TestOrder" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EmergenteInfo" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="BS01" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="BS02" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="BS03" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="BS04" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="BS05" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="BS06" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="BS07" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="BS08" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="BS09" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="BS10" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="LS01" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LS02" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LS03" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LS04" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LS05" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LS06" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LS07" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LS08" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LS09" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LS10" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="Refund_LabelStatus" Type="Int32" />
+          <Property Name="Refund_LabelUserID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Refund_LabelTime" Type="DateTime" Precision="3" />
+          <Property Name="ResponseStatus" Type="Int32" />
+          <Property Name="ResponseTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="RuleReport">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="remark" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Gid" Type="Int32" Nullable="false" />
+          <Property Name="isTime" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TubeColor">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TubeColor1" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="TestGroup" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="TestOrder" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="upgrade">
+          <Key>
+            <PropertyRef Name="module" />
+            <PropertyRef Name="date" />
+          </Key>
+          <Property Name="module" Type="Int32" Nullable="false" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <Association Name="FK_Label_Patient">
+          <End Type="dbLabelMidModel.Patient" Role="Patient" Multiplicity="0..1" />
+          <End Type="dbLabelMidModel.Label" Role="Label" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Label">
+              <PropertyRef Name="PatientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="dbLabelMidModelStoreContainer" CdmEntityContainer="dbLabelMidEntities">
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="dbLabelMidModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="dbLabelMidModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="dbLabelMidModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="dbLabelMidModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbLabelMidModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="dbLabelMidModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbLabelMidModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_ins_Sorting" FunctionName="dbLabelMidModel.Store.sp_ins_Sorting" />
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="dbLabelMidModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="dbLabelMidModel.Store.sp_upgraddiagrams" />
+          <EntitySetMapping Name="GidRemarks">
+            <EntityTypeMapping TypeName="dbLabelMidModel.GidRemark">
+              <MappingFragment StoreEntitySet="GidRemark">
+                <ScalarProperty Name="giditem" ColumnName="giditem" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="gid" ColumnName="gid" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GroupReportTimes">
+            <EntityTypeMapping TypeName="dbLabelMidModel.GroupReportTime">
+              <MappingFragment StoreEntitySet="GroupReportTime">
+                <ScalarProperty Name="REPORT_TIME" ColumnName="REPORT_TIME" />
+                <ScalarProperty Name="TEST_GROUP" ColumnName="TEST_GROUP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GroupReportTimeNews">
+            <EntityTypeMapping TypeName="dbLabelMidModel.GroupReportTimeNew">
+              <MappingFragment StoreEntitySet="GroupReportTimeNew">
+                <ScalarProperty Name="isEmergen" ColumnName="isEmergen" />
+                <ScalarProperty Name="fixTime" ColumnName="fixTime" />
+                <ScalarProperty Name="Report_Place" ColumnName="Report_Place" />
+                <ScalarProperty Name="orderId" ColumnName="orderId" />
+                <ScalarProperty Name="restWeek" ColumnName="restWeek" />
+                <ScalarProperty Name="restDay" ColumnName="restDay" />
+                <ScalarProperty Name="endTime" ColumnName="endTime" />
+                <ScalarProperty Name="startTime" ColumnName="startTime" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="min" ColumnName="min" />
+                <ScalarProperty Name="hour" ColumnName="hour" />
+                <ScalarProperty Name="day" ColumnName="day" />
+                <ScalarProperty Name="ReciveType" ColumnName="ReciveType" />
+                <ScalarProperty Name="textGroup" ColumnName="textGroup" />
+                <ScalarProperty Name="testOrder" ColumnName="testOrder" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Labels">
+            <EntityTypeMapping TypeName="dbLabelMidModel.Label">
+              <MappingFragment StoreEntitySet="Label">
+                <ScalarProperty Name="ResponseTime" ColumnName="ResponseTime" />
+                <ScalarProperty Name="ResponseStatus" ColumnName="ResponseStatus" />
+                <ScalarProperty Name="LabelTime" ColumnName="LabelTime" />
+                <ScalarProperty Name="LabelUserID" ColumnName="LabelUserID" />
+                <ScalarProperty Name="LabelStatus" ColumnName="LabelStatus" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="LS10" ColumnName="LS10" />
+                <ScalarProperty Name="LS09" ColumnName="LS09" />
+                <ScalarProperty Name="LS08" ColumnName="LS08" />
+                <ScalarProperty Name="LS07" ColumnName="LS07" />
+                <ScalarProperty Name="LS06" ColumnName="LS06" />
+                <ScalarProperty Name="LS05" ColumnName="LS05" />
+                <ScalarProperty Name="LS04" ColumnName="LS04" />
+                <ScalarProperty Name="LS03" ColumnName="LS03" />
+                <ScalarProperty Name="LS02" ColumnName="LS02" />
+                <ScalarProperty Name="LS01" ColumnName="LS01" />
+                <ScalarProperty Name="BS10" ColumnName="BS10" />
+                <ScalarProperty Name="BS09" ColumnName="BS09" />
+                <ScalarProperty Name="BS08" ColumnName="BS08" />
+                <ScalarProperty Name="BS07" ColumnName="BS07" />
+                <ScalarProperty Name="BS06" ColumnName="BS06" />
+                <ScalarProperty Name="BS05" ColumnName="BS05" />
+                <ScalarProperty Name="BS04" ColumnName="BS04" />
+                <ScalarProperty Name="BS03" ColumnName="BS03" />
+                <ScalarProperty Name="BS02" ColumnName="BS02" />
+                <ScalarProperty Name="BS01" ColumnName="BS01" />
+                <ScalarProperty Name="EmergenteInfo" ColumnName="EmergenteInfo" />
+                <ScalarProperty Name="TestOrder" ColumnName="TestOrder" />
+                <ScalarProperty Name="TestGroup" ColumnName="TestGroup" />
+                <ScalarProperty Name="TubeColor" ColumnName="TubeColor" />
+                <ScalarProperty Name="PrintCount" ColumnName="PrintCount" />
+                <ScalarProperty Name="LableType" ColumnName="LableType" />
+                <ScalarProperty Name="SampleName" ColumnName="SampleName" />
+                <ScalarProperty Name="Bed" ColumnName="Bed" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="DeviceID" ColumnName="DeviceID" />
+                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+                <ScalarProperty Name="BarCode" ColumnName="BarCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OperateRequests">
+            <EntityTypeMapping TypeName="dbLabelMidModel.OperateRequest">
+              <MappingFragment StoreEntitySet="OperateRequest">
+                <ScalarProperty Name="CompleteTime" ColumnName="CompleteTime" />
+                <ScalarProperty Name="RequestTime" ColumnName="RequestTime" />
+                <ScalarProperty Name="RequestFlag" ColumnName="RequestFlag" />
+                <ScalarProperty Name="PatientType" ColumnName="PatientType" />
+                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+                <ScalarProperty Name="DeviceID" ColumnName="DeviceID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Patients">
+            <EntityTypeMapping TypeName="dbLabelMidModel.Patient">
+              <MappingFragment StoreEntitySet="Patient">
+                <ScalarProperty Name="photo" ColumnName="photo" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="PS10" ColumnName="PS10" />
+                <ScalarProperty Name="PS09" ColumnName="PS09" />
+                <ScalarProperty Name="PS08" ColumnName="PS08" />
+                <ScalarProperty Name="PS07" ColumnName="PS07" />
+                <ScalarProperty Name="PS06" ColumnName="PS06" />
+                <ScalarProperty Name="PS05" ColumnName="PS05" />
+                <ScalarProperty Name="PS04" ColumnName="PS04" />
+                <ScalarProperty Name="PS03" ColumnName="PS03" />
+                <ScalarProperty Name="PS02" ColumnName="PS02" />
+                <ScalarProperty Name="PS01" ColumnName="PS01" />
+                <ScalarProperty Name="AgeUnit" ColumnName="AgeUnit" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="PatientType" ColumnName="PatientType" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Refund_Label">
+            <EntityTypeMapping TypeName="dbLabelMidModel.Refund_Label">
+              <MappingFragment StoreEntitySet="Refund_Label">
+                <ScalarProperty Name="ResponseTime" ColumnName="ResponseTime" />
+                <ScalarProperty Name="ResponseStatus" ColumnName="ResponseStatus" />
+                <ScalarProperty Name="Refund_LabelTime" ColumnName="Refund_LabelTime" />
+                <ScalarProperty Name="Refund_LabelUserID" ColumnName="Refund_LabelUserID" />
+                <ScalarProperty Name="Refund_LabelStatus" ColumnName="Refund_LabelStatus" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="LS10" ColumnName="LS10" />
+                <ScalarProperty Name="LS09" ColumnName="LS09" />
+                <ScalarProperty Name="LS08" ColumnName="LS08" />
+                <ScalarProperty Name="LS07" ColumnName="LS07" />
+                <ScalarProperty Name="LS06" ColumnName="LS06" />
+                <ScalarProperty Name="LS05" ColumnName="LS05" />
+                <ScalarProperty Name="LS04" ColumnName="LS04" />
+                <ScalarProperty Name="LS03" ColumnName="LS03" />
+                <ScalarProperty Name="LS02" ColumnName="LS02" />
+                <ScalarProperty Name="LS01" ColumnName="LS01" />
+                <ScalarProperty Name="BS10" ColumnName="BS10" />
+                <ScalarProperty Name="BS09" ColumnName="BS09" />
+                <ScalarProperty Name="BS08" ColumnName="BS08" />
+                <ScalarProperty Name="BS07" ColumnName="BS07" />
+                <ScalarProperty Name="BS06" ColumnName="BS06" />
+                <ScalarProperty Name="BS05" ColumnName="BS05" />
+                <ScalarProperty Name="BS04" ColumnName="BS04" />
+                <ScalarProperty Name="BS03" ColumnName="BS03" />
+                <ScalarProperty Name="BS02" ColumnName="BS02" />
+                <ScalarProperty Name="BS01" ColumnName="BS01" />
+                <ScalarProperty Name="EmergenteInfo" ColumnName="EmergenteInfo" />
+                <ScalarProperty Name="TestOrder" ColumnName="TestOrder" />
+                <ScalarProperty Name="TestGroup" ColumnName="TestGroup" />
+                <ScalarProperty Name="TubeColor" ColumnName="TubeColor" />
+                <ScalarProperty Name="PrintCount" ColumnName="PrintCount" />
+                <ScalarProperty Name="LableType" ColumnName="LableType" />
+                <ScalarProperty Name="SampleName" ColumnName="SampleName" />
+                <ScalarProperty Name="Bed" ColumnName="Bed" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="DeviceID" ColumnName="DeviceID" />
+                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+                <ScalarProperty Name="BarCode" ColumnName="BarCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RuleReports">
+            <EntityTypeMapping TypeName="dbLabelMidModel.RuleReport">
+              <MappingFragment StoreEntitySet="RuleReport">
+                <ScalarProperty Name="isTime" ColumnName="isTime" />
+                <ScalarProperty Name="Gid" ColumnName="Gid" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="dbLabelMidModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TubeColors">
+            <EntityTypeMapping TypeName="dbLabelMidModel.TubeColor">
+              <MappingFragment StoreEntitySet="TubeColor">
+                <ScalarProperty Name="TestOrder" ColumnName="TestOrder" />
+                <ScalarProperty Name="TestGroup" ColumnName="TestGroup" />
+                <ScalarProperty Name="TubeColor1" ColumnName="TubeColor" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="upgrades">
+            <EntityTypeMapping TypeName="dbLabelMidModel.upgrade">
+              <MappingFragment StoreEntitySet="upgrade">
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="module" ColumnName="module" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

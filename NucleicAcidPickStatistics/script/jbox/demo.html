@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="themes/TooltipBorder.css" rel="stylesheet" />
+    <link href="jBox.css" rel="stylesheet" />
+    <script src="../jquery.js"></script>
+    <script src="jBox.js"></script>
+    <script type="text/javascript">
+        //api地址 http://www.ldstars.com/js/210.html
+        $(window).load(function () {
+
+            $('.tooltip1').jBox('Tooltip', {
+                getTitle: 'data-jbox-title',
+                getContent: 'data-jbox-content'
+            });
+
+            $('.tooltip2').jBox('Tooltip', {
+                title: '我草岁的了放到',
+                content: '<img src=\"http://test.51yiy.com/upfile/source_img/img/2016/3/0de01bbb32716a3a32714d5132719ab93271ab4d224cdf12.jpg\"/>'
+            });
+
+        });
+
+        function ShowMsg(clas,title,content)
+        {
+          new jBox('Tooltip', {
+              getTitle: 'data-jbox-title',
+              getContent: 'data-jbox-content',
+                attach: $('#' + clas),
+            });
+        }
+
+    </script>
+</head>
+<body>
+
+  <span id="spn_test" onclick="ShowMsg('spn_test','我咋测试','测试内容')"  data-jbox-content="[img]http://test.51yiy.com/upfile/source_img/img/2016/3/0de01bbb32716a3a32714d5132719ab93271ab4d224cdf12.jpg">测试0</span>
+    
+<span class="tooltip1" data-jbox-title="测试" data-jbox-content="[img]http://test.51yiy.com/upfile/source_img/img/2016/3/0de01bbb32716a3a32714d5132719ab93271ab4d224cdf12.jpg">测试1!</span>
+<span class="tooltip2">测试2</span>
+</body>
+</html>

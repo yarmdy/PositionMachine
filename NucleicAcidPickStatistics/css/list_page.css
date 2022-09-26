@@ -1,0 +1,43 @@
+﻿.div_prave { height: 30px; font-size: 14px; padding-top: 5px; text-indent: 5px; color: #0E90D2; }
+
+.div_prave_n { height: 50px; font-size: 14px; padding-top: 5px; text-indent: 5px; color: #0E90D2; }
+
+
+.div_left { float: left; width: 50%; font-weight: bold; }
+
+.div_right { float: left; width: 50%; text-align: right; }
+
+    .div_right div { margin-right: 20px; }
+
+.tb_tool { background-color: #F9F9F9; border: 1px solid #DDDDDD; line-height: 40px; text-indent: 5px; border-radius: 5px; color: #333333; font-size: 14px; }
+
+    .tb_tool div { float: left; }
+
+    .tb_tool .l-text-wrapper { position: relative; margin-top: 10px; }
+
+    .tb_tool .l-text-combobox { border: 1px solid #D0D0D0; }
+
+.txt { width: 90px; height: 23px; border: 1px solid #DFDFDF; text-indent: 1px; vertical-align: middle; font-size: 14px; }
+
+.btn { border: 1px solid #DFDFDF; background-color: #fff; min-width: 60px; height: 25px; padding-left: 4px; padding-right: 4px; cursor: pointer; font-size: 12px; vertical-align: middle; }
+
+.operate_btn { border: 1px solid #DFDFDF; background-color: #fff; min-width: 40px; margin-top: 2px; padding-left: 4px; padding-right: 4px; height: 22px; text-align: center; cursor: pointer; font-size: 12px; margin-left: -2px; }
+
+.tool_btn { width: 70px; }
+
+.grid_txt { width: 85px; height: 22px; border: 1px solid #DFDFDF; text-indent: 2px; margin-top: 2px; }
+
+.grid_btn { width: 40px; background-color: #0E90D2; border: 0px; margin-top: 2px; color: white; font-size: 10px; height: 24px; margin-left: 1px; cursor: pointer; }
+
+
+.grid_btn_disable { background-color: #f3f6f7; }
+
+.grid_check { height: 23px; width: 23px; vertical-align: middle; }
+
+.span_no_seting { color: red; }
+
+
+.red { color: red; cursor: pointer; font-weight: bold; }
+
+
+.warn { color: white; background-color: red; cursor: pointer; font-weight: bold; }

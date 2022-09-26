@@ -1,0 +1,206 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="/layui/config/layui/css/layui.css" rel="stylesheet" />
+    @*<script src="/layui/config/lib/admin.js"></script>*@
+    <title></title>
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-card">
+            <!-- 内容区 -->
+            <div class="layui-card-body">
+                <!-- 表格工具栏 -->
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <input type="text" name="role_name" id="role_name" autocomplete="off" placeholder="【姓名】" autocomplete="off" class="layui-input" />
+                        </div>
+                    </div>
+                    
+                    <div class="layui-inline">
+                        <div class="layui-input-inline" style="width: 150px">
+                            <input type="text" name="span_stime" autocomplete="off" class="layui-input" id="span_stime" placeholder="【采样日期】今天" value="@(ViewBag.PickDate!=null?((DateTime)ViewBag.PickDate).ToString("yyyy-MM-dd"):"")" @(ViewBag.PickDate!=null?"disabled":"") >
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-form">
+                        <select name='picktype' id='picktype' lay-verify='required' lay-filter='picktype'>
+                            <option value="">全部</option>
+                            <option value="1">已采样</option>
+                            <option value="0">未采样</option>
+                        </select>
+                    </div>
+
+
+                    <div class="layui-inline">
+                        <div class="layui-input-inline" style="width: auto;">
+                            <button class="layui-btn" id="search"><i class="layui-icon">&#xe615;</i>查询</button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 数据表格 -->
+                <table class="layui-hide" id="tableList" lay-filter="tableList"></table>
+                <div id="laypage"></div>
+                <!-- 表格操作列 -->
+                <script type="text/html" id="toolBar">
+                    @*<a class="layui-btn layui-btn-xs btnEdit" lay-event="detail" title="明细"><i class="layui-icon">&#xe630;</i>明细</a>*@
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <script src="/layui/config/layui/layui.js"></script>
+    <script src="/layui/config/layui/jquery.min.js"></script>
+    <script>
+var pageIndex = 1;
+        var pageSize = 2000;
+        var tname;
+        var labelDate='@(ViewBag.PickDate!=null?((DateTime)ViewBag.PickDate).ToString("yyyy-MM-dd"):"")';
+        var pickType;
+        var TubeId =@(ViewBag.TubeId==null?"null": ViewBag.TubeId+"");
+
+        page("/statistics/peoplelist", pageIndex, pageSize);
+        function page(url, pageIndex, pageSize) {
+            layui.use(['form','laydate', 'laypage', 'layer', 'table', 'element', 'upload'], function () {
+                window.laydate = layui.laydate;
+                var laydate = layui.laydate //日期
+                    , laypage = layui.laypage //分页
+                    , layer = layui.layer //弹层
+                    , table = layui.table //表格
+                    , element = layui.element //元素操作
+                    , form = layui.form
+                //执行一个 table 实例
+                var SL = table.render({
+                    elem: '#tableList'
+                    , method: 'POST'   //laui 修改请求方式
+                    , height: 700
+                    , url: url //数据接口
+                    , title: '设备管理列表'
+                    , page: false //是否分页
+                    , toolbar: 'defaultToolbar' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+                    , loading: true //请求数据时，是否显示loading
+                    , totalRow: true //开启合计行
+                    , cols: [[
+
+                        { type: 'checkbox', fixed: 'left' },
+                        { field: 'ID', title: '身份证号', width: 100, templet: function (r) { return r.person ? r.person.ID:"" } },
+                        { field: 'Name', title: '姓名', width: 100, templet: function (r) { return r.person ? r.person.Name : "" } },
+                        {
+                            field: 'ID', title: '采样状态', width: 100, align: 'center', templet: function (r) { return r.record ? "已采样" : "未采" }
+                        },
+                        { field: 'BarCode', title: '条码号', width: 100, templet: function (r) { return r.tube ? r.tube.BarCode : "" } },
+                        { field: 'PickDate', title: '采样时间', width: 100, templet: function (r) { return r.record ? jsonToDate(r.record.PickDate) : "" } },
+                        { field: 'PPId', title: '采样点', width: 100, templet: function (r) { return r.pickpoint ? r.pickpoint.Name : "" } },
+
+                        { field: 'Sex', title: '性别', width: 100, templet: function (r) { return r.person && r.person.Sex ? r.person.Sex : "" } },
+                        { field: 'Nation', title: '民族', width: 100, templet: function (r) { return r.person && r.person.Nation ? r.person.Nation : "" } },
+                        { field: 'Birthday', title: '生日', width: 100, templet: function (r) { return r.person && r.person.Birthday ? r.person.Birthday : "" } },
+                        { field: 'Address', title: '地址', width: 100, templet: function (r) { return r.person && r.person.Address ? r.person.Address : "" } },
+                        { field: 'ContactInfo', title: '联系方式', width: 100, templet: function (r) { return r.person && r.person.ContactInfo ? r.person.ContactInfo : "" } },
+
+                        /*{ fixed: 'right', title: '功能操作', width: 300, align: 'center', toolbar: '#toolBar' }*/
+                    ]],
+                    where: {
+                        pageIndex: pageIndex,
+                        pageSize: pageSize,
+                        tname: tname,
+                        labelDate: labelDate,
+                        pickType: pickType,
+                        tubeId: TubeId,
+                    }
+                    , parseData: function (res) {
+                        return {
+                            "code": "0",
+                            "msg": "cg",
+                            "count": res.Total,
+                            "data": res.Rows
+                        };
+                    }
+                    , done: function (res, curr, count) {
+                        if (count != 0) {
+                            laypage.render({
+                                elem: 'laypage',
+                                count: count,
+                                curr: pageIndex,
+                                limit: pageSize,
+                                layout: ['prev', 'page', 'next', 'skip', 'count', 'limit'],
+                                jump: function (obj, first) {
+                                    if (!first) {
+                                        pageIndex = obj.curr;
+                                        pageSize = obj.limit;
+                                        page("/statistics/peoplelist", pageIndex, pageSize);
+                                    }
+                                }
+                            });
+                        }
+
+
+                    }
+
+                });
+
+                 //工具列点击事件
+                //table.on('tool(tableList)', function (obj) {
+                //    var data = obj.data; //获得当前行数据
+                //    var event = obj.event;
+                //    if (event === 'detail') {
+                //        var id = data.ID;
+                //        layer.open({
+                //            type: 2,
+                //            title: '明细',
+                //            content: '/statistics/tubedetail?id=' + id,
+                //            maxmin: true,
+                //            area: ['1030px', '620px'],
+                //            cancel: function () {
+                //                //location.reload();
+                //            }
+                //        });
+                //    }
+                //});
+                laydate.render({
+
+                    elem: '#span_stime',
+                    format: 'yyyy-MM-dd',
+
+                });
+            });
+        }
+
+        $(function () {
+            // 搜索
+            $('#search').click(function () {
+                tname = $('#role_name').val();
+                labelDate = $('#span_stime').val();
+                pickType = $('#picktype').val();
+                page("/statistics/peoplelist", pageIndex, pageSize);
+
+            });
+            //$('#add').click(function () {
+            //    layer.open({
+            //        type: 2,
+            //        title: '新增',
+            //        content: '/roles/edit',
+            //        maxmin: true,
+            //        area: ['1000px', '580px'],
+            //        cancel: function () {
+            //            location.reload();
+            //        }
+            //    });
+            //});
+        });
+        function jsonToDate(str) {
+            var reg = /\/Date\(([0-9]+)\)\//.exec(str);
+            return !reg ? "" : new Date(parseInt(reg[1])).toLocaleDateString();
+        }
+    </script>
+</body>
+</html>
+

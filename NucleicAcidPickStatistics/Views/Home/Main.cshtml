@@ -1,0 +1,131 @@
+﻿@using ZEHOU.PM.DB.dbLabelInfo;
+@{
+    Layout = null;
+    ZEHOU.PM.DB.dbLabelInfo.User User = ViewBag.User;
+    Department Depart = ViewBag.Depart;
+    List<Role> Roles = ViewBag.Roles;
+    Post Post = ViewBag.Post;
+}
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta charset="utf-8" />
+    <title></title>
+    <meta name="renderer" content="webkit" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <script src="/layui/config/layui/layui.js"></script>
+    <link href="/layui/config/layui/css/layui.css" rel="stylesheet" />
+    <link href="/layui/config/style/admin.css" rel="stylesheet" />
+    <style>
+        .layui-col-md6 {
+            width: 100%;
+        }
+
+        .layadmin-shortcut li cite {
+            font-style: normal;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .layui-col-md8 {
+            width: 60%;
+        }
+
+        .layui-col-md4 {
+            width: 40%;
+        }
+    </style>
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md8">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md6">
+                        <div class="layui-card" style="height:355px">
+                            <div class="layui-card-header">用户信息</div>
+                            <div class="layui-card-body">
+                                <div class="layui-carousel layadmin-carousel layadmin-shortcut">
+                                    <div style="height:300px">
+                                        <ul class="layui-row layui-col-space10">
+                                            <li class="layui-col-xs3">
+                                                <i class="layui-icon">&#xe705;</i>
+                                                <cite>登录名：@User.LoginName</cite>
+                                            </li>
+                                            <li class="layui-col-xs3">
+                                                <i class="layui-icon">&#xe770;</i>
+                                                <cite>姓名：@User.TrueName</cite>
+                                            </li>
+                                            <li class="layui-col-xs3">
+                                                <i class="layui-icon">&#xe678;</i>
+                                                <cite>电话：@User.Tel</cite>
+                                            </li>
+                                            <li class="layui-col-xs3">
+                                                <i class="layui-icon">&#xe715;</i>
+                                                <cite>角色：@ViewBag.RoleNames</cite>
+                                            </li>
+                                            <li class="layui-col-xs3">
+                                                <i class="layui-icon">&#xe60e;</i>
+                                                <cite>部门：@Depart.Name</cite>
+                                            </li>
+                                            <li class="layui-col-xs3">
+                                                <i class="layui-icon">&#xe613;</i>
+                                                <cite>职位：@Post.Name</cite>
+                                            </li>
+                                            <li class="layui-col-xs3">
+                                                <i class="layui-icon">&#xe657;</i>
+                                                <cite>备注：@User.Note</cite>
+                                            </li>
+                                            <li class="layui-col-xs3">
+                                                <i class="layui-icon">&#xe656;</i>
+                                                <cite>状态：@(User.IsUse?"启用":"禁用")</cite>
+                                            </li>
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <script>
+        layui.config({
+            base: '/layui/config/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use(['index', 'console', 'layer', 'jquery', 'table', 'form', 'laydate'], function () {
+            var layer = layui.layer,
+                $ = layui.jquery,
+                table = layui.table;
+            // 渲染表格
+            
+
+            function addDate(date, days) {
+                var d = new Date(date);
+                d.setDate(d.getDate() + days);
+                var month = d.getMonth() + 1;
+                var day = d.getDate();
+                if (month < 10) {
+                    month = "0" + month;
+                }
+                if (day < 10) {
+                    day = "0" + day;
+                }
+                var val = d.getFullYear() + "-" + month + "-" + day;
+                return val;
+            }
+
+        });
+    </script>
+</body>
+</html>
+
+

@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5A141A35-5FC6-4C44-B28F-6BFC0C3B1030}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ZEHOU.PM.DB.dbLabelInfo</RootNamespace>
+    <AssemblyName>ZEHOU.PM.DB.dbLabelInfo</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="aaaa_Result.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="APP.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="App_Config.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BarcodeRecord.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CallNumberRequest.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Class.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB_dbLabelInfo.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DB_dbLabelInfo.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB_dbLabelInfo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB_dbLabelInfo.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DB_dbLabelInfo.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Department.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DIS_Config.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DIS_Log.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DR.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Equipment_Config.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GroupReportTime.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HOBTSS_Request.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Label.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Log_Label.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Log_LabelConfirm.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Log_Labeling.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LR.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Manager_Data.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NAP_ParentPoints.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NAP_People.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NAP_PickPoints.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NAP_PickRecords.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NAP_PointTypes.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NAP_Tubes.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NAP_UserPickPoints.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OperateRequest.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PaiDui_Result.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Patient.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PatientIDTable.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PatientID_Queue_Table.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Post.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PrintTemplate.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PrintTemplateTable.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PriorityRuleTable.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRIORITY_RULE_TABEL.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueueSet.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QUEUE_RECORD_TABLE.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QUEUE_TABLE.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Role.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ShutDownCmd.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sorting_History.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sorting_TubeGroup_J.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sorting_TubeInfo_History.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sorting_TubeInfo_M.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sorting_TubeItem_J.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SortRecord.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Student.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SystemParameter.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TestQueue_Result.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TEST_TIME_TABEL.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TipsValueTable.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TubeType.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="User.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_GuiLin_Sorting.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_SortingInfo.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_Sorting_TubeGroup.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_Sorting_TubeInfo_History.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_ThreeDays_Sorting_TubeInfo.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_ToDay_Sorting_History.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_ToDay_Sorting_TubeInfo.cs">
+      <DependentUpon>DB_dbLabelInfo.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="DB_dbLabelInfo.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DB_dbLabelInfo.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="DB_dbLabelInfo.edmx.diagram">
+      <DependentUpon>DB_dbLabelInfo.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DB_dbLabelInfo.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DB_dbLabelInfo.Context.cs</LastGenOutput>
+      <DependentUpon>DB_dbLabelInfo.edmx</DependentUpon>
+    </Content>
+    <Content Include="DB_dbLabelInfo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DB_dbLabelInfo.edmx</DependentUpon>
+      <LastGenOutput>DB_dbLabelInfo.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

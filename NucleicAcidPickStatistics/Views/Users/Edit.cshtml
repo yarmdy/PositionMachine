@@ -1,0 +1,150 @@
+﻿@{
+    Layout = null;
+    ZEHOU.PM.DB.dbLabelInfo.User user = ViewBag.Model;
+
+    var isNew = string.IsNullOrEmpty(user.ID);
+    if (ViewBag.IsNew != null)
+    {
+        isNew = ViewBag.IsNew;
+    }
+
+
+    Dictionary<string,ZEHOU.PM.DB.dbLabelInfo.Role> Roles = ViewBag.Roles;
+    Dictionary<string,ZEHOU.PM.DB.dbLabelInfo.Department> Departs = ViewBag.Departs;
+    Dictionary<string,ZEHOU.PM.DB.dbLabelInfo.Post> Posts = ViewBag.Posts;
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    @Html.Raw(PageHelper.DetailPageJsAndCss())
+    <link href="/layui/config/layui/css/layui.css" rel="stylesheet" />
+    @*<script src="/layui/config/lib/admin.js"></script>*@
+</head>
+
+<body>
+    <div class="layui-fluid">
+        <div class="layui-card-body" style="padding: 15px;">
+            <form class="layui-form" method="post">
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户编号：</label>
+                    <div class="layui-input-block">
+                        <input id="role_id" style="height:30px" class="txt" lay-verify='required' value="@user.ID" name="ID" @(isNew ? "" : "readonly") />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">登录名称：</label>
+                    <div class="layui-input-block">
+                        <input id="role_name" style="height:30px" class="txt" lay-verify='required' value="@user.LoginName" name="LoginName" @(isNew ? "" : "readonly") />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">真实姓名：</label>
+                    <div class="layui-input-block">
+                        <input id="true_name" style="height:30px" class="txt" lay-verify='required' value="@user.TrueName" name="TrueName" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">角色：</label>
+                        <div class="layui-input-inline">
+                            <select name='RoleID' id='RoleID' lay-verify='required' lay-filter='RoleID'>
+
+                                @foreach (var role in Roles)
+                                {
+                                    <option value="@role.Value.ID" @(user.RoleID == role.Value.ID ? "selected" : "")>@role.Value.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">部门：</label>
+                        <div class="layui-input-inline">
+                            <select name='DepartmentID' id='DepartmentID' lay-verify='required' lay-filter='DepartmentID'>
+
+                                @foreach (var depart in Departs)
+                                {
+                                    <option value="@depart.Value.ID" @(user.RoleID == depart.Value.ID ? "selected" : "")>@depart.Value.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">职位：</label>
+                        <div class="layui-input-inline">
+                            <select name='PostId' id='PostId' lay-verify='required' lay-filter='PostId'>
+
+                                @foreach (var post in Posts)
+                                {
+                                    <option value="@post.Value.ID" @(user.RoleID == post.Value.ID ? "selected" : "")>@post.Value.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">电话：</label>
+                    <div class="layui-input-block">
+                        <input id="Tel" style="height:30px" class="txt" lay-verify='required' value="@user.Tel" name="Tel" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">备注：</label>
+                    <div class="layui-input-block">
+                        <input id="Note" style="height:30px" class="txt" lay-verify='required' value="@user.Note" name="Note" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">用户状态：</label>
+                        <div class="layui-input-inline">
+                            <select name='IsUse' id='IsUse' lay-verify='required' lay-filter='IsUse'>
+                                <option value="true" @(user.IsUse ? "selected" : "")>启用</option>
+                                <option value="false" @(!user.IsUse ? "selected" : "")>禁用</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="layui-form-item" style="margin-left: 110px; margin-top: 50px">
+                    <button id="btnOK" class="layui-btn btnOption  layui-btn-small btnAdd" type="submit">保 存 </button>
+                    <button id="collapse" class="layui-btn layui-btn-small layui-btn-warm" type="button">取 消</button>
+                </div>
+                <div style="color:red">@ViewBag.ERROR</div>
+                <input type="hidden" name="isNew" value="@(isNew?"true":"false")" />
+                <input type="hidden" name="Password" value="@(user.Password)" />
+            </form>
+        </div>
+    </div>
+    <script src="/layui/config/layui/layui.js"></script>
+    <script src="/layui/config/layui/jquery.min.js"></script>
+    <script>
+
+        layui.use('form', function () {
+            var form = layui.form;
+
+        });
+
+        $('#collapse').click(function () {
+            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+            parent.layer.close(index);
+            parent.$('#search').trigger("click");
+        });
+
+        if (@(ViewBag.Succ != null?"true":"false")) {
+            $('#collapse').trigger("click");
+        }
+    </script>
+</body>
+</html>

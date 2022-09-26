@@ -1,0 +1,311 @@
+﻿@{
+    Layout = null;
+    ZEHOU.PM.DB.dbLabelInfo.Role role = ViewBag.Model;
+    string[] funcs = ViewBag.Funcs;
+}
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <title>系统功能</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="ROBOTS" content="NOINDEX,NOFOLLOW" />
+    <link href="/script/wdtree/img/tree.css" rel="stylesheet" type="text/css" />
+    <link href="/css/select_tree.css" rel="stylesheet" />
+    <style type="text/css">
+        #divTop, #tbFoot, #tbContent {
+            vertical-align: middle;
+            width: 100%;
+        }
+    </style>
+
+
+</head>
+<body>
+    <script src="/script/jquery.js"></script>
+    <script src="/script/wdtree/jquery.wdtree.js" type="text/javascript"></script>
+    <script src="/script/WebServiceHelper.js" type="text/javascript"></script>
+    <script src="/script/json2.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var NodeList = [];        //初始化部门数据
+        var ReturnValue = []; //保存已选择的部门[返回给弹出界面]
+        var searchNodeList = [];
+        var isSearch = false;
+        function EnterPress(e) { //传入 event
+            var e = e || window.event;
+            if (e.keyCode == 13) {
+                searchData();
+            }
+        }
+        function replaceHtml(el, html) {
+            var oldEl = typeof el === "string" ? document.getElementById(el) : el;
+            
+            var newEl = oldEl.cloneNode(false);
+            newEl.innerHTML = html;
+            oldEl.parentNode.replaceChild(newEl, oldEl);
+            /* Since we just removed the old element from the DOM, return a reference
+            to the new element, which can be used to restore variable references. */
+            return newEl;
+        };
+        function closeWindow(flag) {
+            if (parent.Dialog) {
+                window.returnValue = ReturnValue;
+                return ReturnValue;
+            }
+            else {
+                window.returnValue = ReturnValue;
+                window.close();
+            }
+        }
+
+        //搜索
+        function getSearchData(nodes, txtName) {
+            var nodesLength = nodes.length;
+            for (var i = 0; i < nodesLength; i++) {
+                var node = nodes[i];
+                if (node.hasChildren && node.ChildNodes != null && node.ChildNodes.length > 0) {
+                    getSearchData(node.ChildNodes, txtName);
+                } else {
+                    if (node.text.indexOf(txtName) > -1) {
+                        node.hasChildren = false;
+                        node.ChildNodes = null;
+                        searchNodeList.push(node);
+                    }
+                }
+            }
+        }
+        function searchData() {
+            var txtName = $("#txtName").val();
+            if (!$.trim(txtName)) { return; }
+            $("#searchTree").show();
+            $("#treeSource").hide();
+            searchNodeList = [];
+            getSearchData(NodeList, txtName);
+            initTree(searchNodeList);
+            isSearch = true;
+        }
+
+        function clearSearch() {
+            if (isSearch) {
+                $("#txtName").val("");
+                $("#searchTree").hide();
+                $("#treeSource").show();
+
+                initTree(NodeList);
+                isSearch = false;
+            }
+        }
+
+         function clearResult() {
+            replaceHtml("treeSelected", '');
+            setNum(0);
+            for (var i = 0; i< ReturnValue.length;  i++) {
+                var item = ReturnValue[i];
+                $("#tree").checkNode(item.id, false);
+
+            }
+            ReturnValue=[];
+        }
+
+        function onCheck() {
+            var checkedData = $("#tree").getCheckedLeafNodes(true);
+            replaceHtml("treeSelected", checkedData.Htmls.join(''));
+            ReturnValue = checkedData.Nodes;
+            setNum(ReturnValue.length);
+        }
+
+        Array.prototype.remove = function (from, to) {
+            var rest = this.slice((to || from) + 1 || this.length);
+            this.length = from < 0 ? this.length + from : from;
+            return this.push.apply(this, rest);
+        };
+
+        function removeNode(id) {
+            for (var i = 0;i<ReturnValue.length; i++) {
+                var item = ReturnValue[i];
+                if (item.id == id) {
+                    ReturnValue.remove(i);
+                    break;
+                }
+            }
+        }
+
+        function initTree(data) {
+            var o = { cbiconpath: "/script/wdtree/img/", showcheck: true, oncheckcompleted: function () { onCheck(); } };
+            o.data = data;
+            var tree = $("#tree").treeview(o);
+            tree.onnodeclick = onCheck();
+        }
+
+        $(document).ready(function () {
+            $.get("/scripts/functions.json", function (json) {
+                var funcData = {
+                    "id": "0", "text": "系统功能", "value": "0", "showcheck": true, "isexpand": true, "complete": true, "hasChildren": true, "checkstate": 0, "isPublished": null, "createDate": null, "updateDate": null, "ChildNodes": []
+                };
+                var hasFuncs = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(funcs));
+                var root = {};
+                $.extend(true, root, funcData);
+
+                var clientFunc = {};
+                $.extend(true, clientFunc, funcData);
+                clientFunc.text = "客户端功能";
+                clientFunc.id = "-1";
+
+                $.each(json, function (i, a) {
+                    if (a.id.startsWith("M")) return true;
+                    var item = {};
+                    $.extend(true, item, funcData);
+                    item.text = a.title;
+                    item.id = a.id;
+                    item.hasChildren = false;
+                    item.checkstate = hasFuncs.indexOf(a.id)>=0?1:0;
+                    clientFunc.ChildNodes.push(item);
+                });
+
+                var webFunc = {};
+                $.extend(true, webFunc, funcData);
+                webFunc.text = "网站功能";
+                webFunc.id = "-2";
+
+                $.each(json, function (i, a) {
+                    if (!a.id.startsWith("M") || a.id.startsWith("M100") || a.id.startsWith("M200")) return true;
+                    var item = {};
+                    $.extend(true, item, funcData);
+                    item.text = a.title;
+                    item.id = a.id;
+                    item.hasChildren = false;
+                    item.checkstate = hasFuncs.indexOf(a.id) >= 0 ? 1 : 0;
+                    webFunc.ChildNodes.push(item);
+                });
+
+                root.ChildNodes.push(clientFunc);
+                root.ChildNodes.push(webFunc);
+
+                
+                NodeList = [root];
+
+                initTree(NodeList);
+            });
+
+            
+            $("#loadImg").hide();
+
+            //GetMenuId();
+        });
+
+        function rV(id) {
+            //$("#L" + id).css("background", "#fff");
+            $("#L" + id).css("display", "none");
+            $("#tree").checkNode(id, false);
+            setNum(parseInt($("#spSelNum").html()) - 1);
+            removeNode(id);
+        }
+
+        //设置选择数量
+        function setNum(num) {
+            $("#spSelNum").html(num);
+        }
+    </script>
+    <form id="form1" runat="server">
+        
+        <div style="height: 500px;">
+            <input type="text" style="display: none" />
+            <table id="divTop">
+                <tr>
+                    <td width="50%">
+                        <input type="text" onkeypress="EnterPress(event)" onkeydown="EnterPress()" id="txtName"
+                            style="width: 100px;" />
+                        <img alt="搜索" onclick="searchData(); return false;" src="/script/wdtree/img/search.gif" />
+                        <img alt="清空" onclick="clearSearch(); return false;" src="/script/wdtree/img/del.gif" />
+                    </td>
+                    <td valign="top">
+                        <table width="100%">
+                            <tr>
+                                <td align="left" valign="middle" style="font-size: 13px;">已有功能树(<span id="spSelNum">0</span>)
+                                </td>
+                                <td align="left" valign="middle">
+                                    <img alt="清空" style="height: 15px;" onclick="clearResult(); return false;" src="/script/wdtree/img/del.gif" />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <table id="tbContent">
+                <tr>
+                    <td class="tdtree" width="48%">
+                        <div id="divSource" style="height: 450px; overflow-y: scroll">
+                            <div id="loadImg">
+                                <img alt="清空" style="float: right" src="/script/wdtree/img/loading.gif" />
+                            </div>
+                            <ul id="treeSource" class="ztree">
+                            </ul>
+                            <ul id="searchTree" class="ztree" style="display: none;">
+                            </ul>
+                            <div id="tree">
+                            </div>
+                        </div>
+                    </td>
+                    <td class="tdtree" width="48%">
+                        <div id="divResult" style="height: 450px; overflow-y: scroll">
+                            <ul id="treeSelected" class="ztree">
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <table id="tbFoot">
+            <tr>
+                <td align="right">
+                    <input type="button" value="确 定" class="input" onclick="Save()" />
+                    <input type="button" value="取 消" class="input" onclick="javascript: closeWindown();" />
+                    &nbsp;
+                </td>
+            </tr>
+        </table>
+        <script language="javascript" type="text/ecmascript">
+            function Save() {
+                if (ReturnValue.length > 0) {
+                    var funId = ""; var roleId = '@(role.ID)';
+                    var funcs = [];
+                    for (var i = 0; i < ReturnValue.length; i++) {
+                        funId += ReturnValue[i].id + ",";
+                        funcs.push(ReturnValue[i].id);
+                    }
+                    $.ajax({
+                        //几个参数需要注意一下
+                        type: "POST",//方法类型
+                        dataType: 'text',//预期服务器返回的数据类型
+                        url: "/roles/setfuncs",//url
+                        data: { "roleId": roleId, "funId": funId,funcs:funcs },
+                        success: function (result) {
+                            if (result.indexOf("ok") >= 0) {
+
+                                alert('授权成功!');
+                                closeWindown();
+                            } else {
+                                alert("授权失败");
+                            }
+
+                        },
+                         error: function () {
+                             alert("删除数据异常！");
+                         }
+                     });
+
+                }
+                else {
+                    alert("请选择功能项");
+                }
+            }
+
+            function closeWindown() {
+                var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                parent.layer.close(index);
+            }
+        </script>
+    </form>
+</body>
+</html>

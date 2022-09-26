@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f4b5211963ee40e594306e15ebff98b4" Name="Diagram1">
+        <EntityTypeShape EntityType="dbLabelInfoModel.APP" Width="1.5" PointX="0.75" PointY="2.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.App_Config" Width="1.5" PointX="0.75" PointY="11.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.BarcodeRecord" Width="1.5" PointX="12.75" PointY="2.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.Class" Width="1.5" PointX="7.75" PointY="9.125" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.Department" Width="1.5" PointX="0.75" PointY="7.625" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.DIS_Config" Width="1.5" PointX="0.75" PointY="14.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.DIS_Log" Width="1.5" PointX="12.75" PointY="5.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.DR" Width="1.5" PointX="7.75" PointY="4.25" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.Equipment_Config" Width="1.5" PointX="12.75" PointY="9.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.GroupReportTime" Width="1.5" PointX="12.75" PointY="12.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.HOBTSS_Request" Width="1.5" PointX="2.75" PointY="15.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.Label" Width="1.5" PointX="10" PointY="12.875" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.Log_Label" Width="1.5" PointX="4.75" PointY="15.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.Log_LabelConfirm" Width="1.5" PointX="12.75" PointY="15.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.LR" Width="1.5" PointX="5.25" PointY="3" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.Manager_Data" Width="1.5" PointX="14.75" PointY="2.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.OperateRequest" Width="1.5" PointX="14.75" PointY="14.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.Patient" Width="1.5" PointX="7.75" PointY="14.75" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.PatientID_Queue_Table" Width="1.5" PointX="16.75" PointY="2.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.Post" Width="1.5" PointX="0.75" PointY="4.625" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.PrintTemplate" Width="1.5" PointX="16.75" PointY="5.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.PrintTemplateTable" Width="1.5" PointX="16.75" PointY="9.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.PRIORITY_RULE_TABEL" Width="1.5" PointX="7.75" PointY="0.75" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.PriorityRuleTable" Width="1.5" PointX="16.75" PointY="13.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.QUEUE_RECORD_TABLE" Width="1.5" PointX="14.75" PointY="18.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.QUEUE_TABLE" Width="1.5" PointX="10" PointY="2.75" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.QueueSet" Width="1.5" PointX="16.75" PointY="17.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.Role" Width="1.5" PointX="0.75" PointY="19.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.ShutDownCmd" Width="1.5" PointX="2.75" PointY="19.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.Sorting_History" Width="1.5" PointX="4.75" PointY="19.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.Sorting_TubeGroup_J" Width="1.5" PointX="18.75" PointY="2.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.Sorting_TubeInfo_M" Width="1.5" PointX="18.75" PointY="5.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.Sorting_TubeItem_J" Width="1.5" PointX="6.75" PointY="20.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.SortRecord" Width="1.5" PointX="18.75" PointY="13.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.Student" Width="1.5" PointX="10" PointY="8.625" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.SystemParameter" Width="1.5" PointX="18.75" PointY="16.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.TubeType" Width="1.5" PointX="18.75" PointY="20.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.User" Width="1.5" PointX="3" PointY="7" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.CallNumberRequest" Width="1.5" PointX="20.75" PointY="2.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.Log_Labeling" Width="1.5" PointX="0.75" PointY="22.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.PatientIDTable" Width="1.5" PointX="2.75" PointY="22.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.Sorting_TubeInfo_History" Width="1.5" PointX="20.75" PointY="5.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.TEST_TIME_TABEL" Width="1.5" PointX="8.75" PointY="22.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.TipsValueTable" Width="1.5" PointX="10.75" PointY="22.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.V_GuiLin_Sorting" Width="1.5" PointX="20.75" PointY="13.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.V_Sorting_TubeGroup" Width="1.5" PointX="20.75" PointY="16.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.V_Sorting_TubeInfo_History" Width="1.5" PointX="20.75" PointY="21.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.V_SortingInfo" Width="1.5" PointX="22.75" PointY="2.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.V_ThreeDays_Sorting_TubeInfo" Width="1.5" PointX="2.75" PointY="24.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.V_ToDay_Sorting_History" Width="1.5" PointX="22.75" PointY="5.375" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.V_ToDay_Sorting_TubeInfo" Width="1.5" PointX="4.75" PointY="24.375" />
+        <AssociationConnector Association="dbLabelInfoModel.FK_Student_Class" />
+        <AssociationConnector Association="dbLabelInfoModel.FK_User_Department" />
+        <AssociationConnector Association="dbLabelInfoModel.FK_QUEUE_TABLE_DR" />
+        <AssociationConnector Association="dbLabelInfoModel.FK_Label_Patient" />
+        <AssociationConnector Association="dbLabelInfoModel.FK_LR_User" />
+        <AssociationConnector Association="dbLabelInfoModel.FK_User_Post" />
+        <AssociationConnector Association="dbLabelInfoModel.FK_QUEUE_TABLE_PRIORITY_RULE_TABEL" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.NAP_ParentPoints" Width="1.5" PointX="23.375" PointY="8.75" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.NAP_People" Width="1.5" PointX="23.375" PointY="11.75" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.NAP_PickPoints" Width="1.5" PointX="13.375" PointY="23.75" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.NAP_PickRecords" Width="1.5" PointX="23.375" PointY="15.75" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.NAP_PointTypes" Width="1.5" PointX="15.375" PointY="23.75" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.NAP_Tubes" Width="1.5" PointX="17.375" PointY="23.75" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.NAP_UserPickPoints" Width="1.5" PointX="23.375" PointY="18.75" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

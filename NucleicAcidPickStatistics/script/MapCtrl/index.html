@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+    <script src="/script/jquery.js"></script>
+    <script src="/script/jq.select.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=tzAcIFZ5xCoRwm63NcBGfoVB"></script>
+    <!--加载鼠标绘制工具-->
+    <script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
+    <link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
+    <!--加载检索信息窗口-->
+    <script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.js"></script>
+    <link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.css" />
+    
+     <script type="text/javascript" src="js/MapCtrl_info.js"></script>
+    <link href="/css/common_page.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/MapCtrl.css" />
+    <script src="js/jquery-1.7.2.js"></script>
+    <title>设置经纬度</title>
+    <script type="text/javascript">
+        var json_result = {
+            province: '',//省
+            city: '',//市
+            county: '',//区
+            address: '',//详细地址
+            jing: '',//经度
+            wei: '',//维度
+            operate: 'cancell'//操作类型
+        };
+
+        function GetValues() {
+            //s_province,s_city,s_county,suggestId,jing,wei 
+            json_result.province = $("#s_province").find("option:selected").text();
+            json_result.city = $("#s_city").find("option:selected").text();
+            json_result.county = $("#s_county").find("option:selected").text();
+            json_result.address = $("#suggestId").val();
+
+            json_result.jing = $("#jing").val();
+            json_result.wei = $("#wei").val();
+        }
+
+        function closeWindown(flag) {
+            GetValues();
+            json_result.operate = flag;
+            window.parent.frames["openpage_1"].obj.close();
+        }
+    </script>
+    <style>
+        #div_main {
+            border: 1px solid #DFDFDF;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="div_main">
+        <div id='wrap'>
+        </div>
+    </div>
+    <div id="div_bottom">
+        <table>
+            <tr>
+                <td>
+                    <button class="detail_btn" id="btnOk" type="button" onclick="javascript: closeWindown('ok');">确 定</button>
+                </td>
+                <td>
+                    <button class="detail_btn" id="btnCancel" type="button" onclick="javascript: closeWindown('cancel');">取 消</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

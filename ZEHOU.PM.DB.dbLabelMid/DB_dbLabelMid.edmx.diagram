@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="05bf717738a342b0b40fa8ed38b035e0" Name="Diagram1">
+        <EntityTypeShape EntityType="dbLabelMidModel.GidRemark" Width="1.5" PointX="5.75" PointY="0.75" />
+        <EntityTypeShape EntityType="dbLabelMidModel.GroupReportTime" Width="1.5" PointX="5.75" PointY="3.75" />
+        <EntityTypeShape EntityType="dbLabelMidModel.GroupReportTimeNew" Width="1.5" PointX="5.75" PointY="6.75" />
+        <EntityTypeShape EntityType="dbLabelMidModel.Label" Width="1.5" PointX="3" PointY="1.25" />
+        <EntityTypeShape EntityType="dbLabelMidModel.OperateRequest" Width="1.5" PointX="7.75" PointY="0.75" />
+        <EntityTypeShape EntityType="dbLabelMidModel.Patient" Width="1.5" PointX="0.75" PointY="3.125" />
+        <EntityTypeShape EntityType="dbLabelMidModel.Refund_Label" Width="1.5" PointX="7.75" PointY="4.75" />
+        <EntityTypeShape EntityType="dbLabelMidModel.RuleReport" Width="1.5" PointX="9.75" PointY="0.75" />
+        <EntityTypeShape EntityType="dbLabelMidModel.sysdiagram" Width="1.5" PointX="9.75" PointY="3.75" />
+        <EntityTypeShape EntityType="dbLabelMidModel.TubeColor" Width="1.5" PointX="9.75" PointY="6.75" />
+        <EntityTypeShape EntityType="dbLabelMidModel.upgrade" Width="1.5" PointX="9.75" PointY="9.75" />
+        <AssociationConnector Association="dbLabelMidModel.FK_Label_Patient" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

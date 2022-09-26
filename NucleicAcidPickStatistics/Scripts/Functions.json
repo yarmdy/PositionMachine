@@ -1,0 +1,111 @@
+{
+  "0101": {
+    "id": "0101",
+    "title": "自动贴标",
+    "icon": null,
+    "href": null
+  },
+  "0102": {
+    "id": "0102",
+    "title": "贴标记录查询",
+    "icon": null,
+    "href": null
+  },
+  "0107": {
+    "id": "0107",
+    "title": "抽血统计",
+    "icon": null,
+    "href": null
+  },
+  "0103": {
+    "id": "0103",
+    "title": "贴标测试",
+    "icon": null,
+    "href": null
+  },
+  "0104": {
+    "id": "0104",
+    "title": "设备微调",
+    "icon": null,
+    "href": null
+  },
+  "0105": {
+    "id": "0105",
+    "title": "试管类型",
+    "icon": null,
+    "href": null
+  },
+  "5001": {
+    "id": "5001",
+    "title": "系统参数",
+    "icon": null,
+    "href": null
+  },
+  "5002": {
+    "id": "5002",
+    "title": "角色管理",
+    "icon": null,
+    "href": null
+  },
+  "5003": {
+    "id": "5003",
+    "title": "职务管理",
+    "icon": null,
+    "href": null
+  },
+  "5004": {
+    "id": "5004",
+    "title": "部门管理",
+    "icon": null,
+    "href": null
+  },
+  "5005": {
+    "id": "5005",
+    "title": "用户管理",
+    "icon": null,
+    "href": null
+  },
+  "M100": {
+    "id": "M100",
+    "title": "数据统计",
+    "icon": "layui-icon-table",
+    "href": null
+  },
+  "M200": {
+    "id": "M200",
+    "title": "系统管理",
+    "icon": "layui-icon-set-sm",
+    "href": null
+  },
+  "M101": {
+    "id": "M101",
+    "title": "试管使用情况",
+    "icon": "",
+    "href": "/statistics/tubeinfo"
+  },
+  "M102": {
+    "id": "M102",
+    "title": "人员采样情况",
+    "icon": "",
+    "href": "/statistics/peopleinfo"
+  },
+  "M201": {
+    "id": "M201",
+    "title": "角色管理",
+    "icon": "",
+    "href": "/roles"
+  },
+  "M202": {
+    "id": "M202",
+    "title": "用户管理",
+    "icon": "",
+    "href": "/users"
+  },
+  "M203": {
+    "id": "M203",
+    "title": "采样点管理",
+    "icon": "",
+    "href": "/pickpoints"
+  }
+  
+}
