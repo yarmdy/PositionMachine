@@ -114,19 +114,8 @@
                         { type: 'checkbox', fixed: 'left' },
                         { field: 'ID', title: '编号', width: 100 },
                         { field: 'Name', title: '名称', width: 260 },
-                        {
-                            field: 'IsUse', title: '状态', width: 100, align: 'center',
-                            templet: function (r) {
-                                var html;
-                                if (r.IsUse == 0) {
-                                    html = "禁用";
-                                } else {
-                                    html = "启用";
-                                }
-                                return html;
-                            }
-                        },
-                        { field: 'OrderID', title: '排序号', width: 100 },
+                        
+                        { field: 'Code', title: '编码规则', width: 120 },
                         { fixed: 'right', title: '功能操作', width: 300, align: 'center', toolbar: '#toolBar' }
                     ]],
                     where: {
