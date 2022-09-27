@@ -41,30 +41,27 @@ namespace NucleicAcidPickStatistics.Controllers
             if (model == null) {
                 goto finish;
             }
-            if (model.ID<=0)
-            {
-                ViewBag.ERROR = "请输入编号，编号为数字不能小于0";
-                goto finish;
-            }
+            //if (model.ID<=0)
+            //{
+            //    ViewBag.ERROR = "请输入编号，编号为数字不能小于0";
+            //    goto finish;
+            //}
             if (string.IsNullOrEmpty(model.Name))
             {
                 ViewBag.ERROR = "请输入名称";
                 goto finish;
             }
             var bll = new ZEHOU.PM.Bll.NAP();
-            var existspickpoint = bll.GetPickPointById(model.ID);
-            if(isNew && existspickpoint != null)
-            {
-                ViewBag.ERROR = "编号已存在";
-                goto finish;
-            }
+            
             var ret = 0;
             if (isNew)
             {
+                model.ID= 0;
                 ret = bll.AddPickPoint(model);
             }
             else
             {
+                
                 ret = bll.EditPickPoint(model);
             }
             if (ret <= 0)

@@ -80,11 +80,11 @@ namespace ZEHOU.PM.DB.dbLabelInfo
         public virtual DbSet<V_ToDay_Sorting_TubeInfo> V_ToDay_Sorting_TubeInfo { get; set; }
         public virtual DbSet<NAP_ParentPoints> NAP_ParentPoints { get; set; }
         public virtual DbSet<NAP_People> NAP_People { get; set; }
-        public virtual DbSet<NAP_PickPoints> NAP_PickPoints { get; set; }
         public virtual DbSet<NAP_PickRecords> NAP_PickRecords { get; set; }
-        public virtual DbSet<NAP_PointTypes> NAP_PointTypes { get; set; }
         public virtual DbSet<NAP_Tubes> NAP_Tubes { get; set; }
         public virtual DbSet<NAP_UserPickPoints> NAP_UserPickPoints { get; set; }
+        public virtual DbSet<NAP_PickPoints> NAP_PickPoints { get; set; }
+        public virtual DbSet<NAP_PointTypes> NAP_PointTypes { get; set; }
     
         public virtual ObjectResult<aaaa_Result> aaaa(Nullable<int> a, string b, Nullable<int> c, Nullable<int> d)
         {

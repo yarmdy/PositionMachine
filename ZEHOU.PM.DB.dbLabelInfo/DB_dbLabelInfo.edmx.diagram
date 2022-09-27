@@ -65,11 +65,11 @@
         <AssociationConnector Association="dbLabelInfoModel.FK_QUEUE_TABLE_PRIORITY_RULE_TABEL" />
         <EntityTypeShape EntityType="dbLabelInfoModel.NAP_ParentPoints" Width="1.5" PointX="23.375" PointY="8.75" />
         <EntityTypeShape EntityType="dbLabelInfoModel.NAP_People" Width="1.5" PointX="23.375" PointY="11.75" />
-        <EntityTypeShape EntityType="dbLabelInfoModel.NAP_PickPoints" Width="1.5" PointX="13.375" PointY="23.75" />
         <EntityTypeShape EntityType="dbLabelInfoModel.NAP_PickRecords" Width="1.5" PointX="23.375" PointY="15.75" />
-        <EntityTypeShape EntityType="dbLabelInfoModel.NAP_PointTypes" Width="1.5" PointX="15.375" PointY="23.75" />
         <EntityTypeShape EntityType="dbLabelInfoModel.NAP_Tubes" Width="1.5" PointX="17.375" PointY="23.75" />
         <EntityTypeShape EntityType="dbLabelInfoModel.NAP_UserPickPoints" Width="1.5" PointX="23.375" PointY="18.75" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.NAP_PickPoints" Width="1.5" PointX="13.375" PointY="23.75" />
+        <EntityTypeShape EntityType="dbLabelInfoModel.NAP_PointTypes" Width="1.5" PointX="23.375" PointY="21.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

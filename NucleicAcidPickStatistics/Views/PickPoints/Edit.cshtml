@@ -23,7 +23,7 @@
         <div class="layui-card-body" style="padding: 15px;">
             <form class="layui-form" method="post">
 
-                <div class="layui-form-item">
+                <div class="layui-form-item" style="@(isNew?"display:none":"")">
                     <label class="layui-form-label">编号：</label>
                     <div class="layui-input-block">
                         <input id="role_id" style="height:30px" class="txt" lay-verify='required' value="@(isNew?"":pickPoint.ID+"")" name="ID" @(isNew ? "" : "readonly") />

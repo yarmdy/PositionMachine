@@ -348,7 +348,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
@@ -1612,11 +1612,11 @@
           </AssociationSet>
           <EntitySet Name="NAP_ParentPoints" EntityType="dbLabelInfoModel.NAP_ParentPoints" />
           <EntitySet Name="NAP_People" EntityType="dbLabelInfoModel.NAP_People" />
-          <EntitySet Name="NAP_PickPoints" EntityType="dbLabelInfoModel.NAP_PickPoints" />
           <EntitySet Name="NAP_PickRecords" EntityType="dbLabelInfoModel.NAP_PickRecords" />
-          <EntitySet Name="NAP_PointTypes" EntityType="dbLabelInfoModel.NAP_PointTypes" />
           <EntitySet Name="NAP_Tubes" EntityType="dbLabelInfoModel.NAP_Tubes" />
           <EntitySet Name="NAP_UserPickPoints" EntityType="dbLabelInfoModel.NAP_UserPickPoints" />
+          <EntitySet Name="NAP_PickPoints" EntityType="dbLabelInfoModel.NAP_PickPoints" />
+          <EntitySet Name="NAP_PointTypes" EntityType="dbLabelInfoModel.NAP_PointTypes" />
           </EntityContainer>
         <ComplexType Name="aaaa_Result">
           <Property Type="Int32" Name="Column1" Nullable="true" />
@@ -2630,16 +2630,6 @@
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdateTime" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="NAP_PickPoints">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
-        </EntityType>
         <EntityType Name="NAP_PickRecords">
           <Key>
             <PropertyRef Name="TubeId" />
@@ -2649,15 +2639,6 @@
           <Property Name="TubeId" Type="Int32" Nullable="false" />
           <Property Name="PersonId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PickDate" Type="DateTime" Nullable="false" Precision="0" />
-        </EntityType>
-        <EntityType Name="NAP_PointTypes">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="NAP_Tubes">
           <Key>
@@ -2691,6 +2672,25 @@
           </Key>
           <Property Name="UserId" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="PPId" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="NAP_PickPoints">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="NAP_PointTypes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdateTime" Type="DateTime" Precision="3" />
         </EntityType>
@@ -3648,33 +3648,12 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="NAP_PickPoints">
-            <EntityTypeMapping TypeName="dbLabelInfoModel.NAP_PickPoints">
-              <MappingFragment StoreEntitySet="NAP_PickPoints">
-                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="NAP_PickRecords">
             <EntityTypeMapping TypeName="dbLabelInfoModel.NAP_PickRecords">
               <MappingFragment StoreEntitySet="NAP_PickRecords">
                 <ScalarProperty Name="PickDate" ColumnName="PickDate" />
                 <ScalarProperty Name="PersonId" ColumnName="PersonId" />
                 <ScalarProperty Name="TubeId" ColumnName="TubeId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="NAP_PointTypes">
-            <EntityTypeMapping TypeName="dbLabelInfoModel.NAP_PointTypes">
-              <MappingFragment StoreEntitySet="NAP_PointTypes">
-                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3711,6 +3690,27 @@
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="PPId" ColumnName="PPId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NAP_PickPoints">
+            <EntityTypeMapping TypeName="dbLabelInfoModel.NAP_PickPoints">
+              <MappingFragment StoreEntitySet="NAP_PickPoints">
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NAP_PointTypes">
+            <EntityTypeMapping TypeName="dbLabelInfoModel.NAP_PointTypes">
+              <MappingFragment StoreEntitySet="NAP_PointTypes">
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
