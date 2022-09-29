@@ -761,7 +761,7 @@ namespace ZEHOU.PM.Label.SerialPort
         public byte StartLabel(byte[] binIds, string code, byte[] printData) { 
             var data = new List<byte>();
             data.Add((byte)binIds.Length);
-            data.AddRange(binIds);
+            data.AddRange(binIds.OrderBy(a=>a).ToArray());
             var codeData = gb2312Data(code);
             var codeLen = (byte)codeData.Length;
             var printLen = BitConverter.GetBytes((ushort)printData.Length).Reverse().ToArray();
