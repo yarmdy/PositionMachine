@@ -37,11 +37,11 @@ namespace ZEHOU.PM.Label
                 UI.Popup.Error(this,"请输入编号开始值、编号结束值、采样类型");
                 return;
             }
-            model.StartNo = model.StartNo.Trim();
-            model.EndNo = model.EndNo.Trim();
-            model.TubeColor = model.TubeColor.Trim();
-            model.PName = model.PName.Trim();
-            model.Remark = model.Remark.Trim();
+            model.StartNo = model.StartNo?.Trim()??"";
+            model.EndNo = model.EndNo?.Trim() ?? "";
+            model.TubeColor = model.TubeColor?.Trim() ?? "";
+            model.PName = model.PName?.Trim() ?? "";
+            model.Remark = model.Remark?.Trim() ?? "";
             var reg = new Regex(@"^([0-9a-zA-Z]*?)([0-9]+)$",RegexOptions.Singleline);
             if(!reg.IsMatch(model.StartNo) || !reg.IsMatch(model.EndNo))
             {

@@ -272,6 +272,20 @@ namespace ZEHOU.PM.Label
             get { return _TubeLabelStatus; }
             set { _TubeLabelStatus = value; if (PropertyChanged == null) return; PropertyChanged(this, new PropertyChangedEventArgs("TubeLabelStatus")); }
         }
+
+        /// <summary>
+        /// 发送给下位机时间用来判断超时
+        /// </summary>
+        private DateTime _SendTime;
+        /// <summary>
+        /// 发送给下位机时间用来判断超时
+        /// </summary>
+        public DateTime SendTime
+        {
+            get { return _SendTime; }
+            set { _SendTime = value; if (PropertyChanged == null) return; PropertyChanged(this, new PropertyChangedEventArgs("SendTime")); }
+        }
+
         /// <summary>
         /// 仓位
         /// </summary>
@@ -721,6 +735,10 @@ namespace ZEHOU.PM.Label
             if ((int)value == -2)
             {
                 return "缺管";
+            }
+            if ((int)value == -3)
+            {
+                return "超时";
             }
             if ((int)value == 1)
             {

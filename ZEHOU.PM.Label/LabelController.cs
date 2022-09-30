@@ -357,6 +357,7 @@ namespace ZEHOU.PM.Label
             }
             
             label.TubeLabelStatus = 1;
+            label.SendTime = DateTime.Now;
 
             Global.BindingInfo.AlmostDoneLabel = Global.BindingInfo.LocalLabel;
             Global.BindingInfo.LocalLabel = label;
@@ -403,7 +404,7 @@ namespace ZEHOU.PM.Label
                 var item = new List<byte>();
                 var index = JSerialPort.SerialPortLib.IndexOfBytes(command, bytes1D6B, 0);
                 if (index >= 0) {
-                    command[index + 1 + 1] = (byte)(param.Length + 2);
+                    command[index + 2 + 1] = (byte)(param.Length + 2);
                 }
                 item.AddRange(command);
                 item.AddRange(gb2312Data(param));
@@ -475,6 +476,7 @@ namespace ZEHOU.PM.Label
                 //}
                 //Global.LabelController.SendLabelList();
                 //end:
+                Global.BindingInfo.LabelQueue.Where(a => a.TubeLabelStatus >= 1 && a.TubeLabelStatus < 100 && a.SendTime.AddSeconds(int.Parse(Configs.Settings["LabelingTimeout"])) < DateTime.Now).ToList().ForEach(a=>a.TubeLabelStatus=-3);
                 Global.BindingInfo.Queues.Where(a => a.Status == 1).ToList().ForEach(a => {
                     if (a.RemainingTime>=DateTime.Now )
                     {
