@@ -404,7 +404,7 @@ namespace ZEHOU.PM.Label
                 var item = new List<byte>();
                 var index = JSerialPort.SerialPortLib.IndexOfBytes(command, bytes1D6B, 0);
                 if (index >= 0) {
-                    command[index + 1 + 1] = (byte)(param.Length + 2);
+                    command[index + 2 + 1] = (byte)(param.Length + 2);
                 }
                 item.AddRange(command);
                 item.AddRange(gb2312Data(param));
