@@ -99,6 +99,8 @@ namespace NucleicAcidPickStatistics.Controllers
             return Json(new { code = ret, msg = $"移除{(ret > 0 ? "成功" : "失败")}" });
         }
 
-
+        public ActionResult Mine() {
+            return RedirectPermanent("/pickpoints?userid="+this.GetUser().ID);
+        }
     }
 }
