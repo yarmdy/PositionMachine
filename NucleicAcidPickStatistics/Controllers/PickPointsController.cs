@@ -100,8 +100,7 @@ namespace NucleicAcidPickStatistics.Controllers
         }
 
         public ActionResult Mine() {
-            Response.Cache.SetNoStore();
-            return RedirectPermanent("/pickpoints?userid="+this.GetUser().ID);
+            return Redirect("/pickpoints?userid="+this.GetUser().ID);
         }
     }
 }
