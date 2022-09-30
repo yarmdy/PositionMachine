@@ -18,10 +18,25 @@
             <ui:TopButton Text="关闭" Ico="/Images/工具栏/关闭.ico" Width="85" Height="35" Margin="3" x:Name="tbClose" Click="tbClose_Click" ></ui:TopButton>
         </StackPanel>
         <StackPanel>
-            <WrapPanel>
-                <Label Margin="5">料仓</Label>
-                <ComboBox Margin="5" Width="100" ItemsSource="{Binding BinList}" SelectedValue="{Binding BinId}" DisplayMemberPath="Name" SelectedValuePath="Value"></ComboBox>
-            </WrapPanel>
+            <DockPanel>
+                <Label Margin="5" DockPanel.Dock="Left">料仓</Label>
+                <ListBox ItemsSource="{Binding BinList}" Margin="10 10">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"></WrapPanel>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="10 0 10 10">
+                                <CheckBox IsChecked="{Binding Checked}" Margin="0 8 5 0"></CheckBox>
+                                <Label Content="{Binding Name}"></Label>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <!--<ComboBox Margin="5" Width="100" ItemsSource="{Binding BinList}" SelectedValue="{Binding BinId}" DisplayMemberPath="Name" SelectedValuePath="Value"></ComboBox>-->
+            </DockPanel>
             <WrapPanel>
                 <WrapPanel.Resources>
                     <Style TargetType="DockPanel">
