@@ -96,6 +96,14 @@ namespace ZEHOU.PM.Label
         {
             var list = createLabels(1,false);
             Global.LabelController.AddToQueue(list,false);
+
+            //var lr = new DB.dbLabelInfo.LR { };
+            //lr.CopyFrom(list[0].TubeInfo);
+            //lr.UpdateTime = DateTime.Now;
+            //lr.UserID = Global.LocalUser.ID;
+            //var bll = new Bll.Report { };
+            //bll.AddOrEditLr(lr);
+            
         }
 
         private void OnlyPrint_Click(object sender, RoutedEventArgs e)

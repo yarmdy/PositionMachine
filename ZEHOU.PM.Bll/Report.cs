@@ -129,6 +129,24 @@ namespace ZEHOU.PM.Bll
         /// <param name="model"></param>
         /// <returns></returns>
         public int AddOrEditLr(LR model) {
+            if(model==null)
+            {
+                return -1;
+            }
+            var props = model.GetType().GetProperties(System.Reflection.BindingFlags.Public|System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.GetProperty|System.Reflection.BindingFlags.SetProperty);
+            foreach(var prop in props)
+            {
+                if (prop.PropertyType != typeof(string))
+                {
+                    continue;
+                }
+                var val = prop.GetValue(model);
+                if (val != null)
+                {
+                    continue;
+                }
+                prop.SetValue(model, "");
+            }
             try
             {
                 using (var db = new dbLabelInfoEntities { })
@@ -137,6 +155,9 @@ namespace ZEHOU.PM.Bll
                     if (model2 == null)
                     {
                         model.UpdateTime = DateTime.Now;
+                        model.CreateTime = DateTime.Now;
+                        model.PickTime = DateTime.Now;
+                        model.PrintTime = DateTime.Now;
                         model.PrintCount = 1;
                         db.LRs.Add(model);
                     }
@@ -144,6 +165,8 @@ namespace ZEHOU.PM.Bll
                     {
                         db.Entry(model2).State = System.Data.Entity.EntityState.Detached;
                         model.UpdateTime = DateTime.Now;
+                        model.CreateTime = model2.CreateTime;
+                        model.PickTime = model2.PickTime;
                         model.PrintCount = model2.PrintCount + 1;
                         db.LRs.Attach(model);
                         db.Entry(model).State = System.Data.Entity.EntityState.Modified;

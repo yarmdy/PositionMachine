@@ -119,7 +119,7 @@ namespace ZEHOU.PM.Label
             Global.LPM.MachineId = byte.Parse(Config.Configs.Settings["MachineId"]);
             Global.LPM.OnError += LPM_OnError;
             Global.LPM.OnSent += LPM_OnSent;
-            Global.LPM.OnReceive += LPM_OnReceive;
+            Global.LPM.AfterReceive += LPM_OnReceive;
             Global.LPM.OnBaseReceive += LPM_OnBaseReceive;
 
             Global.LPM.OnBackBackOrder += LPM_OnBackBackOrder;
@@ -617,9 +617,11 @@ namespace ZEHOU.PM.Label
         /// <param name="obj"></param>
         private void LPM_OnLabelStatus(SerialPort.DataPackage obj)
         {
+            var finishiOne = Global.BindingInfo.AlmostDoneLabel ?? Global.BindingInfo.LocalLabel;
             //需要处理 贴标状态
-            if (Global.BindingInfo.LocalLabel == null)
+            if (finishiOne == null)
             {
+                UILog.Error($"当前没有贴标任务", null);
                 if (Global.BindingInfo.SysInfo.SysStatus < 0 || Global.BindingInfo.SysInfo.SysStatus == 0)
                 {
                     return;
@@ -629,31 +631,37 @@ namespace ZEHOU.PM.Label
             }
             if (obj.Data[0] == 1)
             {
-                var finishiOne = Global.BindingInfo.AlmostDoneLabel ?? Global.BindingInfo.LocalLabel;
                 UILog.Info($"【{finishiOne.TubeInfo.BarCode}】贴标完成，添加贴标记录");
                 var lr = new DB.dbLabelInfo.LR { };
                 if (Global.BindingInfo.AlmostDoneLabel == null)
                 {
                     lr.CopyFrom(Global.BindingInfo.LocalLabel.TubeInfo);
-                    Global.BindingInfo.LocalLabel.TubeLabelStatus = 10;
+                    Global.BindingInfo.LocalLabel.TubeLabelStatus = 100;
                     Global.BindingInfo.LocalLabel = null;
                 }
                 else {
                     lr.CopyFrom(Global.BindingInfo.AlmostDoneLabel.TubeInfo);
-                    Global.BindingInfo.AlmostDoneLabel.TubeLabelStatus = 10;
+                    Global.BindingInfo.AlmostDoneLabel.TubeLabelStatus = 100;
                     Global.BindingInfo.AlmostDoneLabel = null;
-                    Global.LabelController.removeAPos();
                 }
+                Global.LabelController.removeAPos();
                 lr.PrintTime=DateTime.Now;
-                var reportBll = new Bll.Report();
-                var ret = reportBll.AddOrEditLr(lr);
-                if (ret > 0)
+                lr.UserID = Global.LocalUser.ID;
+                lr.DeviceID = Config.Configs.Settings["DeviceID"];
+                if(!finishiOne.PrintBackOrder && !finishiOne.IsTest)
                 {
-                    UILog.Info($"【{finishiOne.TubeInfo.BarCode}】添加贴标记录成功");
+                    var reportBll = new Bll.Report();
+                    var ret = reportBll.AddOrEditLr(lr);
+                    if (ret > 0)
+                    {
+                        UILog.Info($"【{finishiOne.TubeInfo.BarCode}】添加贴标记录成功");
+                    }
+                    else
+                    {
+                        UILog.Error($"【{finishiOne.TubeInfo.BarCode}】添加贴标记录失败", null);
+                    }
                 }
-                else {
-                    UILog.Error($"【{finishiOne.TubeInfo.BarCode}】添加贴标记录失败",null);
-                }
+                
                 if (Global.BindingInfo.SysInfo.SysStatus < 0 || Global.BindingInfo.SysInfo.SysStatus == 0)
                 {
                     return;
@@ -662,9 +670,15 @@ namespace ZEHOU.PM.Label
             }
             if (obj.Data[0] == 255)
             {
-                UILog.Info($"【{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}】下位机贴标错误");
-                Global.BindingInfo.LocalLabel.TubeLabelStatus = -1;
-                Global.BindingInfo.LocalLabel = null;
+                UILog.Info($"【{finishiOne.TubeInfo.BarCode}】下位机贴标错误");
+                finishiOne.TubeLabelStatus = -1;
+                if (Global.BindingInfo.AlmostDoneLabel != null)
+                {
+                    Global.BindingInfo.AlmostDoneLabel = null;
+                }
+                else {
+                    Global.BindingInfo.LocalLabel = null;
+                }
                 Global.LabelController.removeAPos();
                 if (Global.BindingInfo.SysInfo.SysStatus < 0 || Global.BindingInfo.SysInfo.SysStatus == 0)
                 {
@@ -675,6 +689,11 @@ namespace ZEHOU.PM.Label
             }
             if (obj.Data[0] == 254)
             {
+                if (Global.BindingInfo.LocalLabel == null)
+                {
+                    UILog.Error($"没有待贴标的试管", null);
+                    return;
+                }
                 UILog.Error($"【{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}】下位机缺管", null);
                 var tubeTypes = Global.BindingInfo.LocalLabel.BinId.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToArray();
                 Global.BindingInfo.LocalLabel.TubeLabelStatus = -2;
@@ -842,10 +861,9 @@ namespace ZEHOU.PM.Label
         /// </summary>
         /// <param name="arg"></param>
         /// <returns></returns>
-        private bool LPM_OnReceive(byte[] arg)
+        private void LPM_OnReceive(byte[] arg)
         {
             UILog.Receive(string.Join(" ", arg.Select(a => a.ToString("X2"))));
-            return true;
         }
         /// <summary>
         /// 串口发送

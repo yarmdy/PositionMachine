@@ -120,6 +120,10 @@ namespace ZEHOU.PM.Label.SerialPort
         /// <returns></returns>
         private bool PN532Helper_OnReceive(byte[] arg)
         {
+            if (AfterReceive != null)
+            {
+                AfterReceive(arg);
+            }
             try
             {
                 var dataPackage = new DataPackage();
@@ -352,14 +356,13 @@ namespace ZEHOU.PM.Label.SerialPort
                 {
                     //do nothing
                 }
-
                 return true;
             }
-            catch (Exception ex) {
-                prossError(-99,ex.Message,ex);
+            catch (Exception ex)
+            {
+                prossError(-99, ex.Message, ex);
                 return false;
             }
-            
         }
         /// <summary>
         /// 分析命令 获得一个合法的命令 这个例子诠释了分析事件的用法
@@ -699,6 +702,8 @@ namespace ZEHOU.PM.Label.SerialPort
         /// 上传参数
         /// </summary>
         public event Action<DataPackage> OnUpParam;
+
+        public event Action<byte[]> AfterReceive;
 
 
         #endregion

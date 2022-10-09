@@ -257,6 +257,9 @@ namespace ZEHOU.PM.Label
                 //SendLabelInfo();
             }
         }
+        public void ResetQueue() { 
+            
+        }
         /// <summary>
         /// 从列队删除
         /// </summary>
@@ -314,11 +317,11 @@ namespace ZEHOU.PM.Label
             if (queue != null && queue.Status==1) { 
                 queue.Status = 2;
             }
-            var labeling = Global.BindingInfo.LabelQueue.FirstOrDefault(a=>a.TubeLabelStatus>1);
-            if (labeling != null)
-            {
-                return;
-            }
+            //var labeling = Global.BindingInfo.LabelQueue.Count(a=>a.TubeLabelStatus>1);
+            //if (labeling != null)
+            //{
+            //    return;
+            //}
             var label = Global.BindingInfo.LabelQueue.FirstOrDefault(a => a.TubeLabelStatus >= 0 && a.TubeLabelStatus < 10);
             if (label == null|| Global.BindingInfo.SysInfo.SysStatus<0)
             {
