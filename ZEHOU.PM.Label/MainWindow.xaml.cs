@@ -502,6 +502,8 @@ namespace ZEHOU.PM.Label
                 return;
             }
             objs.ForEach(a => Global.BindingInfo.LabelQueue.Remove(a));
+            
+            Global.LabelController.SendLabelList();
         }
         /// <summary>
         /// 获取选中的列队信息
@@ -562,6 +564,7 @@ namespace ZEHOU.PM.Label
                 Global.BindingInfo.LocalLabelList.RemoveAt(i--);
             }
             Global.BindingInfo.LocalPatient = new PatientInfoNotify();
+            Global.LabelController.SendLabelList();
         }
         /// <summary>
         /// 重试失败
