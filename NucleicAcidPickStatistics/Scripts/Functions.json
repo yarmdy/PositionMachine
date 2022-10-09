@@ -106,6 +106,11 @@
     "title": "采样点管理",
     "icon": "",
     "href": "/pickpoints"
+  },
+  "M204": {
+    "id": "M204",
+    "title": "我的采样点",
+    "icon": "",
+    "href": "/pickpoints/mine"
   }
-  
 }
