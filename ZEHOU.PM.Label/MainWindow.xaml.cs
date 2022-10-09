@@ -180,7 +180,7 @@ namespace ZEHOU.PM.Label
                     case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
                         {
                             //UILog.Info($"贴标列队移除【{((LabelInfoNotify)e.OldItems[0])?.TubeInfo?.BarCode}】");
-                            Global.LabelController.SendLabelList();
+                            //Global.LabelController.SendLabelList();
                         }
                         break;
                     case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
