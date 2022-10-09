@@ -600,7 +600,7 @@ namespace ZEHOU.PM.Label
             Global.BindingInfo.SysInfo.MachineStatus = 0;
             Global.BindingInfo.SysInfo.RemainingTime = 0;
             UILog.Info("下位机空闲，可以接受贴标了");
-            Global.LabelController.SendLabelInfo();
+            Global.LabelController.SendLabelInfo(obj.Data.FirstOrDefault());
         }
         /// <summary>
         /// 开关状态设置
@@ -786,7 +786,9 @@ namespace ZEHOU.PM.Label
             var queue = Global.BindingInfo.Queues.FirstOrDefault(a => a.CommId == obj.CommId);
             if (queue != null) { 
                 queue.Remaining = BitConverter.ToUInt32(obj.Data.Skip(1).Reverse().ToArray(),0);
+                queue.Status = 1;
             }
+            
             if (obj.Data[0] == 1)
             {
                 UILog.Info($"下位机返回空闲");

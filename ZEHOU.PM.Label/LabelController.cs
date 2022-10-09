@@ -294,10 +294,18 @@ namespace ZEHOU.PM.Label
         /// <summary>
         /// 取消贴标清单
         /// </summary>
-        public void CancelLabelList() {
+        public void CancelLabelList(byte? listNo=null) {
             lock (_QueuesLocker) {
+                if (listNo == null) {
+                    UILog.Info($"取消贴标清单【{listNo.Value}】");
+                    Global.LPM.CancelLabelList(listNo.Value);
+                }
                 foreach (var queue in Global.BindingInfo.Queues)
                 {
+                    if (queue.Id == listNo)
+                    {
+                        continue;
+                    }
                     if (queue.Status == 1 || queue.Status == 2 || queue.Status == 254 )
                     {
                         UILog.Info($"取消贴标清单【{queue.Id}】");
@@ -311,7 +319,7 @@ namespace ZEHOU.PM.Label
         /// <summary>
         /// 发送贴标信息
         /// </summary>
-        public void SendLabelInfo()
+        public void SendLabelInfo(byte? listno=null)
         {
             var queue = Global.BindingInfo.Queues.Where(a => a.Status == 1 || a.Status == 2).OrderByDescending(a => a.Status).FirstOrDefault();
             if (queue != null && queue.Status==1) { 
@@ -325,7 +333,7 @@ namespace ZEHOU.PM.Label
             var label = Global.BindingInfo.LabelQueue.FirstOrDefault(a => a.TubeLabelStatus >= 0 && a.TubeLabelStatus < 10);
             if (label == null|| Global.BindingInfo.SysInfo.SysStatus<0)
             {
-                CancelLabelList();
+                CancelLabelList(listno);
                 return;
             }
             byte tmp;
