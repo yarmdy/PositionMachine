@@ -119,7 +119,7 @@ namespace ZEHOU.PM.Label
             TabControl.Items.Remove(item);
         }
 
-        public static SerialPort.LabelMachineHelper LPM { get; set; }
+        public static SerialPort.LabelMachineHelperBase LPM { get; set; }
 
         public static LabelController LabelController { get; set; }
 

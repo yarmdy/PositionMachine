@@ -12,34 +12,34 @@ namespace ZEHOU.PM.Label.SerialPort
     /// <summary>
     /// 贴标机实现类
     /// </summary>
-    public class LabelMachineHelper : SerialPortLib
+    public class LabelMachineHelper : LabelMachineHelperBase
     {
         #region 常量
         /// <summary>
         /// crc多项式
         /// </summary>
-        public const ushort _c_CRCPolynomial = 0xA001;
+        private const ushort _c_CRCPolynomial = 0xA001;
         /// <summary>
         /// crc初值
         /// </summary>
-        public const ushort _c_InitialValue = 0xFFFF;
+        private const ushort _c_InitialValue = 0xFFFF;
         /// <summary>
         /// 下位机id
         /// </summary>
-        public const byte _c_LMachineId = 0x50;
+        private const byte _c_LMachineId = 0x50;
         /// <summary>
         /// 回应ok
         /// </summary>
-        public const byte _c_RespondOK = 0x01;
+        private const byte _c_RespondOK = 0x01;
 
         /// <summary>
         /// 非标仓号
         /// </summary>
-        public const byte _c_SpecialBinId = 0xFF;
+        private const byte _c_SpecialBinId = 0xFF;
         /// <summary>
         /// 回执单仓号
         /// </summary>
-        public const byte _c_BackOrderBinId = 0xFE;
+        private const byte _c_BackOrderBinId = 0xFE;
 
         #endregion
 
@@ -447,7 +447,7 @@ namespace ZEHOU.PM.Label.SerialPort
         /// <summary>
         /// 功能枚举
         /// </summary>
-        public enum EnumFunc : byte { 
+        private enum EnumFunc : byte { 
             /// <summary>
             /// 工作命令
             /// </summary>
@@ -480,7 +480,7 @@ namespace ZEHOU.PM.Label.SerialPort
         /// <summary>
         /// 工作命令
         /// </summary>
-        public enum EnumGOWORKComm : byte
+        private enum EnumGOWORKComm : byte
         {
             /// <summary>
             /// 贴标
@@ -510,7 +510,7 @@ namespace ZEHOU.PM.Label.SerialPort
         /// <summary>
         /// 读取参数命令
         /// </summary>
-        public enum EnumREADPARAMComm : byte {
+        private enum EnumREADPARAMComm : byte {
             /// <summary>
             /// 读取参数
             /// </summary>
@@ -519,7 +519,7 @@ namespace ZEHOU.PM.Label.SerialPort
         /// <summary>
         /// 修改参数命令
         /// </summary>
-        public enum EnumEDITPARAMComm : byte
+        private enum EnumEDITPARAMComm : byte
         {
             /// <summary>
             /// 保存参数
@@ -533,7 +533,7 @@ namespace ZEHOU.PM.Label.SerialPort
         /// <summary>
         /// 测试命令
         /// </summary>
-        public enum EnumTESTComm : byte
+        private enum EnumTESTComm : byte
         {
             /// <summary>
             /// 纵向电机
@@ -572,7 +572,7 @@ namespace ZEHOU.PM.Label.SerialPort
         /// <summary>
         /// 上报工作状态
         /// </summary>
-        public enum EnumUPWORKRESComm : byte
+        private enum EnumUPWORKRESComm : byte
         {
             /// <summary>
             /// 到你了
@@ -586,7 +586,7 @@ namespace ZEHOU.PM.Label.SerialPort
         /// <summary>
         /// 参数上报
         /// </summary>
-        public enum EnumUPPARAMComm : byte
+        private enum EnumUPPARAMComm : byte
         {
             /// <summary>
             /// 参数
@@ -596,19 +596,11 @@ namespace ZEHOU.PM.Label.SerialPort
         /// <summary>
         /// 开关状态上报
         /// </summary>
-        public enum EnumUPSTATUSComm : byte {
+        private enum EnumUPSTATUSComm : byte {
             /// <summary>
             /// 光电状态
             /// </summary>
             LIGHT = 0X01,
-        }
-        
-        /// <summary>
-        /// 开关枚举
-        /// </summary>
-        public enum EnumOpenClose : byte { 
-            CLOSE=0x00,
-            OPEN=0x01
         }
 
         #endregion
@@ -617,93 +609,93 @@ namespace ZEHOU.PM.Label.SerialPort
         /// <summary>
         /// 反馈贴标命令
         /// </summary>
-        public event Action<DataPackage> OnBackLabel;
+        public override event Action<DataPackage> OnBackLabel;
         /// <summary>
         /// 反馈清单命令
         /// </summary>
-        public event Action<DataPackage> OnBackLabelList;
+        public override event Action<DataPackage> OnBackLabelList;
         /// <summary>
         /// 反馈取消清单命令
         /// </summary>
-        public event Action<DataPackage> OnBackCancelList;
+        public override event Action<DataPackage> OnBackCancelList;
         /// <summary>
         /// 反馈非标命令
         /// </summary>
-        public event Action<DataPackage> OnBackSpecialLabel;
+        public override event Action<DataPackage> OnBackSpecialLabel;
         /// <summary>
         /// 反馈回执单命令
         /// </summary>
-        public event Action<DataPackage> OnBackBackOrder;
+        public override event Action<DataPackage> OnBackBackOrder;
         /// <summary>
         /// 反馈光电测试命令
         /// </summary>
-        public event Action<DataPackage> OnBackLightTest;
+        public override event Action<DataPackage> OnBackLightTest;
         /// <summary>
         /// 轮到我了
         /// </summary>
-        public event Action<DataPackage> OnMyTurn;
+        public override event Action<DataPackage> OnMyTurn;
         /// <summary>
         /// 贴标状态
         /// </summary>
-        public event Action<DataPackage> OnLabelStatus;
+        public override event Action<DataPackage> OnLabelStatus;
         /// <summary>
         /// 光电状态
         /// </summary>
-        public event Action<DataPackage> OnLightStatus;
+        public override event Action<DataPackage> OnLightStatus;
 
         /// <summary>
         /// 读取参数
         /// </summary>
-        public event Action<DataPackage> OnBackReadParams;
+        public override event Action<DataPackage> OnBackReadParams;
         /// <summary>
         /// 保存参数
         /// </summary>
-        public event Action<DataPackage> OnBackSaveParams;
+        public override event Action<DataPackage> OnBackSaveParams;
         /// <summary>
         /// 同步参数
         /// </summary>
-        public event Action<DataPackage> OnBackApplyParams;
+        public override event Action<DataPackage> OnBackApplyParams;
 
 
         /// <summary>
         /// 纵向电机
         /// </summary>
-        public event Action<DataPackage> OnBackVerticalMotor;
+        public override event Action<DataPackage> OnBackVerticalMotor;
         /// <summary>
         /// 压轮电机
         /// </summary>
-        public event Action<DataPackage> OnBackPinchRollerMotor;
+        public override event Action<DataPackage> OnBackPinchRollerMotor;
         /// <summary>
         /// 横向电机
         /// </summary>
-        public event Action<DataPackage> OnBackHorizontalMotor;
+        public override event Action<DataPackage> OnBackHorizontalMotor;
         /// <summary>
         /// 主轮电机
         /// </summary>
-        public event Action<DataPackage> OnBackMainMotor;
+        public override event Action<DataPackage> OnBackMainMotor;
         /// <summary>
         /// 机械手
         /// </summary>
-        public event Action<DataPackage> OnBackManipulator;
+        public override event Action<DataPackage> OnBackManipulator;
         /// <summary>
         /// 卡片
         /// </summary>
-        public event Action<DataPackage> OnBackCard;
+        public override event Action<DataPackage> OnBackCard;
         /// <summary>
         /// 出口电机
         /// </summary>
-        public event Action<DataPackage> OnBackExitMotor;
+        public override event Action<DataPackage> OnBackExitMotor;
         /// <summary>
         /// 料仓
         /// </summary>
-        public event Action<DataPackage> OnBackBin;
+        public override event Action<DataPackage> OnBackBin;
 
         /// <summary>
         /// 上传参数
         /// </summary>
-        public event Action<DataPackage> OnUpParam;
+        public override event Action<DataPackage> OnUpParam;
 
-        public event Action<byte[]> AfterReceive;
+        public override event Action<byte[]> AfterReceive;
 
 
         #endregion
@@ -724,16 +716,12 @@ namespace ZEHOU.PM.Label.SerialPort
 
         }
         /// <summary>
-        /// 机器Id
-        /// </summary>
-        public byte MachineId { get; set; }
-        /// <summary>
         /// 创建命令
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public byte[] CreateCommand(byte func,byte comm,byte commId,byte[] data)
+        private byte[] CreateCommand(byte func,byte comm,byte commId,byte[] data)
         {
             if (data == null || data.Length <= 0)
             {
@@ -763,7 +751,7 @@ namespace ZEHOU.PM.Label.SerialPort
         /// <param name="binId"></param>
         /// <param name="code"></param>
         /// <param name="printData"></param>
-        public byte StartLabel(byte[] binIds, string code, byte[] printData) { 
+        public override byte StartLabel(byte[] binIds, string code, byte[] printData) { 
             var data = new List<byte>();
             data.Add((byte)binIds.Length);
             data.AddRange(binIds.OrderBy(a=>a).ToArray());
@@ -786,7 +774,7 @@ namespace ZEHOU.PM.Label.SerialPort
         /// <param name="num"></param>
         /// <param name="binNum"></param>
         /// <param name="binLbNum"></param>
-        public byte StartLabelList(byte orderId, byte num, byte binNum, byte[] binLbNum) {
+        public override byte StartLabelList(byte orderId, byte num, byte binNum, byte[] binLbNum) {
             var data = new List<byte>();
             data.Add(orderId);
             data.Add(num);
@@ -811,7 +799,7 @@ namespace ZEHOU.PM.Label.SerialPort
         /// <param name="num"></param>
         /// <param name="binNum"></param>
         /// <param name="binLbNum"></param>
-        public byte CancelLabelList(byte orderId)
+        public override byte CancelLabelList(byte orderId)
         {
             var data = new List<byte>();
             data.Add(orderId);
@@ -826,7 +814,7 @@ namespace ZEHOU.PM.Label.SerialPort
         /// <param name="binId"></param>
         /// <param name="code"></param>
         /// <param name="printData"></param>
-        public byte StartSpecialLabel(string code, byte[] printData)
+        public override byte StartSpecialLabel(string code, byte[] printData)
         {
             var data = new List<byte>();
             data.Add(_c_SpecialBinId);
@@ -848,7 +836,7 @@ namespace ZEHOU.PM.Label.SerialPort
         /// <param name="binId"></param>
         /// <param name="code"></param>
         /// <param name="printData"></param>
-        public byte StartBackOrder(string code, byte[] printData)
+        public override byte StartBackOrder(string code, byte[] printData)
         {
             var data = new List<byte>();
             data.Add(_c_BackOrderBinId);
@@ -872,7 +860,7 @@ namespace ZEHOU.PM.Label.SerialPort
         /// <param name="num"></param>
         /// <param name="binNum"></param>
         /// <param name="binLbNum"></param>
-        public byte StartLightTest(EnumOpenClose openClose)
+        public override byte StartLightTest(EnumOpenClose openClose)
         {
             var data = new List<byte>();
             data.Add((byte)openClose);
@@ -884,7 +872,7 @@ namespace ZEHOU.PM.Label.SerialPort
         /// <summary>
         /// 读取参数命令
         /// </summary>
-        public byte ReadParam() {
+        public override byte ReadParam() {
             var data = new List<byte>();
             data.Add((byte)0x00);
             var commId = getCommId();
@@ -897,7 +885,7 @@ namespace ZEHOU.PM.Label.SerialPort
         /// </summary>
         /// <param name="length"></param>
         /// <param name="array"></param>
-        public byte SaveParam(ushort[] array)
+        public override byte SaveParam(ushort[] array)
         {
             var data = new List<byte>();
             array.ToList().ForEach(a=>data.AddRange(BitConverter.GetBytes(a).Reverse().ToArray()));
@@ -911,7 +899,7 @@ namespace ZEHOU.PM.Label.SerialPort
         /// </summary>
         /// <param name="length"></param>
         /// <param name="array"></param>
-        public byte ApplyParam(ushort[] array)
+        public override byte ApplyParam(ushort[] array)
         {
             var data = new List<byte>();
             array.ToList().ForEach(a => data.AddRange(BitConverter.GetBytes(a).Reverse().ToArray()));
@@ -925,7 +913,7 @@ namespace ZEHOU.PM.Label.SerialPort
         /// </summary>
         /// <param name="length"></param>
         /// <param name="array"></param>
-        public byte TestMachine(byte comm,byte act)
+        public override byte TestMachine(byte comm,byte act)
         {
             var data = new List<byte>();
             data.Add(act);
@@ -940,7 +928,7 @@ namespace ZEHOU.PM.Label.SerialPort
         /// <param name="binId"></param>
         /// <param name="comm"></param>
         /// <param name="act"></param>
-        public byte TestBin(byte binId, byte act)
+        public override byte TestBin(byte binId, byte act)
         {
             var data = new List<byte>();
             data.Add(binId);
@@ -956,23 +944,11 @@ namespace ZEHOU.PM.Label.SerialPort
         /// <param name="func"></param>
         /// <param name="comm"></param>
         /// <param name="commId"></param>
-        public void Reply(byte func, byte comm, byte commId) {
+        private void Reply(byte func, byte comm, byte commId) {
             var data = new List<byte>();
             data.Add(_c_RespondOK);
             var str = CreateCommand(func, comm, commId, data.ToArray());
             Send(str);
         }
-    }
-    /// <summary>
-    /// 传输数据包
-    /// </summary>
-
-    public class DataPackage
-    { 
-        public byte Func { get; set; }
-        public byte Comm { get; set; }
-        public byte CommId { get; set; }
-        public ushort Len { get; set; }
-        public byte[] Data { get; set; }
     }
 }

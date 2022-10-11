@@ -115,6 +115,12 @@ namespace ZEHOU.PM.Label
         /// </summary>
         private void initLPM()
         {
+            var lpmName = Config.Configs.Settings["LPMName"];
+            if (lpmName == "")
+            {
+                lpmName = "LabelMachineHelper";
+            }
+            //Global.LPM = (SerialPort.LabelMachineHelperBase)Activator.CreateInstance(Type.GetType($"ZEHOU.PM.Label.SerialPort.{lpmName},ZEHOU.PM.Label.SerialPort"), Config.Configs.Settings["PortName"]);
             Global.LPM = new SerialPort.LabelMachineHelper(Config.Configs.Settings["PortName"]);
             Global.LPM.MachineId = byte.Parse(Config.Configs.Settings["MachineId"]);
             Global.LPM.OnError += LPM_OnError;
@@ -502,7 +508,12 @@ namespace ZEHOU.PM.Label
                 return;
             }
             objs.ForEach(a => Global.BindingInfo.LabelQueue.Remove(a));
-            
+
+            if (Global.BindingInfo.LabelQueue.Count <= 0)
+            {
+                Global.LabelController.CancelLabelList();
+                return;
+            }
             Global.LabelController.SendLabelList();
         }
         /// <summary>
@@ -564,7 +575,7 @@ namespace ZEHOU.PM.Label
                 Global.BindingInfo.LocalLabelList.RemoveAt(i--);
             }
             Global.BindingInfo.LocalPatient = new PatientInfoNotify();
-            Global.LabelController.SendLabelList();
+            Global.LabelController.CancelLabelList();
         }
         /// <summary>
         /// 重试失败

@@ -223,7 +223,7 @@ namespace ZEHOU.PM.Label
                 Global.BindingInfo.Queues.Where(a => a.Status == 0 || a.Status==255).ToList().ForEach(a=> Global.BindingInfo.Queues.Remove(a));
                 
                 var queueCount = Global.BindingInfo.Queues.Sum(a=>a.Nums);
-                var listCount = Global.BindingInfo.LabelQueue.Count(a => a.TubeLabelStatus >= 0 && a.TubeLabelStatus < 10);
+                var listCount = Global.BindingInfo.LabelQueue.Count(a => a.TubeLabelStatus >= 0 && a.TubeLabelStatus < 10);                
                 if (queueCount >= listCount)
                 {
                     return;
