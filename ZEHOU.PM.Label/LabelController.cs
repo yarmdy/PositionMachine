@@ -296,7 +296,7 @@ namespace ZEHOU.PM.Label
         /// </summary>
         public void CancelLabelList(byte? listNo=null) {
             lock (_QueuesLocker) {
-                if (listNo == null) {
+                if (listNo != null) {
                     UILog.Info($"取消贴标清单【{listNo.Value}】");
                     Global.LPM.CancelLabelList(listNo.Value);
                 }

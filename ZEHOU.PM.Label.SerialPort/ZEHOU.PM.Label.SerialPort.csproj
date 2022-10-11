@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LabelMachineHelperOld32.cs" />
     <Compile Include="LabelMachineHelperBase.cs" />
     <Compile Include="LabelMachineHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

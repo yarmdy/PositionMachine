@@ -120,8 +120,7 @@ namespace ZEHOU.PM.Label
             {
                 lpmName = "LabelMachineHelper";
             }
-            //Global.LPM = (SerialPort.LabelMachineHelperBase)Activator.CreateInstance(Type.GetType($"ZEHOU.PM.Label.SerialPort.{lpmName},ZEHOU.PM.Label.SerialPort"), Config.Configs.Settings["PortName"]);
-            Global.LPM = new SerialPort.LabelMachineHelper(Config.Configs.Settings["PortName"]);
+            Global.LPM = (SerialPort.LabelMachineHelperBase)Activator.CreateInstance(Type.GetType($"ZEHOU.PM.Label.SerialPort.{lpmName},ZEHOU.PM.Label.SerialPort"), Config.Configs.Settings["PortName"], 115200,8,-1, System.IO.Ports.Parity.None, System.IO.Ports.StopBits.One);
             Global.LPM.MachineId = byte.Parse(Config.Configs.Settings["MachineId"]);
             Global.LPM.OnError += LPM_OnError;
             Global.LPM.OnSent += LPM_OnSent;
