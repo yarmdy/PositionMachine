@@ -819,6 +819,21 @@ namespace ZEHOU.PM.Label
                 //Global.BindingInfo.SysInfo.RemainingTime = Convert.ToUInt32(obj.Data.Skip(1).Reverse().ToArray());
                 return;
             }
+            if (obj.Data[0] == 3)
+            {
+                var queueFullMsg = Config.Configs.Settings["QueueFullMsg"];
+                if (queueFullMsg == "")
+                {
+                    queueFullMsg = "下位机已达到最大队列，无法打印";
+                }
+                UILog.Info(queueFullMsg);
+                Global.LabelController.CancelLabelListSingle(queue.Id, false);
+                Dispatcher.Invoke(() => UI.Popup.Error(this, queueFullMsg));
+                //Global.BindingInfo.SysInfo.MachineStatus = -1;
+                //Global.BindingInfo.SysInfo.RemainingTime = Convert.ToUInt32(obj.Data.Skip(1).Reverse().ToArray());
+                return;
+            }
+            
         }
         /// <summary>
         /// 反馈贴标

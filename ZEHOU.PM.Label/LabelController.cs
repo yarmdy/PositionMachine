@@ -317,6 +317,42 @@ namespace ZEHOU.PM.Label
             }
         }
         /// <summary>
+        /// 取消贴标清单
+        /// </summary>
+        public bool CancelLabelListSingle(byte listNo,bool sendMsg=true)
+        {
+            var res = false;
+            lock (_QueuesLocker)
+            {
+                var ll = Global.BindingInfo.Queues.FirstOrDefault(a => a.Id == listNo);
+                if (ll == null)
+                {
+                    goto finish;
+                }
+                Global.BindingInfo.Queues.Remove(ll);
+                if (sendMsg)
+                {
+                    UILog.Info($"取消贴标清单【{ll.Id}】");
+                    Global.LPM.CancelLabelList(ll.Id);
+                }
+                var queueCount = Global.BindingInfo.Queues.Sum(a => a.Nums);
+                var listCount = Global.BindingInfo.LabelQueue.Count(a => a.TubeLabelStatus >= 0 && a.TubeLabelStatus < 10);
+                
+                if(queueCount >= listCount)
+                {
+                    goto finish;
+                }
+                var removeNums = listCount - queueCount;
+                while (removeNums-- > 0)
+                {
+                    Global.BindingInfo.LabelQueue.RemoveAt(Global.BindingInfo.LabelQueue.Count-1);
+                }
+
+            finish:;
+            }
+            return res;
+        }
+        /// <summary>
         /// 发送贴标信息
         /// </summary>
         public void SendLabelInfo(byte? listno=null)
