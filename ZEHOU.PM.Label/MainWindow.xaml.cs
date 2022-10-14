@@ -104,6 +104,11 @@ namespace ZEHOU.PM.Label
         /// </summary>
         private void intBarcodeGun()
         {
+            if (Config.Configs.Settings["BarCodeGunTime"] != "")
+            {
+                BarCodeScan.HookHelper.KeyPressTimeout = double.Parse(Config.Configs.Settings["BarCodeGunTime"]);
+            }
+            
             BarCodeScan.HookHelper.OnScan = new Action<string>(a => {
                 UILog.Info("扫码：" + a);
                 Global.LabelController.GetABarCode(a);
@@ -657,6 +662,7 @@ namespace ZEHOU.PM.Label
                     Global.BindingInfo.AlmostDoneLabel.TubeLabelStatus = 100;
                     Global.BindingInfo.AlmostDoneLabel = null;
                 }
+                Global.BindingInfo.LabelQueue.Remove(finishiOne);
                 Global.LabelController.removeAPos();
                 lr.PrintTime=DateTime.Now;
                 lr.UserID = Global.LocalUser.ID;
@@ -808,7 +814,7 @@ namespace ZEHOU.PM.Label
                 
                 Global.BindingInfo.SysInfo.MachineStatus = 0;
                 Global.BindingInfo.SysInfo.RemainingTime = 0;
-                Global.LabelController.SendLabelInfo();
+                //Global.LabelController.SendLabelInfo();
                 return;
             }
             if (obj.Data[0] == 2)
