@@ -261,11 +261,11 @@ namespace ZEHOU.PM.Label
             set { _TubeColor = value; if (PropertyChanged == null) return; PropertyChanged(this, new PropertyChangedEventArgs("TubeColor")); }
         }
         /// <summary>
-        /// 贴标状态 0等待贴标 1已发送 10已接受 100已完成 -1错误 -2缺管
+        /// 贴标状态 0等待贴标 1已发送 10已接受 100已完成 -1错误 -2缺管 -3超时
         /// </summary>
         private int _TubeLabelStatus;
         /// <summary>
-        /// 贴标状态 0等待贴标 1已发送 10已接受 100已完成 -1错误 -2缺管
+        /// 贴标状态 0等待贴标 1已发送 10已接受 100已完成 -1错误 -2缺管 -3超时
         /// </summary>
         public int TubeLabelStatus
         {
@@ -619,7 +619,7 @@ namespace ZEHOU.PM.Label
         /// </summary>
         private uint _Remaining;
         /// <summary>
-        /// 等待时间
+        /// 等待时长
         /// </summary>
         public uint Remaining
         {
@@ -630,7 +630,9 @@ namespace ZEHOU.PM.Label
                 PropertyChanged(this, new PropertyChangedEventArgs("RemainingTime")); 
             }
         }
-
+        /// <summary>
+        /// 等待时间
+        /// </summary>
         public DateTime RemainingTime
         {
             get

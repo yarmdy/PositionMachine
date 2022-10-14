@@ -540,10 +540,10 @@ namespace ZEHOU.PM.Label
                     goto end;
                 }
                 var waiting = Global.BindingInfo.Queues.FirstOrDefault(a => a.Status == 1);
-                if (working != null)
+                if (waiting != null)
                 {
                     Global.BindingInfo.SysInfo.MachineStatus = -1;
-                    Global.BindingInfo.SysInfo.RemainingTime = (uint)(working.RemainingTime.AddSeconds(working.Remaining)- DateTime.Now).TotalSeconds;
+                    Global.BindingInfo.SysInfo.RemainingTime = (uint)(waiting.RemainingTime - DateTime.Now).TotalSeconds;
                     goto end;
                 }
                 Global.BindingInfo.SysInfo.MachineStatus = 0;
