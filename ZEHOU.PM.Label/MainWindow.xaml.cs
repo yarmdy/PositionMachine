@@ -662,7 +662,7 @@ namespace ZEHOU.PM.Label
                     Global.BindingInfo.AlmostDoneLabel.TubeLabelStatus = 100;
                     Global.BindingInfo.AlmostDoneLabel = null;
                 }
-                Global.BindingInfo.LabelQueue.Remove(finishiOne);
+                //Global.BindingInfo.LabelQueue.Remove(finishiOne);
                 Global.LabelController.removeAPos();
                 lr.PrintTime=DateTime.Now;
                 lr.UserID = Global.LocalUser.ID;
@@ -805,6 +805,7 @@ namespace ZEHOU.PM.Label
             var queue = Global.BindingInfo.Queues.FirstOrDefault(a => a.CommId == obj.CommId);
             if (queue != null) { 
                 queue.Remaining = BitConverter.ToUInt32(obj.Data.Skip(1).Reverse().ToArray(),0);
+                queue.AskTime = DateTime.Now;
                 queue.Status = 1;
             }
             

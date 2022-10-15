@@ -283,7 +283,11 @@ namespace ZEHOU.PM.Label
         /// <param name="remainCount"></param>
         private static void createQueue(byte remainCount)
         {
-            var qid = Global.BindingInfo.QueueId++;
+            Global.BindingInfo.QueueId++;
+            if (Global.BindingInfo.QueueId == 0) {
+                Global.BindingInfo.QueueId++;
+            }
+            var qid = Global.BindingInfo.QueueId;
             var qinfo = new QueueInfo { AskTime = DateTime.Now, Nums = remainCount, Id = qid, Status = 0 };
             var commId = Global.LPM.StartLabelList(qinfo.Id, qinfo.Nums, 0, null);
             qinfo.CommId = commId;
