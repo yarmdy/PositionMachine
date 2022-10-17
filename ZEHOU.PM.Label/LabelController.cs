@@ -220,7 +220,7 @@ namespace ZEHOU.PM.Label
         public void SendLabelList() {
             lock (_QueuesLocker)
             {
-                Global.BindingInfo.Queues.Where(a => a.Status == 0 || a.Status==255).ToList().ForEach(a=> Global.BindingInfo.Queues.Remove(a));
+                Global.BindingInfo.Queues.Where(a => (a.Status == 0 || a.Status==255)&&a.CreateTime.AddSeconds(2)<DateTime.Now).ToList().ForEach(a=> Global.BindingInfo.Queues.Remove(a));
                 
                 var queueCount = Global.BindingInfo.Queues.Sum(a=>a.Nums);
                 var listCount = Global.BindingInfo.LabelQueue.Count(a => a.TubeLabelStatus >= 0 && a.TubeLabelStatus < 10);                
@@ -539,7 +539,18 @@ namespace ZEHOU.PM.Label
                 //}
                 //Global.LabelController.SendLabelList();
                 //end:
+                //UILog.Info(String.Join(",",Global.BindingInfo.Queues.Select(a=>$"{a.Id}({a.Status}):{a.Nums}")));
+
                 Global.BindingInfo.LabelQueue.Where(a => a.TubeLabelStatus >= 1 && a.TubeLabelStatus < 100 && a.SendTime.AddSeconds(int.Parse(Configs.Settings["LabelingTimeout"])) < DateTime.Now).ToList().ForEach(a=>a.TubeLabelStatus=-3);
+                if (Global.BindingInfo.SysInfo.SysStatus >= 0)
+                {
+                    Global.BindingInfo.Queues.Where(a => (a.Status == 0 || a.Status == 254)&& a.CreateTime.AddSeconds(3)<DateTime.Now).OrderBy(a => a.CreateTime).ToList().ForEach(a => {
+                        var commid = Global.LPM.StartLabelList(a.Id, a.Nums, 0, null);
+                        a.CommId = commid;
+                        a.CreateTime = DateTime.Now;
+                        UILog.Info($"未回应重新发送【{a.Id}】");
+                    });
+                }
                 Global.BindingInfo.Queues.Where(a => a.Status == 1).ToList().ForEach(a => {
                     if (a.RemainingTime>=DateTime.Now )
                     {

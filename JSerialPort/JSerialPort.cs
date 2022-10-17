@@ -147,6 +147,10 @@ namespace JSerialPort {
                 try
                 {
                     _serialPort.Write(data, 0, data.Length);
+                    if (SentTimeSpan >0)
+                    {
+                        Thread.Sleep(SentTimeSpan);
+                    }
                     if (OnSent != null) { 
                         OnSent(data);
                     }
@@ -348,6 +352,8 @@ namespace JSerialPort {
                 return _serialPort.IsOpen;
             }
         }
+
+        public int SentTimeSpan { get; set; }
 
         #region 静态函数
         /// <summary>
