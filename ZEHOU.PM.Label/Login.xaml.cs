@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using ZEHOU.PM.Label.UI;
 using JSerialPort;
 using ZEHOU.PM.Command;
+using System.Collections.ObjectModel;
 
 namespace ZEHOU.PM.Label
 {
@@ -26,6 +27,7 @@ namespace ZEHOU.PM.Label
         public Login()
         {
             InitializeComponent();
+            
             //Printer.LabelPrinterApi.InitPrinterDll();
             //var printer = new Printer.LabelPrinter();
             //printer.Name = "1";

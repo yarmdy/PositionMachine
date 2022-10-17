@@ -256,6 +256,7 @@ namespace ZEHOU.PM.Label
                 //Global.LPM.StartLabelList(Global.BindingInfo.QueueId, Global.BindingInfo.LabelQueue.Count > 255 ? (byte)255 : (byte)Global.BindingInfo.LabelQueue.Count, binNum, binLbNum);
                 //SendLabelInfo();
             }
+            
         }
         public void ResetQueue() { 
             
@@ -265,7 +266,7 @@ namespace ZEHOU.PM.Label
         /// </summary>
         public void removeAPos() {
             lock (_QueuesLocker) {
-                var queue = Global.BindingInfo.Queues.FirstOrDefault(a=>a.Status==2);
+                var queue = Global.BindingInfo.Queues.Where(a => a.Status == 2).OrderBy(a=>a.CreateTime).FirstOrDefault();
                 if (queue == null)
                 {
                     return;
@@ -273,6 +274,7 @@ namespace ZEHOU.PM.Label
                 queue.Nums--;
                 if (queue.Nums <= 0)
                 {
+                    UILog.Info($"“移除清单列表”【{queue.Id}】数量：{queue.Nums}");
                     Global.BindingInfo.Queues.Remove(queue);
                 }
             }
@@ -288,9 +290,10 @@ namespace ZEHOU.PM.Label
                 Global.BindingInfo.QueueId++;
             }
             var qid = Global.BindingInfo.QueueId;
-            var qinfo = new QueueInfo { AskTime = DateTime.Now, Nums = remainCount, Id = qid, Status = 0 };
+            var qinfo = new QueueInfo { CreateTime=DateTime.Now,AskTime = DateTime.Now, Nums = remainCount, Id = qid, Status = 0 };
             var commId = Global.LPM.StartLabelList(qinfo.Id, qinfo.Nums, 0, null);
             qinfo.CommId = commId;
+            UILog.Info($"“加入清单列表”【{qinfo.Id}】数量：{qinfo.Nums}");
             Global.BindingInfo.Queues.Add(qinfo);
         }
 
@@ -361,7 +364,16 @@ namespace ZEHOU.PM.Label
         /// </summary>
         public void SendLabelInfo(byte? listno=null)
         {
-            var queue = Global.BindingInfo.Queues.Where(a => a.Status == 1 || a.Status == 2).OrderByDescending(a => a.Status).FirstOrDefault();
+            //{
+            //    var queue2 = Global.BindingInfo.Queues.FirstOrDefault(a => a.Status == 1 || a.Status == 2);
+            //    if (queue2 != null)
+            //    {
+            //        UILog.Info("清单顺序：" + String.Join(",", Global.BindingInfo.Queues.Select(a => a.Id)));
+            //        UILog.Info("取第一个清单：" + queue2.Id);
+            //    }
+                
+            //}
+            var queue = Global.BindingInfo.Queues.FirstOrDefault(a => a.Status == 1 || a.Status == 2);
             if (queue != null && queue.Status==1) { 
                 queue.Status = 2;
             }
@@ -536,6 +548,7 @@ namespace ZEHOU.PM.Label
                     a.Status = 254;
                     var commid = Global.LPM.StartLabelList(a.Id,a.Nums,0,null);
                     a.CommId = commid;
+                    UILog.Info($"超时重新发送【{a.Id}】");
                 } );
                 var working = Global.BindingInfo.Queues.FirstOrDefault(a => a.Status == 2);
                 if (working != null) {

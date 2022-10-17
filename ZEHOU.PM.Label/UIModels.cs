@@ -613,6 +613,14 @@ namespace ZEHOU.PM.Label
         /// 询问时间
         /// </summary>
         public DateTime AskTime { get { return _AskTime; } set { _AskTime = value; if (PropertyChanged == null) return; PropertyChanged(this, new PropertyChangedEventArgs("AskTime")); } }
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        private DateTime _CreateTime;
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime CreateTime { get { return _CreateTime; } set { _CreateTime = value; if (PropertyChanged == null) return; PropertyChanged(this, new PropertyChangedEventArgs("CreateTime")); } }
 
         /// <summary>
         /// 等待时间

@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ZEHOU.PM.Printer;
 using ZEHOU.PM.Command;
+using System.Collections;
 
 namespace ZEHOU.PM.Label
 {
@@ -662,6 +663,9 @@ namespace ZEHOU.PM.Label
                     Global.BindingInfo.AlmostDoneLabel.TubeLabelStatus = 100;
                     Global.BindingInfo.AlmostDoneLabel = null;
                 }
+                Dispatcher.Invoke(() => {
+                    Global.BindingInfo.LabelQueue.Remove(finishiOne);
+                });
                 //Global.BindingInfo.LabelQueue.Remove(finishiOne);
                 Global.LabelController.removeAPos();
                 lr.PrintTime=DateTime.Now;
@@ -807,6 +811,8 @@ namespace ZEHOU.PM.Label
                 queue.Remaining = BitConverter.ToUInt32(obj.Data.Skip(1).Reverse().ToArray(),0);
                 queue.AskTime = DateTime.Now;
                 queue.Status = 1;
+
+                UILog.Info($"接收清单号返回结果【{queue.Id}】 {queue.Remaining}s");
             }
             
             if (obj.Data[0] == 1)
@@ -834,8 +840,11 @@ namespace ZEHOU.PM.Label
                     queueFullMsg = "下位机已达到最大队列，无法打印";
                 }
                 UILog.Info(queueFullMsg);
-                Global.LabelController.CancelLabelListSingle(queue.Id, false);
-                Dispatcher.Invoke(() => UI.Popup.Error(this, queueFullMsg));
+                
+                Dispatcher.Invoke(() => {
+                    Global.LabelController.CancelLabelListSingle(queue.Id, false);
+                    UI.Popup.Error(this, queueFullMsg);
+                });
                 //Global.BindingInfo.SysInfo.MachineStatus = -1;
                 //Global.BindingInfo.SysInfo.RemainingTime = Convert.ToUInt32(obj.Data.Skip(1).Reverse().ToArray());
                 return;
