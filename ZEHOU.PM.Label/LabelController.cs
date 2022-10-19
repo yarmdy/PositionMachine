@@ -309,6 +309,7 @@ namespace ZEHOU.PM.Label
                 }
                 foreach (var queue in Global.BindingInfo.Queues)
                 {
+                    queue.Status = 255;
                     if (queue.Id == listNo)
                     {
                         continue;
@@ -318,7 +319,6 @@ namespace ZEHOU.PM.Label
                         UILog.Info($"取消贴标清单【{queue.Id}】");
                         Global.LPM.CancelLabelList(queue.Id);
                     }
-                    queue.Status = 255;
                 }
                 Global.BindingInfo.Queues.Clear();
             }
@@ -336,7 +336,9 @@ namespace ZEHOU.PM.Label
                 {
                     goto finish;
                 }
+                ll.Status = 255;
                 Global.BindingInfo.Queues.Remove(ll);
+
                 if (sendMsg)
                 {
                     UILog.Info($"取消贴标清单【{ll.Id}】");

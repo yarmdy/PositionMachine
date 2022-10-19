@@ -30,9 +30,10 @@ namespace JSerialPortTester
             return true;
         }
 
-        private bool analysis(byte[] data, out int length)
+        private bool analysis(byte[] data, out int index, out int length)
         {
             length = data.Length;
+            index = 0;
             return true;
         }
     }
