@@ -395,7 +395,7 @@ namespace ZEHOU.PM.Label.SerialPort
                 return false;
             }
 
-            var len = BitConverter.ToUInt16(data.Skip(8).Take(2).Reverse().ToArray(),0);
+            var len = BitConverter.ToUInt16(data.Skip(headIndex+8).Take(2).Reverse().ToArray(),0);
             if(data.Length< headIndex + 8 + 2 + len+2)
             {
                 //prossError(-1, "长度不对,等待\r\n" + String.Join(" ", data.Select(a => a.ToString("X2"))), null);

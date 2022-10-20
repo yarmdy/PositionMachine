@@ -309,7 +309,7 @@ namespace ZEHOU.PM.Label
                 }
                 foreach (var queue in Global.BindingInfo.Queues)
                 {
-                    queue.Status = 255;
+                    
                     if (queue.Id == listNo)
                     {
                         continue;
@@ -423,6 +423,7 @@ namespace ZEHOU.PM.Label
             
             label.TubeLabelStatus = 1;
             label.SendTime = DateTime.Now;
+            Global.LabelController.removeAPos();
 
             Global.BindingInfo.AlmostDoneLabel = Global.BindingInfo.LocalLabel;
             Global.BindingInfo.LocalLabel = label;

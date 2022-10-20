@@ -674,7 +674,7 @@ namespace ZEHOU.PM.Label
                     Global.BindingInfo.LabelQueue.Remove(finishiOne);
                 });
                 //Global.BindingInfo.LabelQueue.Remove(finishiOne);
-                Global.LabelController.removeAPos();
+                //Global.LabelController.removeAPos();
                 lr.PrintTime=DateTime.Now;
                 lr.UserID = Global.LocalUser.ID;
                 lr.DeviceID = Config.Configs.Settings["DeviceID"];
@@ -709,7 +709,7 @@ namespace ZEHOU.PM.Label
                 else {
                     Global.BindingInfo.LocalLabel = null;
                 }
-                Global.LabelController.removeAPos();
+                //Global.LabelController.removeAPos();
                 if (Global.BindingInfo.SysInfo.SysStatus < 0 || Global.BindingInfo.SysInfo.SysStatus == 0)
                 {
                     return;
@@ -728,7 +728,7 @@ namespace ZEHOU.PM.Label
                 var tubeTypes = Global.BindingInfo.LocalLabel.BinId.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToArray();
                 Global.BindingInfo.LocalLabel.TubeLabelStatus = -2;
                 Global.BindingInfo.LocalLabel = null;
-                Global.LabelController.removeAPos();
+                //Global.LabelController.removeAPos();
 
                 var lackCount = 0;
                 foreach (var tube in Global.BindingInfo.LabelQueue)
@@ -743,7 +743,7 @@ namespace ZEHOU.PM.Label
                         continue;
                     }
                     tube.TubeLabelStatus = -2;
-                    Global.LabelController.removeAPos();
+                    //Global.LabelController.removeAPos();
                     lackCount++;
                 }
                 UILog.Error($"检测到贴标列队其它缺管${lackCount}条", null);
