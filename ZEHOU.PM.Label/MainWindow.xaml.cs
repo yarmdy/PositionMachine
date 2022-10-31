@@ -580,7 +580,7 @@ namespace ZEHOU.PM.Label
             }
             for (int i = 0; i < Global.BindingInfo.LocalLabelList.Count; i++)
             {
-                if (Global.BindingInfo.LocalLabelList[i].TubeLabelStatus >= 10 && Global.BindingInfo.LabelQueue[i].TubeLabelStatus < 100)
+                if (Global.BindingInfo.LocalLabelList[i].TubeLabelStatus >= 10 && Global.BindingInfo.LocalLabelList[i].TubeLabelStatus < 100)
                 {
                     continue;
                 }
