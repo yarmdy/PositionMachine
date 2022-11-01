@@ -50,6 +50,15 @@ namespace ZEHOU.PM.Label.SerialPort
         /// 反馈光电测试命令
         /// </summary>
         public abstract event Action<DataPackage> OnBackLightTest;
+
+        /// <summary>
+        /// 反馈掉管确认
+        /// </summary>
+        public abstract event Action<DataPackage> OnBackDropTubeConfirm;
+        /// <summary>
+        /// 反馈补仓
+        /// </summary>
+        public abstract event Action<DataPackage> OnBackFillBin;
         /// <summary>
         /// 轮到我了
         /// </summary>
@@ -62,6 +71,10 @@ namespace ZEHOU.PM.Label.SerialPort
         /// 光电状态
         /// </summary>
         public abstract event Action<DataPackage> OnLightStatus;
+        /// <summary>
+        /// 空仓
+        /// </summary>
+        public abstract event Action<DataPackage> OnEmptyBin;
 
         /// <summary>
         /// 读取参数
@@ -114,7 +127,9 @@ namespace ZEHOU.PM.Label.SerialPort
         /// 上传参数
         /// </summary>
         public abstract event Action<DataPackage> OnUpParam;
-
+        /// <summary>
+        /// 接收前
+        /// </summary>
         public abstract event Action<byte[]> AfterReceive;
 
 
@@ -215,6 +230,18 @@ namespace ZEHOU.PM.Label.SerialPort
         /// <param name="act"></param>
         public abstract byte TestBin(byte binId, byte act);
         
+        /// <summary>
+        /// 掉管确认
+        /// </summary>
+        /// <param name="act"></param>
+        public abstract byte DropTubeConfirm(byte act);
+
+        /// <summary>
+        /// 补仓
+        /// </summary>
+        /// <param name="act"></param>
+        public abstract byte FillBin(byte binno);
+
     }
     /// <summary>
     /// 传输数据包

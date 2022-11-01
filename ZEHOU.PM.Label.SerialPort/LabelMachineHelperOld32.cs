@@ -40,6 +40,9 @@ namespace ZEHOU.PM.Label.SerialPort
         public override event Action<DataPackage> OnBackBin;
         public override event Action<DataPackage> OnUpParam;
         public override event Action<byte[]> AfterReceive;
+        public override event Action<DataPackage> OnEmptyBin;
+        public override event Action<DataPackage> OnBackDropTubeConfirm;
+        public override event Action<DataPackage> OnBackFillBin;
 
         public override byte ApplyParam(ushort[] array)
         {
@@ -47,6 +50,16 @@ namespace ZEHOU.PM.Label.SerialPort
         }
 
         public override byte CancelLabelList(byte orderId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override byte DropTubeConfirm(byte act)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override byte FillBin(byte binno)
         {
             throw new NotImplementedException();
         }

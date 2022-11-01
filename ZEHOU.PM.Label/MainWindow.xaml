@@ -14,6 +14,7 @@
         <local:SecondConvert x:Key="secondconvert"></local:SecondConvert>
         <local:TubeStatusConvert x:Key="tubestatusconvert"></local:TubeStatusConvert>
         <local:ColorInt2Color x:Key="colorint2color"></local:ColorInt2Color>
+        <local:EmptyBoolConvert x:Key="emptyboolconvert"></local:EmptyBoolConvert>
         <local:SysStatus2BtnTxt x:Key="sysstatus2btntxt"></local:SysStatus2BtnTxt>
         <local:OnlyPrintConvert x:Key="onlyprintconvert"></local:OnlyPrintConvert>
         <local:IsTestConvert x:Key="istestconvert"></local:IsTestConvert>
@@ -111,6 +112,12 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock>贴标列队：</TextBlock>
                         <TextBlock Text="{Binding LabelQueue.Count}"></TextBlock>
+                    </StackPanel>
+                </StatusBarItem>
+                <StatusBarItem MouseDown="StatusBarItemDown" Tag="binstatus">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock>缺管仓号：</TextBlock>
+                        <TextBlock Text=""></TextBlock>
                     </StackPanel>
                 </StatusBarItem>
                 <StatusBarItem MouseDown="StatusBarItemDown" Tag="debuglog">
@@ -293,6 +300,60 @@
                             </GridView>
                         </ListView.View>
                         
+                    </ListView>
+                </Grid>
+            </DockPanel>
+        </Grid>
+        <Grid Margin="0,0,0,28" Height="200" VerticalAlignment="Bottom" Background="White" Name="gdBinStatus" Visibility="Visible">
+            <Border BorderThickness="1" BorderBrush="Black"></Border>
+            <DockPanel>
+                <DockPanel DockPanel.Dock="Top" Background="#ffeeeeee">
+                    <DockPanel DockPanel.Dock="Left">
+                        <Label>料仓状态</Label>
+                    </DockPanel>
+                    <DockPanel DockPanel.Dock="Right">
+                        <Button Width="30" Click="Button_Click_8">×</Button>
+                    </DockPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <!--<Label>清单号：</Label>
+                        <Label Content="{Binding QueueId}"></Label>
+                        <Button FontSize="12" Width="30" Height="20" Margin="10 0 0 0" Content="{Binding SysInfo.SysStatus,Converter={StaticResource sysstatus2btntxt}}" Click="Button_Click_3"></Button>
+                        <Button FontSize="12" Width="30" Height="20" Margin="10 0 0 0" Content="删除" Click="Button_Click_4"></Button>
+                        <Button FontSize="12" Width="30" Height="20" Margin="10 0 0 0" Content="清空" Click="Button_Click_5"></Button>
+                        <Button FontSize="12" Width="30" Height="20" Margin="10 0 0 0" Content="重试" Click="Button_Click_6"></Button>-->
+                    </StackPanel>
+                </DockPanel>
+                <Grid>
+                    <ListView ItemsSource="{Binding BinsList,Mode=OneWay}" Name="lvBins">
+                        <ListView.View>
+                            <GridView>
+                                <GridView.Columns>
+                                    <GridViewColumn Header="颜色" Width="64" >
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Ellipse Width="16" Height="16" StrokeThickness="1" Stroke="Black">
+                                                    <Ellipse.Fill>
+                                                        <SolidColorBrush Color="{Binding TubeColor,Mode=OneWay,Converter={StaticResource colorint2color}}"></SolidColorBrush>
+                                                    </Ellipse.Fill>
+                                                </Ellipse>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="仓号" Width="64" DisplayMemberBinding="{Binding BinId}"></GridViewColumn>
+                                    <GridViewColumn Header="名称" Width="96" DisplayMemberBinding="{Binding Name}"></GridViewColumn>
+                                    <GridViewColumn Header="医院试管名称" Width="128" DisplayMemberBinding="{Binding HID}"></GridViewColumn>
+                                    <GridViewColumn Header="状态" Width="64" DisplayMemberBinding="{Binding IsEmpty,Converter={StaticResource emptyboolconvert}}"></GridViewColumn>
+                                    <GridViewColumn Header="补充" Width="64">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Click="Button_Click_9">补充</Button>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView.Columns>
+                            </GridView>
+                        </ListView.View>
+
                     </ListView>
                 </Grid>
             </DockPanel>

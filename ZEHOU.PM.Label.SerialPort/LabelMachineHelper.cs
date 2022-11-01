@@ -185,6 +185,22 @@ namespace ZEHOU.PM.Label.SerialPort
                                 }
                             }
                             break;
+                        case (byte)EnumGOWORKComm.DROPTUBECONFIRM:
+                            {
+                                if (OnBackLightTest != null)
+                                {
+                                    OnBackDropTubeConfirm(dataPackage);
+                                }
+                            }
+                            break;
+                        case (byte)EnumGOWORKComm.FILLBIN:
+                            {
+                                if (OnBackLightTest != null)
+                                {
+                                    OnBackFillBin(dataPackage);
+                                }
+                            }
+                            break;
                     }
                 }
                 else if (dataPackage.Func == (byte)EnumFunc.READPARAM)
@@ -322,6 +338,15 @@ namespace ZEHOU.PM.Label.SerialPort
                                 }
                             }
                             break;
+                        case (byte)EnumUPWORKRESComm.EMPTYBIN:
+                            {
+                                Reply(dataPackage.Func, dataPackage.Comm, dataPackage.CommId);
+                                if (OnEmptyBin != null)
+                                {
+                                    OnEmptyBin(dataPackage);
+                                }
+                            }
+                            break;
                     }
                 }
                 else if (dataPackage.Func == (byte)EnumFunc.UPPARAM)
@@ -396,7 +421,7 @@ namespace ZEHOU.PM.Label.SerialPort
             }
 
             var len = BitConverter.ToUInt16(data.Skip(headIndex+8).Take(2).Reverse().ToArray(),0);
-            if(data.Length< headIndex + 8 + 2 + len+2)
+            if(data.Length< headIndex + 8 + 2 + len+2+2)
             {
                 //prossError(-1, "长度不对,等待\r\n" + String.Join(" ", data.Select(a => a.ToString("X2"))), null);
                 return false;
@@ -505,7 +530,15 @@ namespace ZEHOU.PM.Label.SerialPort
             /// <summary>
             /// 开关状态
             /// </summary>
-            LIGHTSTATUS = 0X06
+            LIGHTSTATUS = 0X06,
+            /// <summary>
+            /// 掉管确认
+            /// </summary>
+            DROPTUBECONFIRM = 0X07,
+            /// <summary>
+            /// 补仓
+            /// </summary>
+            FILLBIN = 0X08
         }
         /// <summary>
         /// 读取参数命令
@@ -581,7 +614,12 @@ namespace ZEHOU.PM.Label.SerialPort
             /// <summary>
             /// 贴标状态
             /// </summary>
-            LABELSTATUS = 0X02
+            LABELSTATUS = 0X02,
+            /// <summary>
+            /// 空仓了
+            /// </summary>
+            EMPTYBIN = 0X03
+
         }
         /// <summary>
         /// 参数上报
@@ -642,6 +680,14 @@ namespace ZEHOU.PM.Label.SerialPort
         /// 光电状态
         /// </summary>
         public override event Action<DataPackage> OnLightStatus;
+        /// <summary>
+        /// 反馈掉管确认
+        /// </summary>
+        public override event Action<DataPackage> OnBackDropTubeConfirm;
+        /// <summary>
+        /// 反馈补管
+        /// </summary>
+        public override event Action<DataPackage> OnBackFillBin;
 
         /// <summary>
         /// 读取参数
@@ -694,8 +740,15 @@ namespace ZEHOU.PM.Label.SerialPort
         /// 上传参数
         /// </summary>
         public override event Action<DataPackage> OnUpParam;
-
+        /// <summary>
+        /// 接收前
+        /// </summary>
         public override event Action<byte[]> AfterReceive;
+        /// <summary>
+        /// 空仓
+        /// </summary>
+        public override event Action<DataPackage> OnEmptyBin;
+        
 
 
         #endregion
@@ -939,6 +992,33 @@ namespace ZEHOU.PM.Label.SerialPort
             return commId;
         }
         /// <summary>
+        /// 掉管确认
+        /// </summary>
+        /// <param name="act"></param>
+        public override byte DropTubeConfirm(byte act)
+        {
+            var data = new List<byte>();
+            data.Add(act);
+            var commId = getCommId();
+            var commdata = CreateCommand((byte)EnumFunc.GOWORK, (byte)EnumGOWORKComm.DROPTUBECONFIRM, commId, data.ToArray());
+            Send(commdata);
+            return commId;
+        }
+        /// <summary>
+        /// 补仓
+        /// </summary>
+        /// <param name="binno"></param>
+        /// <returns></returns>
+        public override byte FillBin(byte binno)
+        {
+            var data = new List<byte>();
+            data.Add(binno);
+            var commId = getCommId();
+            var commdata = CreateCommand((byte)EnumFunc.GOWORK, (byte)EnumGOWORKComm.FILLBIN, commId, data.ToArray());
+            Send(commdata);
+            return commId;
+        }
+        /// <summary>
         /// 对下位机反馈
         /// </summary>
         /// <param name="func"></param>
@@ -950,5 +1030,7 @@ namespace ZEHOU.PM.Label.SerialPort
             var str = CreateCommand(func, comm, commId, data.ToArray());
             Send(str);
         }
+
+        
     }
 }

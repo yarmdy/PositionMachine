@@ -28,5 +28,6 @@ namespace ZEHOU.PM.Label.UI
         {
             return MessageBox.Show(owner, msg, title, MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.Yes);
         }
+        
     }
 }

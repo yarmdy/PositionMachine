@@ -171,6 +171,20 @@ namespace ZEHOU.PM.Label
             }
         }
 
+
+        /// <summary>
+        /// 仓位状态
+        /// </summary>
+        private ObservableCollection<BinStatusInfo> _BinsList;
+        /// <summary>
+        /// 仓位状态
+        /// </summary>
+        public ObservableCollection<BinStatusInfo> BinsList
+        {
+            get { return _BinsList; }
+            set { _BinsList = value; if (PropertyChanged == null) return; PropertyChanged(this, new PropertyChangedEventArgs("BinsList")); }
+        }
+
         /// <summary>
         /// 实例化初始化日志事件
         /// </summary>
@@ -261,11 +275,11 @@ namespace ZEHOU.PM.Label
             set { _TubeColor = value; if (PropertyChanged == null) return; PropertyChanged(this, new PropertyChangedEventArgs("TubeColor")); }
         }
         /// <summary>
-        /// 贴标状态 0等待贴标 1已发送 10已接受 100已完成 -1错误 -2缺管 -3超时
+        /// 贴标状态 0等待贴标 1已发送 10已接受 100已完成 -1错误 -2缺管 -3超时 -4掉管
         /// </summary>
         private int _TubeLabelStatus;
         /// <summary>
-        /// 贴标状态 0等待贴标 1已发送 10已接受 100已完成 -1错误 -2缺管 -3超时
+        /// 贴标状态 0等待贴标 1已发送 10已接受 100已完成 -1错误 -2缺管 -3超时 -4掉管
         /// </summary>
         public int TubeLabelStatus
         {
@@ -649,6 +663,74 @@ namespace ZEHOU.PM.Label
             }
         }
     }
+    public partial class BinStatusInfo:INotifyPropertyChanged
+    {
+        /// <summary>
+        /// 属性改变事件
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+        /// <summary>
+        /// 仓号
+        /// </summary>
+        private byte _BinId;
+        /// <summary>
+        /// 仓号
+        /// </summary>
+        public byte BinId { get { return _BinId; } set { _BinId = value; if (PropertyChanged == null) return; PropertyChanged(this, new PropertyChangedEventArgs("BinId")); } }
+        /// <summary>
+        /// 仓号
+        /// </summary>
+        private string _ID;
+        /// <summary>
+        /// 仓号
+        /// </summary>
+        public string ID { get { return _ID; } set { _ID = value; if (PropertyChanged == null) return; PropertyChanged(this, new PropertyChangedEventArgs("ID")); } }
+        /// <summary>
+        /// 颜色
+        /// </summary>
+        private string _Name;
+        /// <summary>
+        /// 颜色
+        /// </summary>
+        public string Name { get { return _Name; } set { _Name = value; if (PropertyChanged == null) return; PropertyChanged(this, new PropertyChangedEventArgs("Name")); } }
+        /// <summary>
+        /// 厂家颜色
+        /// </summary>
+        private string _HID;
+        /// <summary>
+        /// 厂家颜色
+        /// </summary>
+        public string HID { get { return _HID; } set { _HID = value; if (PropertyChanged == null) return; PropertyChanged(this, new PropertyChangedEventArgs("HID")); } }
+        /// <summary>
+        /// 数量
+        /// </summary>
+        private byte _Nums;
+        /// <summary>
+        /// 数量
+        /// </summary>
+        public byte Nums { get { return _Nums; } set { _Nums = value; if (PropertyChanged == null) return; PropertyChanged(this, new PropertyChangedEventArgs("Nums"));
+                PropertyChanged(this, new PropertyChangedEventArgs("IsEmpty"));
+            } }
+
+        /// <summary>
+        /// 是否为空
+        /// </summary>
+        public bool IsEmpty { get { return _Nums<=0; } }
+
+        /// <summary>
+        /// 仓号
+        /// </summary>
+        private int _TubeColor;
+        /// <summary>
+        /// 仓号
+        /// </summary>
+        public int TubeColor { get { return _TubeColor; } set { _TubeColor = value; if (PropertyChanged == null) return; PropertyChanged(this, new PropertyChangedEventArgs("TubeColor")); } }
+
+        /// <summary>
+        /// 命令ID
+        /// </summary>
+        public byte CommId { get; set; }
+    }
     /// <summary>
     /// 串口状态颜色转换
     /// </summary>
@@ -749,6 +831,10 @@ namespace ZEHOU.PM.Label
             if ((int)value == -3)
             {
                 return "超时";
+            }
+            if ((int)value == -4)
+            {
+                return "掉管";
             }
             if ((int)value == 1)
             {
@@ -866,6 +952,27 @@ namespace ZEHOU.PM.Label
             return 0;
         }
     }
+
+    /// <summary>
+    /// 缺管正常
+    /// </summary>
+    public class EmptyBoolConvert : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value == null || !(bool)value)
+            {
+                return "正常";
+            }
+            return "缺管";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return 0;
+        }
+    }
+
     /// <summary>
     /// 是否测试
     /// </summary>

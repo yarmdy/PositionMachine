@@ -16,6 +16,8 @@ using System.Windows.Shapes;
 using ZEHOU.PM.Printer;
 using ZEHOU.PM.Command;
 using System.Collections;
+using ZEHOU.PM.Config;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace ZEHOU.PM.Label
 {
@@ -34,10 +36,11 @@ namespace ZEHOU.PM.Label
             Global.TabControl = tbTab;
             setMenu();
             intBarcodeGun();
+            
             initLPM();
+            InitTubeColorDic();
             initBinding();
             Global.LabelController = new LabelController();
-            InitTubeColorDic();
             Global.LabelController.StartRemainingTimer();
             initPrinter();
             initPassiveClass();
@@ -152,6 +155,10 @@ namespace ZEHOU.PM.Label
             Global.LPM.OnLightStatus += LPM_OnLightStatus;
             Global.LPM.OnMyTurn += LPM_OnMyTurn;
 
+            Global.LPM.OnEmptyBin += LPM_OnEmptyBin;
+            Global.LPM.OnBackFillBin += LPM_OnBackFillBin;
+            Global.LPM.OnBackDropTubeConfirm += LPM_OnBackDropTubeConfirm;
+
             //Global.LPM.TestAddSend(new byte[] {0x40,0x5A,0x48,0x01,0x50,0xD2,0x01,0x10,0x00,0x12,0x00,0x3C,0x21,0x34,0x05,0x78,0x22,0xF6,0x22,0x2E,0x05,0xDC,0x1D,0x1A,0x1C,0x52,0x00,0x14,0xFC,0x3B,0x0D,0x0A
             //});
             //Global.LPM.TestAddSend(new byte[] {0x40,0x5A,0x48,0x01,0x50,0xD2,0x01,0x02,0x00,0x12,0x00,0x3C,0x21,0x34
@@ -162,6 +169,51 @@ namespace ZEHOU.PM.Label
             //System.Threading.Thread.Sleep(100);
             //Global.LPM.TestAddSend(new byte[] {0xCD,0x48,0x0D,0x0A
             //});
+        }
+
+        private void LPM_OnBackDropTubeConfirm(SerialPort.DataPackage obj)
+        {
+            
+        }
+
+        private void LPM_OnBackFillBin(SerialPort.DataPackage obj)
+        {
+            var commId = obj.CommId;
+            var bin = Global.BindingInfo.BinsList.FirstOrDefault(a => a.CommId == commId);
+            if (bin == null)
+            {
+                UILog.Error($"补仓反馈，但是并未找到对应命令号：{commId}", null);
+                return;
+            }
+            UILog.Info($"补仓反馈，仓号：{bin.BinId}");
+            bin.Nums = 100;
+        }
+
+        private void LPM_OnEmptyBin(SerialPort.DataPackage obj)
+        {
+            var binid = obj.Data[0];
+            var bin = Global.BindingInfo.BinsList.FirstOrDefault(a => a.BinId == binid);
+            if (bin == null)
+            {
+                UILog.Error($"空仓告警，但是并未找到对应仓号：{binid}",null);
+                return;
+            }
+            UILog.Info($"空仓告警，仓号：{binid}");
+            bin.Nums = 0;
+        }
+
+        private void initBins() {
+            var bll = new Bll.Device();
+            var tubeTypes = bll.GetTubeTypes(Configs.Settings["DeviceID"]);
+            
+            byte binno = 0;
+            new byte[int.Parse(Configs.Settings["BinNum"])].ToList().ForEach(a => { 
+                binno++;
+                byte tmp;
+                var types = tubeTypes.Where(b => b.BinID.Split(',').Where(c => byte.TryParse(c, out tmp)).Select(int.Parse).Contains(binno));
+                var bininfo = new BinStatusInfo {BinId=binno, Nums=100,TubeColor=Global.TubeColorDic.G(types.FirstOrDefault()?.Name??""),Name=string.Join("、", types.Select(b => b.Name)),HID = string.Join("、", types.Select(b => b.HID)), ID = string.Join("、", types.Select(b => b.ID)) };
+                Global.BindingInfo.BinsList.Add(bininfo);
+            });
         }
         /// <summary>
         /// 初始化界面绑定
@@ -183,6 +235,8 @@ namespace ZEHOU.PM.Label
             Global.BindingInfo.SysInfo.RemainingTime = 0;
             Global.BindingInfo.SysInfo.SysStatus = 0;
             Global.BindingInfo.Queues = new ObservableCollection<QueueInfo>();
+            Global.BindingInfo.BinsList = new ObservableCollection<BinStatusInfo>();
+            initBins();
             this.DataContext = Global.BindingInfo;
 
             Global.BindingInfo.LabelQueue.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler((a, e) =>
@@ -446,6 +500,15 @@ namespace ZEHOU.PM.Label
             gdQueue.Visibility = Visibility.Collapsed;
         }
         /// <summary>
+        /// 打印列队
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_8(object sender, RoutedEventArgs e)
+        {
+            gdBinStatus.Visibility = Visibility.Collapsed;
+        }
+        /// <summary>
         /// 状态栏事件
         /// </summary>
         /// <param name="sender"></param>
@@ -456,6 +519,7 @@ namespace ZEHOU.PM.Label
             gdSysLog.Visibility = Visibility.Collapsed;
             gdDebug.Visibility = Visibility.Collapsed;
             gdQueue.Visibility = Visibility.Collapsed;
+            gdBinStatus.Visibility = Visibility.Collapsed;
             switch (act)
             {
                 case "syslog":
@@ -471,6 +535,11 @@ namespace ZEHOU.PM.Label
                 case "queue":
                     {
                         gdQueue.Visibility = Visibility.Visible;
+                    }
+                    break;
+                case "binstatus":
+                    {
+                        gdBinStatus.Visibility = Visibility.Visible;
                     }
                     break;
             }
@@ -691,12 +760,6 @@ namespace ZEHOU.PM.Label
                         UILog.Error($"【{finishiOne.TubeInfo.BarCode}】添加贴标记录失败", null);
                     }
                 }
-                
-                if (Global.BindingInfo.SysInfo.SysStatus < 0 || Global.BindingInfo.SysInfo.SysStatus == 0)
-                {
-                    return;
-                }
-                Global.BindingInfo.SysInfo.SysStatus = 0;
             }
             if (obj.Data[0] == 255)
             {
@@ -710,12 +773,7 @@ namespace ZEHOU.PM.Label
                     Global.BindingInfo.LocalLabel = null;
                 }
                 //Global.LabelController.removeAPos();
-                if (Global.BindingInfo.SysInfo.SysStatus < 0 || Global.BindingInfo.SysInfo.SysStatus == 0)
-                {
-                    return;
-                }
-                Global.BindingInfo.SysInfo.SysStatus = 0;
-                return;
+                
             }
             if (obj.Data[0] == 254)
             {
@@ -726,9 +784,17 @@ namespace ZEHOU.PM.Label
                 }
                 UILog.Error($"【{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}】下位机缺管", null);
                 var tubeTypes = Global.BindingInfo.LocalLabel.BinId.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToArray();
+                byte tmpbinid;
+                tubeTypes.Where(a=>byte.TryParse(a,out tmpbinid)).Select(byte.Parse).ToList().ForEach(a => {
+                    var tmpbin = Global.BindingInfo.BinsList.FirstOrDefault(b=>b.BinId==a);
+                    if (tmpbin == null) return;
+                    tmpbin.Nums = 0;
+                });
                 Global.BindingInfo.LocalLabel.TubeLabelStatus = -2;
                 Global.BindingInfo.LocalLabel = null;
                 //Global.LabelController.removeAPos();
+
+
 
                 var lackCount = 0;
                 foreach (var tube in Global.BindingInfo.LabelQueue)
@@ -748,18 +814,42 @@ namespace ZEHOU.PM.Label
                 }
                 UILog.Error($"检测到贴标列队其它缺管${lackCount}条", null);
 
-                if (Global.BindingInfo.SysInfo.SysStatus < 0 || Global.BindingInfo.SysInfo.SysStatus == 0)
+                
+            }
+            if (obj.Data[0] == 253)
+            {
+                if (Global.BindingInfo.LocalLabel == null)
                 {
+                    UILog.Info($"下位机掉管，但是无法定位掉管的试管编号");
                     return;
                 }
-                Global.BindingInfo.SysInfo.SysStatus = 0;
-                return;
+                UILog.Info($"【{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}】下位机掉管，是否重试");
+                MessageBoxResult diaresault = MessageBoxResult.None;
+                Dispatcher.Invoke(() => {
+                    diaresault = UI.Popup.Confirm(Global.MainWindow, $"{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}下位机掉管，是否重试");
+                });
+                
+                if (diaresault != MessageBoxResult.OK)
+                {
+                    UILog.Info($"【{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}】下位机掉管，选择取消");
+                    Global.BindingInfo.LocalLabel.TubeLabelStatus = -4;
+                    Global.BindingInfo.LocalLabel = null;
+                    Global.LPM.DropTubeConfirm(2);
+                    goto dropGuanResualt;
+                }
+                UILog.Info($"【{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}】下位机掉管，选择确定");
+                Global.BindingInfo.LocalLabel.SendTime = DateTime.Now;
+                Global.LPM.DropTubeConfirm(1);
+
+            dropGuanResualt:
+                Global.BindingInfo.LocalLabel = null;
+                
             }
             if (Global.BindingInfo.SysInfo.SysStatus < 0 || Global.BindingInfo.SysInfo.SysStatus == 1)
             {
                 goto other;
             }
-            Global.BindingInfo.SysInfo.SysStatus = 1;
+            Global.BindingInfo.SysInfo.SysStatus = 0;
         other:;
         }
         /// <summary>
@@ -944,6 +1034,18 @@ namespace ZEHOU.PM.Label
         private void Button_Click_7(object sender, RoutedEventArgs e)
         {
             Global.BindingInfo.IsHideLeft = !Global.BindingInfo.IsHideLeft;
+        }
+
+        private void Button_Click_9(object sender, RoutedEventArgs e)
+        {
+            var btn = (Button)sender;
+            
+            if(!(btn.DataContext is BinStatusInfo))
+            {
+                return;
+            }
+            var obj = (BinStatusInfo)btn.DataContext;
+            obj.CommId = Global.LPM.FillBin(obj.BinId);
         }
     }
     /// <summary>
