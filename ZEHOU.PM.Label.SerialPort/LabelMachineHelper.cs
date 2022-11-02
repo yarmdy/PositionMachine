@@ -361,6 +361,14 @@ namespace ZEHOU.PM.Label.SerialPort
                                 }
                             }
                             break;
+                        case (byte)EnumUPPARAMComm.MOTORSTEPS:
+                            {
+                                if (OnUpMotorSteps != null)
+                                {
+                                    OnUpMotorSteps(dataPackage);
+                                }
+                            }
+                            break;
                     }
                 }
                 else if (dataPackage.Func == (byte)EnumFunc.UPSTATUS)
@@ -600,6 +608,10 @@ namespace ZEHOU.PM.Label.SerialPort
             /// 料仓
             /// </summary>
             BIN = 0X08,
+            // <summary>
+            /// 料仓
+            /// </summary>
+            MOTOR = 0X09,
         }
 
         /// <summary>
@@ -630,6 +642,10 @@ namespace ZEHOU.PM.Label.SerialPort
             /// 参数
             /// </summary>
             PARAMS = 0X01,
+            /// <summary>
+            /// 电机步数
+            /// </summary>
+            MOTORSTEPS = 0X02,
         }
         /// <summary>
         /// 开关状态上报
@@ -740,6 +756,10 @@ namespace ZEHOU.PM.Label.SerialPort
         /// 上传参数
         /// </summary>
         public override event Action<DataPackage> OnUpParam;
+        /// <summary>
+        /// 上传步数
+        /// </summary>
+        public override event Action<DataPackage> OnUpMotorSteps;
         /// <summary>
         /// 接收前
         /// </summary>
@@ -1031,6 +1051,15 @@ namespace ZEHOU.PM.Label.SerialPort
             Send(str);
         }
 
-        
+        public override byte TestMotor(byte act, short val)
+        {
+            var data = new List<byte>();
+            data.Add(act);
+            data.AddRange(BitConverter.GetBytes(val).Reverse().ToArray());
+            var commId = getCommId();
+            var commdata = CreateCommand((byte)EnumFunc.TEST, (byte)EnumTESTComm.MOTOR, commId, data.ToArray());
+            Send(commdata);
+            return commId;
+        }
     }
 }

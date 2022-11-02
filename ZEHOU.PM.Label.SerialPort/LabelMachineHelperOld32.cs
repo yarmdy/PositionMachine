@@ -43,6 +43,7 @@ namespace ZEHOU.PM.Label.SerialPort
         public override event Action<DataPackage> OnEmptyBin;
         public override event Action<DataPackage> OnBackDropTubeConfirm;
         public override event Action<DataPackage> OnBackFillBin;
+        public override event Action<DataPackage> OnUpMotorSteps;
 
         public override byte ApplyParam(ushort[] array)
         {
@@ -105,6 +106,11 @@ namespace ZEHOU.PM.Label.SerialPort
         }
 
         public override byte TestMachine(byte comm, byte act)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override byte TestMotor(byte act, short val)
         {
             throw new NotImplementedException();
         }

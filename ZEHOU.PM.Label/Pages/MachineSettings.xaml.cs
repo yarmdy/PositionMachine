@@ -42,6 +42,8 @@ namespace ZEHOU.PM.Label
             cbBins.SelectedIndex = 0;
 
             Global.LPM.StartLightTest(SerialPort.LabelMachineHelper.EnumOpenClose.OPEN);
+
+            //Global.LPM.
         }
 
         private Dictionary<int, bool> convertInt2Light(uint val) {
@@ -93,6 +95,12 @@ namespace ZEHOU.PM.Label
 
             Global.LPM.OnBackSaveParams += LPM_OnBackSaveParams;
             Global.LPM.OnBackApplyParams += LPM_OnBackApplyParams;
+
+            Global.LPM.OnUpMotorSteps += LPM_OnUpMotorSteps;
+        }
+
+        private void LPM_OnUpMotorSteps(SerialPort.DataPackage obj)
+        {
             
         }
 
@@ -234,6 +242,8 @@ namespace ZEHOU.PM.Label
 
             Global.LPM.OnBackSaveParams -= LPM_OnBackSaveParams;
             Global.LPM.OnBackApplyParams -= LPM_OnBackApplyParams;
+
+            Global.LPM.OnUpMotorSteps -= LPM_OnUpMotorSteps;
         }
 
         private void MotorTestButton_Click(object sender, RoutedEventArgs e)
@@ -301,6 +311,55 @@ namespace ZEHOU.PM.Label
             var mthd = this.GetType().GetMethod(act.After, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
             mthd.Invoke(this, new object[] { act });
         }
+
+        private void ParamTestButton_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = (Button)sender;
+            var sp = getParent<StackPanel>(btn);
+            if (sp == null)
+            {
+                return;
+            }
+            var txts = getChildren<TextBox>(sp);
+            if (txts.Count <= 0)
+            {
+                return;
+            }
+            var txt = txts[0];
+            var act = (MachineAction)(btn.DataContext);
+            short tmp = 0;
+            short.TryParse(txt.Text,out tmp);
+
+            if (act.Name2 == null)
+            {
+                Global.LPM.TestMotor(act.Action, tmp);
+                goto after;
+            }
+
+            if (btn.Tag + "" == "")
+            {
+                Global.LPM.TestMotor(act.Action, tmp);
+                btn.Tag = "1";
+                btn.Content = act.Name2;
+                goto after;
+            }
+            else
+            {
+                Global.LPM.TestMotor(act.Action2, tmp);
+                btn.Tag = "";
+                btn.Content = act.Name;
+                goto after;
+            }
+
+        after:
+            if (string.IsNullOrWhiteSpace(act.After))
+            {
+                return;
+            }
+            var mthd = this.GetType().GetMethod(act.After, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+            mthd.Invoke(this, new object[] { act });
+        }
+
         private void binReset(MachineAction act) 
         {
             var btns = getChildren<Button>(lvBins);
@@ -324,14 +383,37 @@ namespace ZEHOU.PM.Label
             }
             return res;
         }
+
+        private T getParent<T>(DependencyObject obj) where T : class {
+            var parent = VisualTreeHelper.GetParent(obj);
+            if (parent == null)
+            {
+                return null;
+            }
+            if(parent.GetType() == typeof(T))
+            {
+                return parent as T;
+            }
+            return getParent<T>(parent);
+        }
     }
 
-    public class MachineSetting
+    public class MachineSetting: INotifyPropertyChanged
     {
         public List<MachineSettingGroup<MachineLightStatus>> Lights { get; set; }
         public List<MachineSettingGroup<MachineParam>> Params { get; set; }
         public List<MachineSettingGroup<MachineSettingGroup<MachineAction>>> Actions { get; set; }
         public List<MachineSettingGroup<MachineAction>> Bins { get; set; }
+
+        private short _MotorSteps;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public short MotorSteps
+        {
+            get { return _MotorSteps; }
+            set { _MotorSteps = value; if (PropertyChanged == null) return; PropertyChanged(this, new PropertyChangedEventArgs("MotorSteps")); }
+        }
     }
     public class MachineSettingGroup<T>
     {
@@ -342,6 +424,8 @@ namespace ZEHOU.PM.Label
     {
         public string Name { get; set; }
         public int Index { get; set; }
+
+        public List<MachineAction> Buttons { get; set; }
     }
     public class MachineLightStatus : MachineSettingItem, INotifyPropertyChanged
     {

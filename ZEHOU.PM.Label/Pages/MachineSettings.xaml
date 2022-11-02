@@ -72,7 +72,12 @@
                 </ListView>
             </StackPanel>
             <StackPanel>
-                <Label>参数设置</Label>
+                <StackPanel Orientation="Horizontal">
+                    <Label>参数设置</Label>
+                    <Label>（电机步数：</Label>
+                    <Label Content="{Binding MotorSteps}" Width="64" HorizontalAlignment="Center" Foreground="Red"></Label>
+                    <Label>）</Label>
+                </StackPanel>
                 <ListView ItemsSource="{Binding Params}" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -88,7 +93,7 @@
                                 <ListView Margin="0,0,0,0" ItemsSource="{Binding List}" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                     <ListView.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <WrapPanel Orientation="Horizontal"></WrapPanel>
+                                            <WrapPanel Orientation="Vertical"></WrapPanel>
                                         </ItemsPanelTemplate>
                                     </ListView.ItemsPanel>
                                     <ListView.ItemTemplate>
@@ -96,6 +101,18 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <Label Content="{Binding Name}"></Label>
                                                 <TextBox Text="{Binding Value}" Width="50"></TextBox>
+                                                <ListView Margin="0,0,0,0" BorderThickness="0" ItemsSource="{Binding Buttons}">
+                                                    <ListView.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <WrapPanel Orientation="Horizontal"></WrapPanel>
+                                                        </ItemsPanelTemplate>
+                                                    </ListView.ItemsPanel>
+                                                    <ListView.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Button Content="{Binding Name}" Click="ParamTestButton_Click"></Button>
+                                                        </DataTemplate>
+                                                    </ListView.ItemTemplate>
+                                                </ListView>
                                             </StackPanel>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>

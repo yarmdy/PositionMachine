@@ -128,6 +128,10 @@ namespace ZEHOU.PM.Label.SerialPort
         /// </summary>
         public abstract event Action<DataPackage> OnUpParam;
         /// <summary>
+        /// 上传步数
+        /// </summary>
+        public abstract event Action<DataPackage> OnUpMotorSteps;
+        /// <summary>
         /// 接收前
         /// </summary>
         public abstract event Action<byte[]> AfterReceive;
@@ -229,7 +233,15 @@ namespace ZEHOU.PM.Label.SerialPort
         /// <param name="comm"></param>
         /// <param name="act"></param>
         public abstract byte TestBin(byte binId, byte act);
-        
+
+        /// <summary>
+        /// 测试电机
+        /// </summary>
+        /// <param name="binId"></param>
+        /// <param name="comm"></param>
+        /// <param name="act"></param>
+        public abstract byte TestMotor(byte act, short val);
+
         /// <summary>
         /// 掉管确认
         /// </summary>
