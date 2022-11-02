@@ -224,6 +224,9 @@
                     <DockPanel DockPanel.Dock="Left">
                         <Label>系统消息</Label>
                     </DockPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Click="Button_Click_10">清空</Button>
+                    </StackPanel>
                     <DockPanel DockPanel.Dock="Right">
                         <Button Width="30" Click="Button_Click_1">×</Button>
                     </DockPanel>
@@ -241,6 +244,9 @@
                     <DockPanel DockPanel.Dock="Left">
                         <Label>调试信息</Label>
                     </DockPanel>
+                    <StackPanel>
+                        <Button Click="Button_Click_11">清空</Button>
+                    </StackPanel>
                     <DockPanel DockPanel.Dock="Right">
                         <Button Width="30" Click="Button_Click">×</Button>
                     </DockPanel>
@@ -304,7 +310,7 @@
                 </Grid>
             </DockPanel>
         </Grid>
-        <Grid Margin="0,0,0,28" Height="200" VerticalAlignment="Bottom" Background="White" Name="gdBinStatus" Visibility="Visible">
+        <Grid Margin="0,0,0,28" Height="200" VerticalAlignment="Bottom" Background="White" Name="gdBinStatus" Visibility="Collapsed">
             <Border BorderThickness="1" BorderBrush="Black"></Border>
             <DockPanel>
                 <DockPanel DockPanel.Dock="Top" Background="#ffeeeeee">

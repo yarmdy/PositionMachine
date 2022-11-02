@@ -101,7 +101,7 @@ namespace ZEHOU.PM.Label
 
         private void LPM_OnUpMotorSteps(SerialPort.DataPackage obj)
         {
-            
+            _binding.MotorSteps = BitConverter.ToInt16(obj.Data.Reverse().ToArray(),0);
         }
 
         private void LPM_OnBackApplyParams(SerialPort.DataPackage obj)

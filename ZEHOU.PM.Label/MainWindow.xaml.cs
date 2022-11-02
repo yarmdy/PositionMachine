@@ -1047,6 +1047,16 @@ namespace ZEHOU.PM.Label
             var obj = (BinStatusInfo)btn.DataContext;
             obj.CommId = Global.LPM.FillBin(obj.BinId);
         }
+
+        private void Button_Click_10(object sender, RoutedEventArgs e)
+        {
+            Global.BindingInfo.SysLog.Clear();
+        }
+
+        private void Button_Click_11(object sender, RoutedEventArgs e)
+        {
+            Global.BindingInfo.DebugLog.Clear();
+        }
     }
     /// <summary>
     /// tab源
