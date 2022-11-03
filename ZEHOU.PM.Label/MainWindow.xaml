@@ -116,7 +116,7 @@
                 </StatusBarItem>
                 <StatusBarItem MouseDown="StatusBarItemDown" Tag="binstatus">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock>缺管仓号：</TextBlock>
+                        <TextBlock>料仓状态</TextBlock>
                         <TextBlock Text=""></TextBlock>
                     </StackPanel>
                 </StatusBarItem>
