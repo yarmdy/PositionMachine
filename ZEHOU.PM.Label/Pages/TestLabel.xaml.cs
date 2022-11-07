@@ -117,6 +117,14 @@ namespace ZEHOU.PM.Label
             var list = createLabels(_model.Nums, true);
             Global.LabelController.AddToQueue(list, false);
         }
+
+        private void btnBackOrder_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new PrintBackOrder(null);
+            dlg.ShowDialog();
+            dlg.Print();
+            dlg.Close();
+        }
     }
     public class TestLabelModel
     {

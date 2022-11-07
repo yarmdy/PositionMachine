@@ -102,6 +102,17 @@
                 </DockPanel>
                 <Button x:Name="btnContinuousPrinting" Click="btnContinuousPrinting_Click">连续打印</Button>
             </WrapPanel>
+            <WrapPanel>
+                <WrapPanel.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="5"></Setter>
+                    </Style>
+                    <Style TargetType="DockPanel">
+                        <Setter Property="Margin" Value="5"></Setter>
+                    </Style>
+                </WrapPanel.Resources>
+                <Button x:Name="btnBackOrder" Click="btnBackOrder_Click" >回执单预览</Button>
+            </WrapPanel>
         </StackPanel>
     </DockPanel>
 </Page>

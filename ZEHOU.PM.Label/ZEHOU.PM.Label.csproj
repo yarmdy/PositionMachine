@@ -90,12 +90,14 @@
     <Reference Include="NPOI.OpenXmlFormats, Version=2.5.6.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
       <HintPath>..\packages\NPOI.2.5.6\lib\net45\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
+    <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Printing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -138,6 +140,9 @@
     <Compile Include="NewInterface.cs" />
     <Compile Include="UILog.cs" />
     <Compile Include="UIModels.cs" />
+    <Compile Include="Windows\PrintBackOrder.xaml.cs">
+      <DependentUpon>PrintBackOrder.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\BatchLabelDialog.xaml.cs">
       <DependentUpon>BatchLabelDialog.xaml</DependentUpon>
     </Compile>
@@ -213,6 +218,11 @@
       <DependentUpon>WinUserInfo.xaml</DependentUpon>
     </Compile>
     <Compile Include="ZHWindow.cs" />
+    <None Include="BackOrderTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Page Include="Pages\TestLabel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -230,6 +240,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\MachineSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\PrintBackOrder.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
