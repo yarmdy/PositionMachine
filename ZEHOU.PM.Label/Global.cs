@@ -149,19 +149,19 @@ namespace ZEHOU.PM.Label
                 return Config.Configs.Settings["PortName"] == Config.Configs.Settings["NonStandard"];
             }
         }
-        public static bool IsMachineBackOrder
-        {
-            get
-            {
-                return Config.Configs.Settings["PortName"] == Config.Configs.Settings["BackOrder"];
-            }
-        }
-        public static bool IsSamePrinter {
-            get
-            {
-                return Config.Configs.Settings["NonStandard"] == Config.Configs.Settings["BackOrder"];
-            }
-        }
+        //public static bool IsMachineBackOrder
+        //{
+        //    get
+        //    {
+        //        return Config.Configs.Settings["PortName"] == Config.Configs.Settings["BackOrder"];
+        //    }
+        //}
+        //public static bool IsSamePrinter {
+        //    get
+        //    {
+        //        return Config.Configs.Settings["NonStandard"] == Config.Configs.Settings["BackOrder"];
+        //    }
+        //}
 
         public static LabelPrinter NonStandardPrinter { get; set; }
         public static LabelPrinter BackOrderPrinter { get; set; }

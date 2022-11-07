@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZEHOU.PM.Label"
+        xmlns:ui="clr-namespace:ZEHOU.PM.Label.UI"
         mc:Ignorable="d"
         Title="回执单预览" Height="600" Width="800" WindowStartupLocation="CenterScreen">
     <Grid>
@@ -14,6 +15,7 @@
                     <StackPanel Orientation="Vertical" Width="6.5cm">
                         <Label Height="0.3cm" Padding="0">回执单打印</Label>
                         <Label HorizontalAlignment="Right" Height="0.3cm" Padding="0">2022-10-10 10:00:01</Label>
+                        <ui:UIBarCode PicHeight="2cm" PicWidth="6cm" Code="202201070012"></ui:UIBarCode>
                     </StackPanel>
                 </Paragraph>
             </FlowDocument>

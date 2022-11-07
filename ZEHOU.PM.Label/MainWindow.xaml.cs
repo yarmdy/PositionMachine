@@ -318,14 +318,14 @@ namespace ZEHOU.PM.Label
                 Global.NonStandardPrinter = new Printer.LabelPrinter("非标打印机", "LPQ80", Config.Configs.Settings["NonStandard"]);
                 Global.NonStandardPrinter.OnError += NonStandardPrinter_OnError;
             }
-            if (Global.IsSamePrinter)
-            {
-                Global.BackOrderPrinter = Global.NonStandardPrinter;
-            }
-            else if (Config.Configs.Settings["BackOrder"] != "" && Global.IsMachineBackOrder) {
-                Global.BackOrderPrinter = new Printer.LabelPrinter("回执单打印机", "LPQ80", Config.Configs.Settings["BackOrder"]);
-                Global.BackOrderPrinter.OnError += BackOrderPrinter_OnError;
-            }
+            //if (Global.IsSamePrinter)
+            //{
+            //    Global.BackOrderPrinter = Global.NonStandardPrinter;
+            //}
+            //else if (Config.Configs.Settings["BackOrder"] != "" && Global.IsMachineBackOrder) {
+            //    Global.BackOrderPrinter = new Printer.LabelPrinter("回执单打印机", "LPQ80", Config.Configs.Settings["BackOrder"]);
+            //    Global.BackOrderPrinter.OnError += BackOrderPrinter_OnError;
+            //}
         }
 
         private void BackOrderPrinter_OnError(Printer.LabelPrinter arg1, Printer.PrinterEventArgs arg2)
@@ -747,7 +747,8 @@ namespace ZEHOU.PM.Label
                 lr.PrintTime=DateTime.Now;
                 lr.UserID = Global.LocalUser.ID;
                 lr.DeviceID = Config.Configs.Settings["DeviceID"];
-                if(!finishiOne.PrintBackOrder && !finishiOne.IsTest)
+                //if(!finishiOne.PrintBackOrder && !finishiOne.IsTest)
+                if(!finishiOne.IsTest)
                 {
                     var reportBll = new Bll.Report();
                     var ret = reportBll.AddOrEditLr(lr);

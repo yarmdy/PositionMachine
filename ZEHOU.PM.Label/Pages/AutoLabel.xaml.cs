@@ -93,5 +93,10 @@ namespace ZEHOU.PM.Label
             mouseEvent.Source = lvMyTubes;
             lvMyTubes.RaiseEvent(mouseEvent);
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Global.LabelController.PrintBackOrder();
+        }
     }
 }

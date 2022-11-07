@@ -337,18 +337,18 @@ namespace ZEHOU.PM.Label
             set { _OnlyPrint = value; if (PropertyChanged == null) return; PropertyChanged(this, new PropertyChangedEventArgs("OnlyPrint")); }
         }
 
-        /// <summary>
-        /// 打印回执单
-        /// </summary>
-        private bool _PrintBackOrder;
-        /// <summary>
-        /// 打印回执单
-        /// </summary>
-        public bool PrintBackOrder
-        {
-            get { return _PrintBackOrder; }
-            set { _PrintBackOrder = value; if (PropertyChanged == null) return; PropertyChanged(this, new PropertyChangedEventArgs("PrintBackOrder")); }
-        }
+        ///// <summary>
+        ///// 打印回执单
+        ///// </summary>
+        //private bool _PrintBackOrder;
+        ///// <summary>
+        ///// 打印回执单
+        ///// </summary>
+        //public bool PrintBackOrder
+        //{
+        //    get { return _PrintBackOrder; }
+        //    set { _PrintBackOrder = value; if (PropertyChanged == null) return; PropertyChanged(this, new PropertyChangedEventArgs("PrintBackOrder")); }
+        //}
     }
     /// <summary>
     /// 患者基本信息
@@ -479,7 +479,7 @@ namespace ZEHOU.PM.Label
         private DateTime _ResponseTime; 
         public DateTime ResponseTime { get { return _ResponseTime; } set { _ResponseTime = value; if (PropertyChanged == null) return; PropertyChanged(this, new PropertyChangedEventArgs("ResponseTime")); } }
 
-
+        public int Index { get; set; }
     }
     /// <summary>
     /// 系统信息

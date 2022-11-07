@@ -40,6 +40,11 @@ namespace ZEHOU.PM.Label
             InputCodeClass.Code = txtCode.Text.Trim();
             Close();
         }
+
+        private void ZHWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            txtCode.Focus();
+        }
     }
 
     public class InputCodeClass { 

@@ -128,10 +128,11 @@ namespace ZEHOU.PM.Label
         /// 添加到贴标列队
         /// </summary>
         public void AddToQueue(ObservableCollection<LabelInfoNotify> list=null,bool? onlyPrint=null) {
-            var hasBackOrder = false;
-            if (list == null) {
+            //var hasBackOrder = false;
+            if (list == null)
+            {
                 list = Global.BindingInfo.LocalLabelList;
-                hasBackOrder = Global.BindingInfo.SysInfo.AutoReadCard;
+                //hasBackOrder = Global.BindingInfo.SysInfo.AutoReadCard;
             }
             if (list.Count <= 0)
             {
@@ -184,28 +185,28 @@ namespace ZEHOU.PM.Label
                 UI.Popup.Error(Global.MainWindow, $"没有添加任何贴标记录，请勾选要贴标的项目");
                 return;
             }
-            if (!hasBackOrder)
-            {
-                goto finish;
-            }
-            var backItem = new LabelInfoNotify { OnlyPrint = true, PrintBackOrder = true, TubeInfo = new TubeInfoNotify(), Patient = new PatientInfoNotify() };
-            backItem.TubeInfo.CopyFrom(list.FirstOrDefault()?.TubeInfo);
-            backItem.Patient.CopyFrom(list.FirstOrDefault()?.Patient);
-            backItem.TubeInfo.TestOrder = "回执";
+            //if (!hasBackOrder)
+            //{
+            //    goto finish;
+            //}
+            //var backItem = new LabelInfoNotify { OnlyPrint = true, PrintBackOrder = true, TubeInfo = new TubeInfoNotify(), Patient = new PatientInfoNotify() };
+            //backItem.TubeInfo.CopyFrom(list.FirstOrDefault()?.TubeInfo);
+            //backItem.Patient.CopyFrom(list.FirstOrDefault()?.Patient);
+            //backItem.TubeInfo.TestOrder = "回执";
 
 
-            if (!Global.IsMachineBackOrder && Global.BackOrderPrinter != null)
-            {
-                PrintBackOrderOnPC(new List<LabelInfoNotify> { backItem });
-                goto finish;
-            }
-            if (Global.IsMachineBackOrder) { 
+            //if (!Global.IsMachineBackOrder && Global.BackOrderPrinter != null)
+            //{
+            //    PrintBackOrderOnPC(new List<LabelInfoNotify> { backItem });
+            //    goto finish;
+            //}
+            //if (Global.IsMachineBackOrder) { 
 
-                addCount++;
-                Global.BindingInfo.LabelQueue.Add(backItem);
-            }
+            //    addCount++;
+            //    Global.BindingInfo.LabelQueue.Add(backItem);
+            //}
 
-        finish:
+        //finish:
 
             UILog.Info($"成功添加{addCount}条贴标记录");
             //if (!newOrder)
@@ -395,13 +396,14 @@ namespace ZEHOU.PM.Label
                 .Parse).ToArray();
 
             var printData = (byte[])null;
-            if (!label.PrintBackOrder)
-            {
-                printData = GetPrintData(label.TubeInfo, label.OnlyPrint ? "1" : "0", label.TubeInfo.LableType + "");
-            }
-            else {
-                printData = GetPrintBackOrderData(label.TubeInfo);
-            }
+            printData = GetPrintData(label.TubeInfo, label.OnlyPrint ? "1" : "0", label.TubeInfo.LableType + "");
+            //if (!label.PrintBackOrder)
+            //{
+            //    printData = GetPrintData(label.TubeInfo, label.OnlyPrint ? "1" : "0", label.TubeInfo.LableType + "");
+            //}
+            //else {
+            //    printData = GetPrintBackOrderData(label.TubeInfo);
+            //}
             if (printData == null) {
                 UILog.Error($"获取打印模板失败",null);
                 label.TubeLabelStatus = -1;
@@ -409,10 +411,11 @@ namespace ZEHOU.PM.Label
                 return;
             }
             UILog.Info($"向下位机发送贴标命令");
-            if (label.PrintBackOrder) {
-                Global.LPM.StartBackOrder(label.TubeInfo.PatientID, printData);
-            }
-            else if (!label.OnlyPrint)
+            //if (label.PrintBackOrder) {
+            //    Global.LPM.StartBackOrder(label.TubeInfo.PatientID, printData);
+            //}
+            //else 
+            if (!label.OnlyPrint)
             {
                 Global.LPM.StartLabel(binIds, label.TubeInfo.BarCode, printData);
             }
@@ -501,6 +504,34 @@ namespace ZEHOU.PM.Label
                 list.ForEach(a => a.TubeLabelStatus = 100);
             });
         }
+
+        /// <summary>
+        /// 打印回执单在pc上
+        /// </summary>
+        /// <param name="list"></param>
+        public void PrintBackOrder()
+        {
+            if(Global.BindingInfo.LocalLabelList==null || Global.BindingInfo.LocalLabelList.Count <= 0)
+            {
+                UI.Popup.Error(Global.MainWindow,"当前没有可打印的回执单信息，请扫码后操作");
+                return;
+            }
+            var obj = Global.BindingInfo.LocalLabelList.Select(a => {
+                var tmp = new LabelInfoNotify { };
+                var patient = new PatientInfoNotify { };
+                var tubeinfo = new TubeInfoNotify { };
+                tmp.CopyFrom(a);
+                patient.CopyFrom(a.Patient);
+                tubeinfo.CopyFrom(a.TubeInfo);
+                tmp.Patient = patient;
+                tmp.TubeInfo = tubeinfo;
+                return tmp;
+            }).ToList();
+            var dlg = new PrintBackOrder(obj);
+            dlg.Print();
+            dlg.Close();
+        }
+
         /// <summary>
         /// 打印回执单在pc上
         /// </summary>
