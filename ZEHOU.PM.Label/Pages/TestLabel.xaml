@@ -102,6 +102,55 @@
                 </DockPanel>
                 <Button x:Name="btnContinuousPrinting" Click="btnContinuousPrinting_Click">连续打印</Button>
             </WrapPanel>
+            <Label>患者信息：</Label>
+            <WrapPanel>
+                <WrapPanel.Resources>
+                    <Style TargetType="DockPanel">
+                        <Setter Property="Width" Value="280"></Setter>
+                        <Setter Property="Margin" Value="5"></Setter>
+                    </Style>
+                </WrapPanel.Resources>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left">参数01</Label>
+                    <TextBox Text="{Binding LS01}"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left">参数02</Label>
+                    <TextBox Text="{Binding LS02}"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left">参数03</Label>
+                    <TextBox Text="{Binding LS03}"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left">参数04</Label>
+                    <TextBox Text="{Binding LS04}"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left">参数05</Label>
+                    <TextBox Text="{Binding LS05}"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left">参数06</Label>
+                    <TextBox Text="{Binding LS06}"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left">参数07</Label>
+                    <TextBox Text="{Binding LS07}"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left">参数08</Label>
+                    <TextBox Text="{Binding LS08}"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left">参数09</Label>
+                    <TextBox Text="{Binding LS09}"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left">参数10</Label>
+                    <TextBox Text="{Binding LS10}"></TextBox>
+                </DockPanel>
+            </WrapPanel>
             <WrapPanel>
                 <WrapPanel.Resources>
                     <Style TargetType="Button">
