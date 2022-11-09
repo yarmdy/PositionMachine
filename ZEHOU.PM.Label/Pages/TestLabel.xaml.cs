@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ZEHOU.PM.Command;
+using ZEHOU.PM.DB.dbLabelInfo;
 
 namespace ZEHOU.PM.Label
 {
@@ -120,9 +121,40 @@ namespace ZEHOU.PM.Label
 
         private void btnBackOrder_Click(object sender, RoutedEventArgs e)
         {
-            var dlg = new PrintBackOrder(null);
+            var obj = new List<LabelInfoNotify>();
+            var pat = new PatientInfoNotify { Name = "张三丰", Age = 18, Gender = "男", AgeUnit = "岁", CreateTime = DateTime.Now,ID="123456"
+                ,PS01=PS01.Text,
+                PS02 = PS02.Text,
+                PS03 = PS03.Text,
+                PS04 = PS04.Text,
+                PS05 = PS05.Text,
+                PS06 = PS06.Text,
+                PS07 = PS07.Text,
+                PS08 = PS08.Text,
+                PS09 = PS09.Text,
+                PS10 = PS10.Text
+            };
+            for (int i = 0; i < 5; i++) { 
+                var tubeInfo = new TubeInfoNotify { BarCode="654321",CreateTime=DateTime.Now
+                    ,LS01= _model.LS01,
+                    LS02 = _model.LS02,
+                    LS03 = _model.LS03,
+                    LS04 = _model.LS04,
+                    LS05 = _model.LS05,
+                    LS06 = _model.LS06,
+                    LS07 = _model.LS07,
+                    LS08 = _model.LS08,
+                    LS09 = _model.LS09,
+                    LS10 = _model.LS10
+                };
+                var labelinfo = new LabelInfoNotify();
+                labelinfo.Patient = new PatientInfoNotify();
+                labelinfo.Patient.CopyFrom(pat);
+                labelinfo.TubeInfo = tubeInfo;
+                obj.Add(labelinfo);
+            }
+            var dlg = new PrintBackOrder(obj);
             dlg.ShowDialog();
-            dlg.Print();
             dlg.Close();
         }
     }

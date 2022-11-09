@@ -112,43 +112,43 @@
                 </WrapPanel.Resources>
                 <DockPanel>
                     <Label DockPanel.Dock="Left">参数01</Label>
-                    <TextBox Text="{Binding LS01}"></TextBox>
+                    <TextBox Name="PS01"></TextBox>
                 </DockPanel>
                 <DockPanel>
                     <Label DockPanel.Dock="Left">参数02</Label>
-                    <TextBox Text="{Binding LS02}"></TextBox>
+                    <TextBox Name="PS02"></TextBox>
                 </DockPanel>
                 <DockPanel>
                     <Label DockPanel.Dock="Left">参数03</Label>
-                    <TextBox Text="{Binding LS03}"></TextBox>
+                    <TextBox Name="PS03"></TextBox>
                 </DockPanel>
                 <DockPanel>
                     <Label DockPanel.Dock="Left">参数04</Label>
-                    <TextBox Text="{Binding LS04}"></TextBox>
+                    <TextBox Name="PS04"></TextBox>
                 </DockPanel>
                 <DockPanel>
                     <Label DockPanel.Dock="Left">参数05</Label>
-                    <TextBox Text="{Binding LS05}"></TextBox>
+                    <TextBox Name="PS05"></TextBox>
                 </DockPanel>
                 <DockPanel>
                     <Label DockPanel.Dock="Left">参数06</Label>
-                    <TextBox Text="{Binding LS06}"></TextBox>
+                    <TextBox Name="PS06"></TextBox>
                 </DockPanel>
                 <DockPanel>
                     <Label DockPanel.Dock="Left">参数07</Label>
-                    <TextBox Text="{Binding LS07}"></TextBox>
+                    <TextBox Name="PS07"></TextBox>
                 </DockPanel>
                 <DockPanel>
                     <Label DockPanel.Dock="Left">参数08</Label>
-                    <TextBox Text="{Binding LS08}"></TextBox>
+                    <TextBox Name="PS08"></TextBox>
                 </DockPanel>
                 <DockPanel>
                     <Label DockPanel.Dock="Left">参数09</Label>
-                    <TextBox Text="{Binding LS09}"></TextBox>
+                    <TextBox Name="PS09"></TextBox>
                 </DockPanel>
                 <DockPanel>
                     <Label DockPanel.Dock="Left">参数10</Label>
-                    <TextBox Text="{Binding LS10}"></TextBox>
+                    <TextBox Name="PS10"></TextBox>
                 </DockPanel>
             </WrapPanel>
             <WrapPanel>
