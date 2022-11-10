@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Security.AccessControl;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -15,9 +17,18 @@ namespace ZEHOU.PM.Label
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            bool isNew;
+            Global.Mutex = new Mutex(true, "ZEHOU.PM.Label", out isNew);
+            if (!isNew)
+            {
+                Shutdown();
+            }
+
             Application.Current.ShutdownMode = ShutdownMode.OnLastWindowClose;
             Bll.ExceptionTrigger.OnException += ExceptionTrigger_OnException;
             base.OnStartup(e);
+
+            
         }
 
         private void ExceptionTrigger_OnException(string arg1, Exception arg2)

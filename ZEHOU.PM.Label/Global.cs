@@ -14,6 +14,7 @@ namespace ZEHOU.PM.Label
 {
     public static class Global
     {
+        public static Mutex Mutex = null;
         public static ZEHOU.PM.DB.dbLabelInfo.User LocalUser { get; set; }
         public static List<ZEHOU.PM.DB.dbLabelInfo.Role> LocalRoles { get; set; }
 

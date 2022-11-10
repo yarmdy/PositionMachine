@@ -37,8 +37,8 @@
         <Label Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="8" VerticalContentAlignment="Center">医院试管名称（多个名称之间用“,”隔开）</Label>
         
 
-        <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="5" Margin="10" Padding="5" Text="{Binding ID}" Name="txtID"></TextBox>
-        <TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="5" Margin="10" Padding="5" Text="{Binding Name}" Name="txtName"></TextBox>
+        <TextBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="5" Margin="0" Padding="5" Height="35" Text="{Binding ID}" Name="txtID"></TextBox>
+        <TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="5" Margin="0" Padding="5" Height="35" Text="{Binding Name}" Name="txtName"></TextBox>
 
         <ListView Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="6" Grid.RowSpan="2" Margin="10" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Name="lvBinID">
             <ListView.ItemsPanel>

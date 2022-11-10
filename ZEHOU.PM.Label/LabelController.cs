@@ -164,7 +164,8 @@ namespace ZEHOU.PM.Label
                     item.OnlyPrint = false;
                 }
                 item.TubeLabelStatus = 0;
-                if (!Global.IsMachineNonStandard && item.OnlyPrint) {
+                //if (!Global.IsMachineNonStandard && item.OnlyPrint) {
+                if (item.OnlyPrint) {
                     item.TubeLabelStatus = 10;
                     printPc.Add(item);
                     continue;
@@ -177,7 +178,14 @@ namespace ZEHOU.PM.Label
             }
             if (printPc.Count > 0)
             {
-                PrintNonStandardOnPC(printPc);
+                if (Global.IsMachineNonStandard)
+                {
+                    PrintNonStandardOnMachine(printPc);
+                }
+                else {
+                    PrintNonStandardOnPC(printPc);
+                }
+                
             }
             if (addCount <= 0 && printPc.Count<=0)
             {
@@ -500,6 +508,19 @@ namespace ZEHOU.PM.Label
                     var data = GetPrintData(a.TubeInfo,"1",a.TubeInfo.LableType+"");
                     var printObj = new Printer.PrinterListItem { Data=data,BackObj=a};
                     printer.Print(printObj);
+                });
+                list.ForEach(a => a.TubeLabelStatus = 100);
+            });
+        }
+        /// <summary>
+        /// 打印非标在下位机上
+        /// </summary>
+        /// <param name="list"></param>
+        public async void PrintNonStandardOnMachine(List<LabelInfoNotify> list) {
+            await Task.Run(() => {
+                list.ForEach(a => {
+                    var data = GetPrintData(a.TubeInfo,"1",a.TubeInfo.LableType+"");
+                    Global.LPM.StartSpecialLabel(a.TubeInfo.BarCode,data);
                 });
                 list.ForEach(a => a.TubeLabelStatus = 100);
             });

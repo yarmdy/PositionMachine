@@ -18,6 +18,7 @@ using ZEHOU.PM.Command;
 using System.Collections;
 using ZEHOU.PM.Config;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
+using ZEHOU.PM.DB.dbLabelInfo;
 
 namespace ZEHOU.PM.Label
 {
@@ -715,7 +716,35 @@ namespace ZEHOU.PM.Label
             var finishiOne = Global.BindingInfo.AlmostDoneLabel ?? Global.BindingInfo.LocalLabel;
 
             var converter = new TubeStatusConvert();
-            var msg = converter.Convert(obj.Data[0],null,null,null);
+            var msg = converter.Convert(-(int)obj.Data[0],null,null,null);
+
+            if (obj.Data[0] == 0xa4)
+            {
+                UILog.Info($"下位机“{msg}”，点击【确定】继续，点击【取消】停止所有贴标任务");
+                MessageBoxResult diaresault = MessageBoxResult.None;
+                Dispatcher.Invoke(() => {
+                    diaresault = UI.Popup.Confirm(Global.MainWindow, $"下位机“{msg}”，点击【确定】继续，点击【取消】停止所有贴标任务");
+                });
+                if (diaresault != MessageBoxResult.OK)
+                {
+                    UILog.Info($"下位机“{msg}”，选择【取消】");
+                    Global.LPM.FaultConfirm(2);
+
+                    foreach (var tube in Global.BindingInfo.LabelQueue)
+                    {
+                        if (tube.TubeLabelStatus < 0 || tube.TubeLabelStatus > 10)
+                        {
+                            continue;
+                        }
+                        tube.TubeLabelStatus = -obj.Data[0];
+                    }
+                    return;
+                }
+                UILog.Info($"下位机“{msg}”，选择【确定】");
+                Global.LPM.FaultConfirm(1);
+                return;
+            }
+
             //需要处理 贴标状态
             if (finishiOne == null)
             {
@@ -822,26 +851,26 @@ namespace ZEHOU.PM.Label
             }
             if (obj.Data[0] >= 0xa1 && obj.Data[0] < 0xd0)
             {
-                if (Global.BindingInfo.LocalLabel == null)
+                if (Global.BindingInfo.LocalLabel == null )
                 {
                     UILog.Info($"下位机“{msg}”，但是无法定位试管编号");
                     return;
                 }
-                UILog.Info($"【{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}】下位机“{msg}”，是否重试");
+                UILog.Info($"【{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}】下位机“{msg}”，点击【确定】重试");
                 MessageBoxResult diaresault = MessageBoxResult.None;
                 Dispatcher.Invoke(() => {
-                    diaresault = UI.Popup.Confirm(Global.MainWindow, $"{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}下位机“{msg}”，是否重试");
+                    diaresault = UI.Popup.Confirm(Global.MainWindow, $"{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}下位机“{msg}”，点击【确定】重试");
                 });
                 
                 if (diaresault != MessageBoxResult.OK)
                 {
-                    UILog.Info($"【{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}】下位机“{msg}”，选择取消");
+                    UILog.Info($"【{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}】下位机“{msg}”，选择【取消】");
                     Global.BindingInfo.LocalLabel.TubeLabelStatus = -obj.Data[0];
                     Global.BindingInfo.LocalLabel = null;
                     Global.LPM.FaultConfirm(2);
                     goto dropGuanResualt;
                 }
-                UILog.Info($"【{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}】下位机“{msg}”，选择确定");
+                UILog.Info($"【{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}】下位机“{msg}”，选择【确定】");
                 Global.BindingInfo.LocalLabel.SendTime = DateTime.Now;
                 Global.LPM.FaultConfirm(1);
 
