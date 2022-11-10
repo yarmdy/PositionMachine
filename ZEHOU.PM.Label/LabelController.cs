@@ -216,7 +216,10 @@ namespace ZEHOU.PM.Label
 
         //finish:
 
-            UILog.Info($"成功添加{addCount}条贴标记录");
+            if(addCount > 0)
+            {
+                UILog.Info($"成功添加{addCount}条贴标记录");
+            }
             //if (!newOrder)
             //{
             //    return;
