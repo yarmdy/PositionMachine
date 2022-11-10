@@ -599,7 +599,7 @@ namespace ZEHOU.PM.Label
                 //end:
                 //UILog.Info(String.Join(",",Global.BindingInfo.Queues.Select(a=>$"{a.Id}({a.Status}):{a.Nums}")));
 
-                Global.BindingInfo.LabelQueue.Where(a => a.TubeLabelStatus >= 1 && a.TubeLabelStatus < 100 && a.SendTime.AddSeconds(int.Parse(Configs.Settings["LabelingTimeout"])) < DateTime.Now).ToList().ForEach(a=>a.TubeLabelStatus=-3);
+                Global.BindingInfo.LabelQueue.Where(a => a.TubeLabelStatus >= 1 && a.TubeLabelStatus < 100 && a.SendTime.AddSeconds(int.Parse(Configs.Settings["LabelingTimeout"])) < DateTime.Now).ToList().ForEach(a=>a.TubeLabelStatus=-0xff);
                 if (Global.BindingInfo.SysInfo.SysStatus >= 0)
                 {
                     Global.BindingInfo.Queues.Where(a => (a.Status == 0 || a.Status == 254)&& a.CreateTime.AddSeconds(3)<DateTime.Now).OrderBy(a => a.CreateTime).ToList().ForEach(a => {

@@ -49,7 +49,7 @@ namespace ZEHOU.PM.Label.UI
             bw.Format = ZXing.BarcodeFormat.CODE_128;
             var img = bw.Write(Code+"");
             var ms = new MemoryStream();
-            img.Save(ms,System.Drawing.Imaging.ImageFormat.Png);
+            img.Save(ms,System.Drawing.Imaging.ImageFormat.Bmp);
             ms.Position = 0;
             ImageSourceConverter imgcvtr = new ImageSourceConverter();
             imgBarCode.Source = (ImageSource)imgcvtr.ConvertFrom(ms);
