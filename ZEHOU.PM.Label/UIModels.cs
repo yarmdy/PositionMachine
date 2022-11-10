@@ -279,7 +279,7 @@ namespace ZEHOU.PM.Label
         /// </summary>
         private int _TubeLabelStatus;
         /// <summary>
-        /// 贴标状态 0等待贴标 1已发送 10已接受 100已完成 -1错误 -2缺管 -3超时 -4掉管
+        /// 贴标状态 0等待贴标 1已发送 10已接受 100已完成 -0xa1到-0xa4（掉管 主辊压空 压辊不到位 压辊不归位） -0xd1到-0xd4（缺管 复核不匹配 无条码 巡边故障）
         /// </summary>
         public int TubeLabelStatus
         {
@@ -820,21 +820,37 @@ namespace ZEHOU.PM.Label
             {
                 return "等待贴标";
             }
-            if ((int)value == -1)
-            {
-                return "发生错误";
-            }
-            if ((int)value == -2)
+            if ((int)value == -0xd1)
             {
                 return "缺管";
             }
-            if ((int)value == -3)
+            if ((int)value == -0xd2)
             {
-                return "超时";
+                return "复核不匹配";
             }
-            if ((int)value == -4)
+            if ((int)value == -0xd3)
+            {
+                return "无条码";
+            }
+            if ((int)value == -0xd4)
+            {
+                return "巡边故障";
+            }
+            if ((int)value == -0xa1)
             {
                 return "掉管";
+            }
+            if ((int)value == -0xa2)
+            {
+                return "主辊压空";
+            }
+            if ((int)value == -0xa3)
+            {
+                return "压辊不到位";
+            }
+            if ((int)value == -0xa4)
+            {
+                return "压辊不归位";
             }
             if ((int)value == 1)
             {

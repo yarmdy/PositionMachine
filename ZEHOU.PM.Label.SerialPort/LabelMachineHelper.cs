@@ -1012,10 +1012,10 @@ namespace ZEHOU.PM.Label.SerialPort
             return commId;
         }
         /// <summary>
-        /// 掉管确认
+        /// 故障确认
         /// </summary>
         /// <param name="act"></param>
-        public override byte DropTubeConfirm(byte act)
+        public override byte FaultConfirm(byte act)
         {
             var data = new List<byte>();
             data.Add(act);

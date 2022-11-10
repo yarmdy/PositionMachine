@@ -55,7 +55,7 @@ namespace ZEHOU.PM.Label.SerialPort
             throw new NotImplementedException();
         }
 
-        public override byte DropTubeConfirm(byte act)
+        public override byte FaultConfirm(byte act)
         {
             throw new NotImplementedException();
         }

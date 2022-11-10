@@ -243,10 +243,10 @@ namespace ZEHOU.PM.Label.SerialPort
         public abstract byte TestMotor(byte act, short val);
 
         /// <summary>
-        /// 掉管确认
+        /// 故障确认
         /// </summary>
         /// <param name="act"></param>
-        public abstract byte DropTubeConfirm(byte act);
+        public abstract byte FaultConfirm(byte act);
 
         /// <summary>
         /// 补仓

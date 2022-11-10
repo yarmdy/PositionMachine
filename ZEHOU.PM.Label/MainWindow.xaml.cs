@@ -713,6 +713,9 @@ namespace ZEHOU.PM.Label
         private void LPM_OnLabelStatus(SerialPort.DataPackage obj)
         {
             var finishiOne = Global.BindingInfo.AlmostDoneLabel ?? Global.BindingInfo.LocalLabel;
+
+            var converter = new TubeStatusConvert();
+            var msg = converter.Convert(obj.Data[0],null,null,null);
             //需要处理 贴标状态
             if (finishiOne == null)
             {
@@ -762,10 +765,10 @@ namespace ZEHOU.PM.Label
                     }
                 }
             }
-            if (obj.Data[0] == 255)
+            if (obj.Data[0] >= 0xd2)
             {
-                UILog.Info($"【{finishiOne.TubeInfo.BarCode}】下位机贴标错误");
-                finishiOne.TubeLabelStatus = -1;
+                UILog.Info($"【{finishiOne.TubeInfo.BarCode}】下位机“{msg}”");
+                finishiOne.TubeLabelStatus = -obj.Data[0];
                 if (Global.BindingInfo.AlmostDoneLabel != null)
                 {
                     Global.BindingInfo.AlmostDoneLabel = null;
@@ -776,7 +779,7 @@ namespace ZEHOU.PM.Label
                 //Global.LabelController.removeAPos();
                 
             }
-            if (obj.Data[0] == 254)
+            if (obj.Data[0] == 0xd1)
             {
                 if (Global.BindingInfo.LocalLabel == null)
                 {
@@ -791,7 +794,7 @@ namespace ZEHOU.PM.Label
                     if (tmpbin == null) return;
                     tmpbin.Nums = 0;
                 });
-                Global.BindingInfo.LocalLabel.TubeLabelStatus = -2;
+                Global.BindingInfo.LocalLabel.TubeLabelStatus = -obj.Data[0];
                 Global.BindingInfo.LocalLabel = null;
                 //Global.LabelController.removeAPos();
 
@@ -817,30 +820,30 @@ namespace ZEHOU.PM.Label
 
                 
             }
-            if (obj.Data[0] == 253)
+            if (obj.Data[0] >= 0xa1 && obj.Data[0] < 0xd0)
             {
                 if (Global.BindingInfo.LocalLabel == null)
                 {
-                    UILog.Info($"下位机掉管，但是无法定位掉管的试管编号");
+                    UILog.Info($"下位机“{msg}”，但是无法定位试管编号");
                     return;
                 }
-                UILog.Info($"【{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}】下位机掉管，是否重试");
+                UILog.Info($"【{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}】下位机“{msg}”，是否重试");
                 MessageBoxResult diaresault = MessageBoxResult.None;
                 Dispatcher.Invoke(() => {
-                    diaresault = UI.Popup.Confirm(Global.MainWindow, $"{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}下位机掉管，是否重试");
+                    diaresault = UI.Popup.Confirm(Global.MainWindow, $"{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}下位机“{msg}”，是否重试");
                 });
                 
                 if (diaresault != MessageBoxResult.OK)
                 {
-                    UILog.Info($"【{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}】下位机掉管，选择取消");
-                    Global.BindingInfo.LocalLabel.TubeLabelStatus = -4;
+                    UILog.Info($"【{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}】下位机“{msg}”，选择取消");
+                    Global.BindingInfo.LocalLabel.TubeLabelStatus = -obj.Data[0];
                     Global.BindingInfo.LocalLabel = null;
-                    Global.LPM.DropTubeConfirm(2);
+                    Global.LPM.FaultConfirm(2);
                     goto dropGuanResualt;
                 }
-                UILog.Info($"【{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}】下位机掉管，选择确定");
+                UILog.Info($"【{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}】下位机“{msg}”，选择确定");
                 Global.BindingInfo.LocalLabel.SendTime = DateTime.Now;
-                Global.LPM.DropTubeConfirm(1);
+                Global.LPM.FaultConfirm(1);
 
             dropGuanResualt:
                 Global.BindingInfo.LocalLabel = null;
