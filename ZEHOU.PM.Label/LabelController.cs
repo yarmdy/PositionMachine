@@ -303,10 +303,10 @@ namespace ZEHOU.PM.Label
             }
             var qid = Global.BindingInfo.QueueId;
             var qinfo = new QueueInfo { CreateTime=DateTime.Now,AskTime = DateTime.Now, Nums = remainCount, Id = qid, Status = 0 };
-            var commId = Global.LPM.StartLabelList(qinfo.Id, qinfo.Nums, 0, null);
-            qinfo.CommId = commId;
             UILog.Info($"“加入清单列表”【{qinfo.Id}】数量：{qinfo.Nums}");
             Global.BindingInfo.Queues.Add(qinfo);
+            var commId = Global.LPM.StartLabelList(qinfo.Id, qinfo.Nums, 0, null);
+            qinfo.CommId = commId;
         }
 
 
@@ -603,22 +603,23 @@ namespace ZEHOU.PM.Label
                 if (Global.BindingInfo.SysInfo.SysStatus >= 0)
                 {
                     Global.BindingInfo.Queues.Where(a => (a.Status == 0 || a.Status == 254)&& a.CreateTime.AddSeconds(3)<DateTime.Now).OrderBy(a => a.CreateTime).ToList().ForEach(a => {
+                        a.CreateTime = DateTime.Now;
                         var commid = Global.LPM.StartLabelList(a.Id, a.Nums, 0, null);
                         a.CommId = commid;
-                        a.CreateTime = DateTime.Now;
                         UILog.Info($"未回应重新发送【{a.Id}】");
                     });
+
+                    Global.BindingInfo.Queues.Where(a => a.Status == 1).ToList().ForEach(a => {
+                        if (a.RemainingTime >= DateTime.Now)
+                        {
+                            return;
+                        }
+                        a.Status = 254;
+                        var commid = Global.LPM.StartLabelList(a.Id, a.Nums, 0, null);
+                        a.CommId = commid;
+                        UILog.Info($"超时重新发送【{a.Id}】");
+                    });
                 }
-                Global.BindingInfo.Queues.Where(a => a.Status == 1).ToList().ForEach(a => {
-                    if (a.RemainingTime>=DateTime.Now )
-                    {
-                        return;
-                    }
-                    a.Status = 254;
-                    var commid = Global.LPM.StartLabelList(a.Id,a.Nums,0,null);
-                    a.CommId = commid;
-                    UILog.Info($"超时重新发送【{a.Id}】");
-                } );
                 var working = Global.BindingInfo.Queues.FirstOrDefault(a => a.Status == 2);
                 if (working != null) {
                     Global.BindingInfo.SysInfo.MachineStatus= 1;

@@ -874,8 +874,8 @@ namespace ZEHOU.PM.Label
                 Global.BindingInfo.LocalLabel.SendTime = DateTime.Now;
                 Global.LPM.FaultConfirm(1);
 
-            dropGuanResualt:
-                Global.BindingInfo.LocalLabel = null;
+            dropGuanResualt:;
+                //Global.BindingInfo.LocalLabel = null;
                 
             }
             if (Global.BindingInfo.SysInfo.SysStatus < 0 || Global.BindingInfo.SysInfo.SysStatus == 1)
