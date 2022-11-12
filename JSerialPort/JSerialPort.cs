@@ -26,6 +26,8 @@ namespace JSerialPort {
 
         private AutoResetEvent _prossReceivedAre = new AutoResetEvent(false);
         private AutoResetEvent _prossSendAre = new AutoResetEvent(false);
+        private DateTime _lastSendTime = DateTime.MinValue;
+        private DateTime _lastReceiveTime = DateTime.MinValue;
         #endregion
         
         #region 私有方法
@@ -108,6 +110,7 @@ namespace JSerialPort {
                 }
                 try
                 {
+                    _lastReceiveTime = DateTime.Now;
                     var res = prossReceiveFunc(data);
                 }
                 catch (Exception ex)
@@ -147,6 +150,7 @@ namespace JSerialPort {
                 try
                 {
                     _serialPort.Write(data, 0, data.Length);
+                    _lastSendTime = DateTime.Now;
                     if (SentTimeSpan >0)
                     {
                         Thread.Sleep(SentTimeSpan);
@@ -350,6 +354,26 @@ namespace JSerialPort {
         public bool IsOpen {
             get {
                 return _serialPort.IsOpen;
+            }
+        }
+        /// <summary>
+        /// 最后发送时间
+        /// </summary>
+        public DateTime LastSendTime
+        {
+            get
+            {
+                return _lastSendTime;
+            }
+        }
+        /// <summary>
+        /// 最后接收时间
+        /// </summary>
+        public DateTime LastReceiveTime
+        {
+            get
+            {
+                return _lastReceiveTime;
             }
         }
 

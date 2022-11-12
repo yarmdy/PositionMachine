@@ -587,10 +587,7 @@ namespace ZEHOU.PM.Label
             timer.Elapsed += new System.Timers.ElapsedEventHandler((sender, args) => { 
                 timer.Enabled = false;
 
-                if( (DateTime.Now - Global.LPM.LastSendTime).TotalMilliseconds >= 1000)
-                {
-                    Global.LPM.ReadParam();
-                }
+                
                 var checkBreakLine = Configs.Settings["CheckBreakLine"];
                 if (checkBreakLine == "")
                 {
@@ -599,11 +596,15 @@ namespace ZEHOU.PM.Label
                 var checkBreakLineTime = int.Parse(checkBreakLine);
                 if (checkBreakLineTime > 0)
                 {
-                    if (Global.LPM.LastReceiveTime > DateTime.MinValue && (DateTime.Now - Global.LPM.LastReceiveTime).TotalMilliseconds >= checkBreakLineTime && Global.BindingInfo.SysInfo.IsOpened)
+                    if ((DateTime.Now - Global.LPM.LastSendTime).TotalMilliseconds >= checkBreakLineTime)
+                    {
+                        Global.LPM.ReadParam();
+                    }
+                    if ((DateTime.Now - Global.LPM.LastReceiveTime).TotalMilliseconds >= checkBreakLineTime+1000 && Global.BindingInfo.SysInfo.IsOpened)
                     {
                         Global.BindingInfo.SysInfo.IsOpened = false;
                     }
-                    if (Global.LPM.LastReceiveTime > DateTime.MinValue && (DateTime.Now - Global.LPM.LastReceiveTime).TotalMilliseconds < checkBreakLineTime && !Global.BindingInfo.SysInfo.IsOpened)
+                    if ((DateTime.Now - Global.LPM.LastReceiveTime).TotalMilliseconds < checkBreakLineTime+1000 && !Global.BindingInfo.SysInfo.IsOpened)
                     {
                         Global.BindingInfo.SysInfo.IsOpened = true;
                     }
