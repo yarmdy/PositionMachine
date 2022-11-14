@@ -324,9 +324,13 @@ namespace ZEHOU.PM.Label
         /// </summary>
         private void initPrinter() {
             Printer.LabelPrinterApi.InitPrinterDll();
-            if (!Global.IsMachineNonStandard) {
+            if (!Global.IsMachineNonStandard && Config.Configs.Settings["NonStandard"].ToLower().StartsWith("usb")) {
                 Global.NonStandardPrinter = new Printer.LabelPrinter("非标打印机", "LPQ80", Config.Configs.Settings["NonStandard"]);
                 Global.NonStandardPrinter.OnError += NonStandardPrinter_OnError;
+            }
+            if (!Global.IsMachineNonStandard && Config.Configs.Settings["NonStandard"].ToLower().StartsWith("com"))
+            {
+                Global.NonStandardPrinterCom = new JSerialPort.SerialPortLib(Config.Configs.Settings["NonStandard"]);
             }
             //if (Global.IsSamePrinter)
             //{
@@ -772,7 +776,7 @@ namespace ZEHOU.PM.Label
                 lr.CopyFrom(finishiOne.Patient);
                 lr.CopyFrom(finishiOne.TubeInfo);
                 lr.PatientName = finishiOne.Patient.Name;
-                Global.BindingInfo.AlmostDoneLabel.TubeLabelStatus = 100;
+                finishiOne.TubeLabelStatus = 100;
                 if (Global.BindingInfo.AlmostDoneLabel == null)
                 {
                     Global.BindingInfo.LocalLabel = null;

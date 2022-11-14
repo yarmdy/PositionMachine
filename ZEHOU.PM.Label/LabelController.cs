@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using ZEHOU.PM.Config;
 using ZEHOU.PM.Command;
 using System.Collections.ObjectModel;
+using ZEHOU.PM.DB.dbLabelInfo;
+using System.Windows.Threading;
 
 namespace ZEHOU.PM.Label
 {
@@ -499,21 +501,120 @@ namespace ZEHOU.PM.Label
         /// </summary>
         /// <param name="list"></param>
         public async void PrintNonStandardOnPC(List<LabelInfoNotify> list) {
-            await Task.Run(() => {
-                var printer = Global.NonStandardPrinter;
-                if (printer == null)
-                {
-                    list.ForEach(a => a.TubeLabelStatus = -1);
-                    return;
-                }
+            if (Config.Configs.Settings["NonStandard"].ToLower().StartsWith("usb"))
+            {
+                await Task.Run(() => {
+                    var printer = Global.NonStandardPrinter;
+                    if (printer == null)
+                    {
+                        list.ForEach(a => a.TubeLabelStatus = -1);
+                        return;
+                    }
 
-                list.ForEach(a => {
-                    var data = GetPrintData(a.TubeInfo,"1",a.TubeInfo.LableType+"");
-                    var printObj = new Printer.PrinterListItem { Data=data,BackObj=a};
-                    printer.Print(printObj);
+                    list.ForEach(a => {
+                        var data = GetPrintData(a.TubeInfo, "1", a.TubeInfo.LableType + "");
+                        var printObj = new Printer.PrinterListItem { Data = data, BackObj = a };
+                        printer.Print(printObj);
+                    });
+                    list.ForEach(a => {
+                        a.TubeLabelStatus = 100;
+                        if (Global.BindingInfo.LabelQueue.Contains(a))
+                        {
+                            Global.BindingInfo.LabelQueue.Remove(a);
+                        }
+                        if (a.IsTest)
+                        {
+                            return;
+                        }
+                        var lr = new DB.dbLabelInfo.LR { };
+                        lr.CopyFrom(a.Patient);
+                        lr.CopyFrom(a.TubeInfo);
+                        lr.PatientName = a.Patient.Name;
+                        lr.PrintTime = DateTime.Now;
+                        lr.UserID = Global.LocalUser.ID;
+                        lr.DeviceID = Config.Configs.Settings["DeviceID"];
+                        lr.PickStatus = 1;
+                        var reportBll = new Bll.Report();
+                        var ret = reportBll.AddOrEditLr(lr);
+                        if (ret > 0)
+                        {
+                            UILog.Info($"【{a.TubeInfo.BarCode}】添加贴标记录成功");
+                        }
+                        else
+                        {
+                            UILog.Error($"【{a.TubeInfo.BarCode}】添加贴标记录失败", null);
+                        }
+                        var labelBll = new Bll.Label();
+                        ret = labelBll.EditLabelStatus(a.TubeInfo.BarCode, 1);
+                        if (ret > 0)
+                        {
+                            UILog.Info($"【{a.TubeInfo.BarCode}】贴标状态修改成功");
+                        }
+                        else
+                        {
+                            UILog.Error($"【{a.TubeInfo.BarCode}】贴标状态修改失败", null);
+                        }
+                    }) ;
                 });
-                list.ForEach(a => a.TubeLabelStatus = 100);
-            });
+                return;
+            }
+
+            if (Config.Configs.Settings["NonStandard"].ToLower().StartsWith("com"))
+            {
+                await Task.Run(() => {
+                    var printer = Global.NonStandardPrinterCom;
+                    if (printer == null)
+                    {
+                        list.ForEach(a => a.TubeLabelStatus = -1);
+                        return;
+                    }
+                    list.ForEach(a => {
+                        var data = GetPrintData(a.TubeInfo, "1", a.TubeInfo.LableType + "");
+                        //var printObj = new Printer.PrinterListItem { Data = data, BackObj = a };
+                        printer.Send(data);
+                    });
+                    list.ForEach(a => {
+                        a.TubeLabelStatus = 100;
+                        if (Global.BindingInfo.LabelQueue.Contains(a))
+                        {
+                            Global.BindingInfo.LabelQueue.Remove(a);
+                        }
+                        if (a.IsTest)
+                        {
+                            return;
+                        }
+                        var lr = new DB.dbLabelInfo.LR { };
+                        lr.CopyFrom(a.Patient);
+                        lr.CopyFrom(a.TubeInfo);
+                        lr.PatientName = a.Patient.Name;
+                        lr.PrintTime = DateTime.Now;
+                        lr.UserID = Global.LocalUser.ID;
+                        lr.DeviceID = Config.Configs.Settings["DeviceID"];
+                        lr.PickStatus = 1;
+                        var reportBll = new Bll.Report();
+                        var ret = reportBll.AddOrEditLr(lr);
+                        if (ret > 0)
+                        {
+                            UILog.Info($"【{a.TubeInfo.BarCode}】添加贴标记录成功");
+                        }
+                        else
+                        {
+                            UILog.Error($"【{a.TubeInfo.BarCode}】添加贴标记录失败", null);
+                        }
+                        var labelBll = new Bll.Label();
+                        ret = labelBll.EditLabelStatus(a.TubeInfo.BarCode, 1);
+                        if (ret > 0)
+                        {
+                            UILog.Info($"【{a.TubeInfo.BarCode}】贴标状态修改成功");
+                        }
+                        else
+                        {
+                            UILog.Error($"【{a.TubeInfo.BarCode}】贴标状态修改失败", null);
+                        }
+                    });
+                });
+                return;
+            }
         }
         /// <summary>
         /// 打印非标在下位机上
@@ -525,7 +626,45 @@ namespace ZEHOU.PM.Label
                     var data = GetPrintData(a.TubeInfo,"1",a.TubeInfo.LableType+"");
                     Global.LPM.StartSpecialLabel(a.TubeInfo.BarCode,data);
                 });
-                list.ForEach(a => a.TubeLabelStatus = 100);
+                list.ForEach(a => {
+                    a.TubeLabelStatus = 100;
+                    if (Global.BindingInfo.LabelQueue.Contains(a))
+                    {
+                        Global.BindingInfo.LabelQueue.Remove(a);
+                    }
+                    if (a.IsTest)
+                    {
+                        return;
+                    }
+                    var lr = new DB.dbLabelInfo.LR { };
+                    lr.CopyFrom(a.Patient);
+                    lr.CopyFrom(a.TubeInfo);
+                    lr.PatientName = a.Patient.Name;
+                    lr.PrintTime = DateTime.Now;
+                    lr.UserID = Global.LocalUser.ID;
+                    lr.DeviceID = Config.Configs.Settings["DeviceID"];
+                    lr.PickStatus = 1;
+                    var reportBll = new Bll.Report();
+                    var ret = reportBll.AddOrEditLr(lr);
+                    if (ret > 0)
+                    {
+                        UILog.Info($"【{a.TubeInfo.BarCode}】添加贴标记录成功");
+                    }
+                    else
+                    {
+                        UILog.Error($"【{a.TubeInfo.BarCode}】添加贴标记录失败", null);
+                    }
+                    var labelBll = new Bll.Label();
+                    ret = labelBll.EditLabelStatus(a.TubeInfo.BarCode, 1);
+                    if (ret > 0)
+                    {
+                        UILog.Info($"【{a.TubeInfo.BarCode}】贴标状态修改成功");
+                    }
+                    else
+                    {
+                        UILog.Error($"【{a.TubeInfo.BarCode}】贴标状态修改失败", null);
+                    }
+                });
             });
         }
 

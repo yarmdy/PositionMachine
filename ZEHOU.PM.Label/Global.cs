@@ -165,6 +165,7 @@ namespace ZEHOU.PM.Label
         //}
 
         public static LabelPrinter NonStandardPrinter { get; set; }
+        public static JSerialPort.SerialPortLib NonStandardPrinterCom { get; set; }
         public static LabelPrinter BackOrderPrinter { get; set; }
 
         public static PassiveClass PassiveClass { get; set; }
