@@ -772,10 +772,7 @@ namespace ZEHOU.PM.Label
             if (obj.Data[0] == 1)
             {
                 UILog.Info($"【{finishiOne.TubeInfo.BarCode}】贴标完成，添加贴标记录");
-                var lr = new DB.dbLabelInfo.LR { };
-                lr.CopyFrom(finishiOne.Patient);
-                lr.CopyFrom(finishiOne.TubeInfo);
-                lr.PatientName = finishiOne.Patient.Name;
+                
                 finishiOne.TubeLabelStatus = 100;
                 if (Global.BindingInfo.AlmostDoneLabel == null)
                 {
@@ -789,33 +786,9 @@ namespace ZEHOU.PM.Label
                 });
                 //Global.BindingInfo.LabelQueue.Remove(finishiOne);
                 //Global.LabelController.removeAPos();
-                lr.PrintTime=DateTime.Now;
-                lr.UserID = Global.LocalUser.ID;
-                lr.DeviceID = Config.Configs.Settings["DeviceID"];
-                lr.PickStatus = 1;
-                //if(!finishiOne.PrintBackOrder && !finishiOne.IsTest)
                 if (!finishiOne.IsTest)
                 {
-                    var reportBll = new Bll.Report();
-                    var ret = reportBll.AddOrEditLr(lr);
-                    if (ret > 0)
-                    {
-                        UILog.Info($"【{finishiOne.TubeInfo.BarCode}】添加贴标记录成功");
-                    }
-                    else
-                    {
-                        UILog.Error($"【{finishiOne.TubeInfo.BarCode}】添加贴标记录失败", null);
-                    }
-                    var labelBll = new Bll.Label();
-                    ret = labelBll.EditLabelStatus(finishiOne.TubeInfo.BarCode,1);
-                    if (ret > 0)
-                    {
-                        UILog.Info($"【{finishiOne.TubeInfo.BarCode}】贴标状态修改成功");
-                    }
-                    else
-                    {
-                        UILog.Error($"【{finishiOne.TubeInfo.BarCode}】贴标状态修改失败", null);
-                    }
+                    Global.LabelController.SaveLR(finishiOne);
                 }
             }
             if (obj.Data[0] >= 0xd2)

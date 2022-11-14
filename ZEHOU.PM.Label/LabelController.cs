@@ -526,34 +526,7 @@ namespace ZEHOU.PM.Label
                         {
                             return;
                         }
-                        var lr = new DB.dbLabelInfo.LR { };
-                        lr.CopyFrom(a.Patient);
-                        lr.CopyFrom(a.TubeInfo);
-                        lr.PatientName = a.Patient.Name;
-                        lr.PrintTime = DateTime.Now;
-                        lr.UserID = Global.LocalUser.ID;
-                        lr.DeviceID = Config.Configs.Settings["DeviceID"];
-                        lr.PickStatus = 1;
-                        var reportBll = new Bll.Report();
-                        var ret = reportBll.AddOrEditLr(lr);
-                        if (ret > 0)
-                        {
-                            UILog.Info($"【{a.TubeInfo.BarCode}】添加贴标记录成功");
-                        }
-                        else
-                        {
-                            UILog.Error($"【{a.TubeInfo.BarCode}】添加贴标记录失败", null);
-                        }
-                        var labelBll = new Bll.Label();
-                        ret = labelBll.EditLabelStatus(a.TubeInfo.BarCode, 1);
-                        if (ret > 0)
-                        {
-                            UILog.Info($"【{a.TubeInfo.BarCode}】贴标状态修改成功");
-                        }
-                        else
-                        {
-                            UILog.Error($"【{a.TubeInfo.BarCode}】贴标状态修改失败", null);
-                        }
+                        SaveLR(a);
                     }) ;
                 });
                 return;
@@ -583,37 +556,41 @@ namespace ZEHOU.PM.Label
                         {
                             return;
                         }
-                        var lr = new DB.dbLabelInfo.LR { };
-                        lr.CopyFrom(a.Patient);
-                        lr.CopyFrom(a.TubeInfo);
-                        lr.PatientName = a.Patient.Name;
-                        lr.PrintTime = DateTime.Now;
-                        lr.UserID = Global.LocalUser.ID;
-                        lr.DeviceID = Config.Configs.Settings["DeviceID"];
-                        lr.PickStatus = 1;
-                        var reportBll = new Bll.Report();
-                        var ret = reportBll.AddOrEditLr(lr);
-                        if (ret > 0)
-                        {
-                            UILog.Info($"【{a.TubeInfo.BarCode}】添加贴标记录成功");
-                        }
-                        else
-                        {
-                            UILog.Error($"【{a.TubeInfo.BarCode}】添加贴标记录失败", null);
-                        }
-                        var labelBll = new Bll.Label();
-                        ret = labelBll.EditLabelStatus(a.TubeInfo.BarCode, 1);
-                        if (ret > 0)
-                        {
-                            UILog.Info($"【{a.TubeInfo.BarCode}】贴标状态修改成功");
-                        }
-                        else
-                        {
-                            UILog.Error($"【{a.TubeInfo.BarCode}】贴标状态修改失败", null);
-                        }
+                        SaveLR(a);
                     });
                 });
                 return;
+            }
+        }
+
+        public void SaveLR(LabelInfoNotify lin) {
+            var lr = new DB.dbLabelInfo.LR { };
+            lr.CopyFrom(lin.Patient);
+            lr.CopyFrom(lin.TubeInfo);
+            lr.PatientName = lin.Patient.Name;
+            lr.PrintTime = DateTime.Now;
+            lr.UserID = Global.LocalUser.ID;
+            lr.DeviceID = Config.Configs.Settings["DeviceID"];
+            lr.PickStatus = 1;
+            var reportBll = new Bll.Report();
+            var ret = reportBll.AddOrEditLr(lr);
+            if (ret > 0)
+            {
+                UILog.Info($"【{lin.TubeInfo.BarCode}】添加贴标记录成功");
+            }
+            else
+            {
+                UILog.Error($"【{lin.TubeInfo.BarCode}】添加贴标记录失败", null);
+            }
+            var labelBll = new Bll.Label();
+            ret = labelBll.EditLabelStatus(lin.TubeInfo.BarCode, 1);
+            if (ret > 0)
+            {
+                UILog.Info($"【{lin.TubeInfo.BarCode}】贴标状态修改成功");
+            }
+            else
+            {
+                UILog.Error($"【{lin.TubeInfo.BarCode}】贴标状态修改失败", null);
             }
         }
         /// <summary>
@@ -636,34 +613,7 @@ namespace ZEHOU.PM.Label
                     {
                         return;
                     }
-                    var lr = new DB.dbLabelInfo.LR { };
-                    lr.CopyFrom(a.Patient);
-                    lr.CopyFrom(a.TubeInfo);
-                    lr.PatientName = a.Patient.Name;
-                    lr.PrintTime = DateTime.Now;
-                    lr.UserID = Global.LocalUser.ID;
-                    lr.DeviceID = Config.Configs.Settings["DeviceID"];
-                    lr.PickStatus = 1;
-                    var reportBll = new Bll.Report();
-                    var ret = reportBll.AddOrEditLr(lr);
-                    if (ret > 0)
-                    {
-                        UILog.Info($"【{a.TubeInfo.BarCode}】添加贴标记录成功");
-                    }
-                    else
-                    {
-                        UILog.Error($"【{a.TubeInfo.BarCode}】添加贴标记录失败", null);
-                    }
-                    var labelBll = new Bll.Label();
-                    ret = labelBll.EditLabelStatus(a.TubeInfo.BarCode, 1);
-                    if (ret > 0)
-                    {
-                        UILog.Info($"【{a.TubeInfo.BarCode}】贴标状态修改成功");
-                    }
-                    else
-                    {
-                        UILog.Error($"【{a.TubeInfo.BarCode}】贴标状态修改失败", null);
-                    }
+                    SaveLR(a);
                 });
             });
         }
