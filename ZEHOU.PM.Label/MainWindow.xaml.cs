@@ -762,12 +762,16 @@ namespace ZEHOU.PM.Label
                 var lr = new DB.dbLabelInfo.LR { };
                 if (Global.BindingInfo.AlmostDoneLabel == null)
                 {
+                    lr.CopyFrom(Global.BindingInfo.LocalLabel.Patient);
                     lr.CopyFrom(Global.BindingInfo.LocalLabel.TubeInfo);
+                    lr.PatientName = Global.BindingInfo.LocalLabel.Patient.Name;
                     Global.BindingInfo.LocalLabel.TubeLabelStatus = 100;
                     Global.BindingInfo.LocalLabel = null;
                 }
                 else {
+                    lr.CopyFrom(Global.BindingInfo.AlmostDoneLabel.Patient);
                     lr.CopyFrom(Global.BindingInfo.AlmostDoneLabel.TubeInfo);
+                    lr.PatientName = Global.BindingInfo.AlmostDoneLabel.Patient.Name;
                     Global.BindingInfo.AlmostDoneLabel.TubeLabelStatus = 100;
                     Global.BindingInfo.AlmostDoneLabel = null;
                 }

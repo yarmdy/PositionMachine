@@ -72,16 +72,20 @@ namespace ZEHOU.PM.Printer
                     }
                     goto finish;
                 }
-                ret = LabelPrinterApi.PortOpen(printer, IoSettings);
-                if (Constants.E_SUCCESS != ret)
+                if (IoSettings.ToLower().Contains("usb"))
                 {
-                    if (OnError != null)
+                    ret = LabelPrinterApi.PortOpen(printer, IoSettings);
+                    if (Constants.E_SUCCESS != ret)
                     {
-                        OnError(this, new PrinterEventArgs { ErrorCode = ret, Message = $"【{Name}】打印机打开失败", BackObj = _printList.Where(a => a.BackObj != null).Select(a => a.BackObj).ToList() });
-                        _printList.Clear();
+                        if (OnError != null)
+                        {
+                            OnError(this, new PrinterEventArgs { ErrorCode = ret, Message = $"【{Name}】打印机打开失败", BackObj = _printList.Where(a => a.BackObj != null).Select(a => a.BackObj).ToList() });
+                            _printList.Clear();
+                        }
+                        goto finish;
                     }
-                    goto finish;
                 }
+                
 
                 while (had)
                 {

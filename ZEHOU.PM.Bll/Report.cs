@@ -165,9 +165,19 @@ namespace ZEHOU.PM.Bll
                     {
                         db.Entry(model2).State = System.Data.Entity.EntityState.Detached;
                         model.UpdateTime = DateTime.Now;
-                        model.CreateTime = model2.CreateTime;
-                        model.PickTime = model2.PickTime;
-                        model.PrintCount = model2.PrintCount + 1;
+                        if (model2.CreateTime.Date == DateTime.Now.Date)
+                        {
+                            model.CreateTime = model2.CreateTime;
+                            model.PickTime = model2.PickTime;
+                            model.PrintCount = model2.PrintCount + 1;
+                        }
+                        else
+                        {
+                            model.CreateTime = DateTime.Now;
+                            model.PickTime = DateTime.Now;
+                            model.PrintCount = 1;
+                        }
+                        
                         db.LRs.Attach(model);
                         db.Entry(model).State = System.Data.Entity.EntityState.Modified;
                     }
