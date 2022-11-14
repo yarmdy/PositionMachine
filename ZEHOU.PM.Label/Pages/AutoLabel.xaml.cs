@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ZEHOU.PM.Label.UI;
 
 namespace ZEHOU.PM.Label
 {
@@ -65,6 +66,7 @@ namespace ZEHOU.PM.Label
             var inputInfo = new InputCodeClass();
             var winInput = new InputCode() { InputCodeClass= inputInfo };
             winInput.ShowDialog();
+            txtId.Focus();
             if (string.IsNullOrEmpty(inputInfo.Code)) {
                 return;
             }

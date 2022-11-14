@@ -273,6 +273,15 @@ namespace ZEHOU.PM.Label
                         break;
                 }
             });
+            Global.BindingInfo.Queues.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler((a, b) => {
+                var queue = (ObservableCollection<QueueInfo>)a;
+                var hasItems = queue.Count > 0;
+                if (Global.BindingInfo.SysInfo.SysStatus < 0)
+                {
+                    return;
+                }
+                Global.BindingInfo.SysInfo.SysStatus = hasItems ? 1 : 0;
+            });
         }
         /// <summary>
         /// 初始化试管颜色
@@ -760,19 +769,15 @@ namespace ZEHOU.PM.Label
             {
                 UILog.Info($"【{finishiOne.TubeInfo.BarCode}】贴标完成，添加贴标记录");
                 var lr = new DB.dbLabelInfo.LR { };
+                lr.CopyFrom(finishiOne.Patient);
+                lr.CopyFrom(finishiOne.TubeInfo);
+                lr.PatientName = finishiOne.Patient.Name;
+                Global.BindingInfo.AlmostDoneLabel.TubeLabelStatus = 100;
                 if (Global.BindingInfo.AlmostDoneLabel == null)
                 {
-                    lr.CopyFrom(Global.BindingInfo.LocalLabel.Patient);
-                    lr.CopyFrom(Global.BindingInfo.LocalLabel.TubeInfo);
-                    lr.PatientName = Global.BindingInfo.LocalLabel.Patient.Name;
-                    Global.BindingInfo.LocalLabel.TubeLabelStatus = 100;
                     Global.BindingInfo.LocalLabel = null;
                 }
                 else {
-                    lr.CopyFrom(Global.BindingInfo.AlmostDoneLabel.Patient);
-                    lr.CopyFrom(Global.BindingInfo.AlmostDoneLabel.TubeInfo);
-                    lr.PatientName = Global.BindingInfo.AlmostDoneLabel.Patient.Name;
-                    Global.BindingInfo.AlmostDoneLabel.TubeLabelStatus = 100;
                     Global.BindingInfo.AlmostDoneLabel = null;
                 }
                 Dispatcher.Invoke(() => {
@@ -783,8 +788,9 @@ namespace ZEHOU.PM.Label
                 lr.PrintTime=DateTime.Now;
                 lr.UserID = Global.LocalUser.ID;
                 lr.DeviceID = Config.Configs.Settings["DeviceID"];
+                lr.PickStatus = 1;
                 //if(!finishiOne.PrintBackOrder && !finishiOne.IsTest)
-                if(!finishiOne.IsTest)
+                if (!finishiOne.IsTest)
                 {
                     var reportBll = new Bll.Report();
                     var ret = reportBll.AddOrEditLr(lr);
@@ -795,6 +801,16 @@ namespace ZEHOU.PM.Label
                     else
                     {
                         UILog.Error($"【{finishiOne.TubeInfo.BarCode}】添加贴标记录失败", null);
+                    }
+                    var labelBll = new Bll.Label();
+                    ret = labelBll.EditLabelStatus(finishiOne.TubeInfo.BarCode,1);
+                    if (ret > 0)
+                    {
+                        UILog.Info($"【{finishiOne.TubeInfo.BarCode}】贴标状态修改成功");
+                    }
+                    else
+                    {
+                        UILog.Error($"【{finishiOne.TubeInfo.BarCode}】贴标状态修改失败", null);
                     }
                 }
             }

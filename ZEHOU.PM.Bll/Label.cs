@@ -107,5 +107,25 @@ namespace ZEHOU.PM.Bll
                 return null;
             }
         }
+
+        public int EditLabelStatus(string barCode,int status)
+        {
+            try
+            {
+                using (var db = new dbLabelMidEntities())
+                {
+                    var label = new DB.dbLabelMid.Label {BarCode=barCode,LabelStatus=status };
+                    db.Labels.Attach(label);
+                    db.Entry(label).State=System.Data.Entity.EntityState.Unchanged;
+                    db.Entry(label).Property(a => a.LabelStatus).IsModified = true;
+                    return db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionTrigger.ProssException("【Label.EditLabelStatus】修改贴标状态失败", ex);
+                return -1;
+            }
+        }
     }
 }

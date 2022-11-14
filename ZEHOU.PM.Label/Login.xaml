@@ -12,8 +12,8 @@
         </Grid.Background>
         <Label Content="用户名" HorizontalAlignment="Left" Margin="160,145,0,0" VerticalAlignment="Top" FontSize="16"/>
         <Label Content="密   码" HorizontalAlignment="Left" Margin="160,194,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <TextBox HorizontalAlignment="Left" Margin="223,145,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="207" Height="30" Name="txtUserName" FontSize="16" FontWeight="Normal" TextAlignment="Left" Padding="5,5,5,5"/>
-        <PasswordBox HorizontalAlignment="Left" Margin="223,194,0,0" VerticalAlignment="Top" Width="207" Height="30" Name="pwdPassword" Padding="5,5,5,5"/>
+        <TextBox HorizontalAlignment="Left" Margin="223,145,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="207" Height="30" Name="txtUserName" FontSize="16" FontWeight="Normal" TextAlignment="Left" Padding="5,2,5,5" />
+        <PasswordBox HorizontalAlignment="Left" Margin="223,194,0,0" VerticalAlignment="Top" Width="207" Height="30" Name="pwdPassword" Padding="5,2,5,5"/>
         <Button Content="登录" HorizontalAlignment="Left" Margin="160,244,0,0" VerticalAlignment="Top" Height="31" Width="110" Name="btnLogin" FontSize="16" FontStyle="Normal" BorderBrush="{x:Null}" Foreground="White" Click="btnLogin_Click" IsDefault="True">
             <Button.Background>
                 <ImageBrush ImageSource="/Images/登录/按钮2.png"/>
