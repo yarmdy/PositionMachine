@@ -19,6 +19,7 @@ using System.Collections;
 using ZEHOU.PM.Config;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 using ZEHOU.PM.DB.dbLabelInfo;
+using ZEHOU.PM.Label.UI;
 
 namespace ZEHOU.PM.Label
 {
@@ -112,9 +113,9 @@ namespace ZEHOU.PM.Label
             if (Config.Configs.Settings["BarCodeGunTime"] != "")
             {
                 BarCodeScan.HookHelper.KeyPressTimeout = double.Parse(Config.Configs.Settings["BarCodeGunTime"]);
-                BarCodeScan.HookHelper.IsOpened = true;
             }
-            
+            BarCodeScan.HookHelper.IsOpened = true;
+
             BarCodeScan.HookHelper.OnScan = new Action<string>(a => {
                 UILog.Info("扫码：" + a);
                 Global.LabelController.GetABarCode(a);
@@ -752,6 +753,7 @@ namespace ZEHOU.PM.Label
                         }
                         tube.TubeLabelStatus = -obj.Data[0];
                     }
+                    Global.LabelController.CancelLabelList();
                     return;
                 }
                 UILog.Info($"下位机“{msg}”，选择【确定】");
@@ -796,6 +798,11 @@ namespace ZEHOU.PM.Label
             {
                 UILog.Info($"【{finishiOne.TubeInfo.BarCode}】下位机“{msg}”");
                 finishiOne.TubeLabelStatus = -obj.Data[0];
+                Dispatcher.Invoke(() => {
+                    var popmsg = new PopupMessage("操作提示", $"【{finishiOne.TubeInfo.BarCode}】下位机“{msg}”", finishiOne);
+                    popmsg.Show();
+                });
+                
                 if (Global.BindingInfo.AlmostDoneLabel != null)
                 {
                     Global.BindingInfo.AlmostDoneLabel = null;
@@ -814,6 +821,11 @@ namespace ZEHOU.PM.Label
                     return;
                 }
                 UILog.Error($"【{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}】下位机缺管", null);
+                Dispatcher.Invoke(() => {
+                    var popmsg = new PopupMessage("操作提示", $"【{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}】下位机缺管");
+                    popmsg.Show();
+                });
+                
                 var tubeTypes = Global.BindingInfo.LocalLabel.BinId.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToArray();
                 byte tmpbinid;
                 tubeTypes.Where(a=>byte.TryParse(a,out tmpbinid)).Select(byte.Parse).ToList().ForEach(a => {
@@ -866,6 +878,18 @@ namespace ZEHOU.PM.Label
                     Global.BindingInfo.LocalLabel.TubeLabelStatus = -obj.Data[0];
                     Global.BindingInfo.LocalLabel = null;
                     Global.LPM.FaultConfirm(2);
+                    if (obj.Data[0] == 0xa1 || obj.Data[0] == 0xa2 || obj.Data[0] == 0xa3 )
+                    {
+                        foreach (var tube in Global.BindingInfo.LabelQueue)
+                        {
+                            if (tube.TubeLabelStatus < 0 || tube.TubeLabelStatus > 10)
+                            {
+                                continue;
+                            }
+                            tube.TubeLabelStatus = -obj.Data[0];
+                        }
+                        Global.LabelController.CancelLabelList();
+                    }
                     goto dropGuanResualt;
                 }
                 UILog.Info($"【{Global.BindingInfo.LocalLabel.TubeInfo.BarCode}】下位机“{msg}”，选择【确定】");
@@ -978,6 +1002,18 @@ namespace ZEHOU.PM.Label
                 });
                 //Global.BindingInfo.SysInfo.MachineStatus = -1;
                 //Global.BindingInfo.SysInfo.RemainingTime = Convert.ToUInt32(obj.Data.Skip(1).Reverse().ToArray());
+                return;
+            }
+            if (obj.Data[0] == 6) {
+                UILog.Info($"下位机返回已排队");
+                return;
+            }
+            if (obj.Data[0] == 7) {
+                UILog.Info($"下位机返回取料");
+                return;
+            }
+            if (obj.Data[0] == 8) {
+                UILog.Info($"下位机返回贴标");
                 return;
             }
             

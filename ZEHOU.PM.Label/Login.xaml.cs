@@ -27,7 +27,7 @@ namespace ZEHOU.PM.Label
         public Login()
         {
             InitializeComponent();
-            
+
             //Printer.LabelPrinterApi.InitPrinterDll();
             //var printer = new Printer.LabelPrinter();
             //printer.Name = "1";

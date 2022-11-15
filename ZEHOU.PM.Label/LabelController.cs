@@ -232,6 +232,10 @@ namespace ZEHOU.PM.Label
         /// 发送贴标清单
         /// </summary>
         public void SendLabelList() {
+            if (Global.BindingInfo.SysInfo.SysStatus < 0)
+            {
+                return;
+            }
             lock (_QueuesLocker)
             {
                 Global.BindingInfo.Queues.Where(a => (a.Status == 0 || a.Status==255)&&a.CreateTime.AddSeconds(2)<DateTime.Now).ToList().ForEach(a=> Global.BindingInfo.Queues.Remove(a));
@@ -520,7 +524,10 @@ namespace ZEHOU.PM.Label
                         a.TubeLabelStatus = 100;
                         if (Global.BindingInfo.LabelQueue.Contains(a))
                         {
-                            Global.BindingInfo.LabelQueue.Remove(a);
+                            Global.MainWindow.Dispatcher.Invoke(() => {
+                                Global.BindingInfo.LabelQueue.Remove(a);
+                            });
+                            
                         }
                         if (a.IsTest)
                         {
@@ -550,7 +557,9 @@ namespace ZEHOU.PM.Label
                         a.TubeLabelStatus = 100;
                         if (Global.BindingInfo.LabelQueue.Contains(a))
                         {
-                            Global.BindingInfo.LabelQueue.Remove(a);
+                            Global.MainWindow.Dispatcher.Invoke(() => {
+                                Global.BindingInfo.LabelQueue.Remove(a);
+                            });
                         }
                         if (a.IsTest)
                         {
@@ -607,7 +616,9 @@ namespace ZEHOU.PM.Label
                     a.TubeLabelStatus = 100;
                     if (Global.BindingInfo.LabelQueue.Contains(a))
                     {
-                        Global.BindingInfo.LabelQueue.Remove(a);
+                        Global.MainWindow.Dispatcher.Invoke(() => {
+                            Global.BindingInfo.LabelQueue.Remove(a);
+                        });
                     }
                     if (a.IsTest)
                     {
