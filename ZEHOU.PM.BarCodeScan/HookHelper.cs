@@ -75,9 +75,11 @@ namespace ZEHOU.PM.BarCodeScan
         static StringBuilder _barcode = new StringBuilder();
         static DateTime lastTime = DateTime.Now;
         public static double KeyPressTimeout { get; set; } = 50;
+
+        public static bool IsOpened { get; set; }
         public static int KeyBoardHookProc(int nCode, int wParam, IntPtr lParam)
         {
-            if (nCode < 0 || wParam!=0x0100)
+            if (!IsOpened || nCode < 0 || wParam!=0x0100)
             {
                 goto result;
             }
