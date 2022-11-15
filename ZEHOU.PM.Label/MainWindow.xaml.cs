@@ -112,6 +112,7 @@ namespace ZEHOU.PM.Label
             if (Config.Configs.Settings["BarCodeGunTime"] != "")
             {
                 BarCodeScan.HookHelper.KeyPressTimeout = double.Parse(Config.Configs.Settings["BarCodeGunTime"]);
+                BarCodeScan.HookHelper.IsOpened = true;
             }
             
             BarCodeScan.HookHelper.OnScan = new Action<string>(a => {

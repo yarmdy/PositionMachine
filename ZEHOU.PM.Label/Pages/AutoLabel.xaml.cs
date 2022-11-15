@@ -65,8 +65,10 @@ namespace ZEHOU.PM.Label
         {
             var inputInfo = new InputCodeClass();
             var winInput = new InputCode() { InputCodeClass= inputInfo };
+            BarCodeScan.HookHelper.IsOpened = false;
             winInput.ShowDialog();
             txtId.Focus();
+            BarCodeScan.HookHelper.IsOpened = true;
             if (string.IsNullOrEmpty(inputInfo.Code)) {
                 return;
             }
