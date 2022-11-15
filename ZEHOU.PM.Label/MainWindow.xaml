@@ -26,7 +26,7 @@
             <Menu DockPanel.Dock="Top" FontSize="16">
                 <MenuItem Header="功能菜单" Name="menuAct">
                     <MenuItem Header="自动贴标" Click="MenuItem_Click" Tag="AutoLabel" DataContext="0101"></MenuItem>
-                    <MenuItem Header="批量打印" Click="MenuItem_Click" Tag="BatchLabel" DataContext="0101"></MenuItem>
+                    <MenuItem Header="批量打印" Click="MenuItem_Click" Tag="BatchLabel" DataContext="0108"></MenuItem>
                     <MenuItem Header="贴标记录查询" Click="MenuItem_Click" Tag="LabelRecord" DataContext="0102"></MenuItem>
                     <MenuItem Header="抽血统计" Click="MenuItem_Click" Tag="CollectbloodStatistics" DataContext="0107"></MenuItem>
                     <MenuItem Header="贴标测试" Click="MenuItem_Click" Tag="TestLabel" DataContext="0103"></MenuItem>
@@ -136,7 +136,7 @@
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Width="180" Name="svLabelManager">
                     <StackPanel Orientation="Vertical" Name="spLabelManager">
                         <ui:LeftButton Text="自动贴标" Ico="/Images/贴标管理/自动贴标.ico" Width="154" Height="80" Margin="3" Click="MenuItem_Click" Tag="AutoLabel" DataContext="0101"></ui:LeftButton>
-                        <ui:LeftButton Text="批量打印" Ico="/Images/贴标管理/一键打印.ico" Width="154" Height="80" Margin="3" Click="MenuItem_Click" Tag="BatchLabel" DataContext="0101"></ui:LeftButton>
+                        <ui:LeftButton Text="批量打印" Ico="/Images/贴标管理/一键打印.ico" Width="154" Height="80" Margin="3" Click="MenuItem_Click" Tag="BatchLabel" DataContext="0108"></ui:LeftButton>
                         <ui:LeftButton Text="贴标记录查询" Ico="/Images/贴标管理/贴标记录查询.ico" Width="154" Height="80" Margin="3" Click="MenuItem_Click" Tag="LabelRecord" DataContext="0102"></ui:LeftButton>
                         <ui:LeftButton Text="抽血统计" Ico="/Images/贴标管理/统计.ico" Width="154" Height="80" Margin="3" Click="MenuItem_Click" Tag="CollectbloodStatistics" DataContext="0107"></ui:LeftButton>
                         <ui:LeftButton Text="贴标测试" Ico="/Images/贴标管理/贴标测试.ico" Width="154" Height="80" Margin="3" Click="MenuItem_Click" Tag="TestLabel" DataContext="0103"></ui:LeftButton>

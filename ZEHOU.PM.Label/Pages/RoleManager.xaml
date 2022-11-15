@@ -47,6 +47,14 @@
                         <TreeViewItem>
                             <TreeViewItem.Header>
                                 <StackPanel Orientation="Horizontal">
+                                    <CheckBox VerticalContentAlignment="Center" Tag="0108"></CheckBox>
+                                    <Label>批量打印</Label>
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem>
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
                                     <CheckBox VerticalContentAlignment="Center" Tag="0102"></CheckBox>
                                     <Label>贴标记录查询</Label>
                                 </StackPanel>
