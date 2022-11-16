@@ -112,8 +112,8 @@ namespace ZEHOU.PM.Label
                 return;
             }
             var data =  (LabelInfoNotify)((Image)sender).DataContext;
-            data.TubeLabelStatus = -0xa1;
-            return;
+            //data.TubeLabelStatus = -0xa1;
+            //return;
             var dataList = new System.Collections.ObjectModel.ObservableCollection<LabelInfoNotify> { };
             dataList.Add(data);
             data.IsChecked = true;

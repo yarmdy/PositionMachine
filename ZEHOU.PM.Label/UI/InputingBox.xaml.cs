@@ -32,26 +32,28 @@ namespace ZEHOU.PM.Label.UI
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            timer.Enabled=false;
             timeout--;
             if (timeout < 0) { timeout = 0;}
             if(timeout <= 0) {
-                Dispatcher.Invoke(()=> Hide());
+                Dispatcher.Invoke(()=> {
+                    timer.Enabled = false;
+                    Hide();
+                });
+                return;
             }
-            timer.Enabled=true;
         }
 
         public void SetCode(string code)
         {
             inpCode.Text = code; 
             Show();
-            timeout = 2;
+            timeout = 3;
             inpCode.Focus();
+            timer.Enabled = true;
         }
         public void Complete()
         {
             inpCode.Text = "";
-            timeout = 0;
         }
     }
 }
