@@ -568,7 +568,10 @@ namespace ZEHOU.PM.Label
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
-            Global.SynchronizationContext.Post(new System.Threading.SendOrPostCallback(a => ((TextBox)sender).ScrollToEnd()), System.Threading.Thread.CurrentThread.ManagedThreadId);
+            //Global.SynchronizationContext.Post(new System.Threading.SendOrPostCallback(a => ((TextBox)sender).ScrollToEnd()), System.Threading.Thread.CurrentThread.ManagedThreadId);
+            Dispatcher.Invoke(() => {
+                ((TextBox)sender).ScrollToEnd();
+            });
         }
         /// <summary>
         /// 暂停继续

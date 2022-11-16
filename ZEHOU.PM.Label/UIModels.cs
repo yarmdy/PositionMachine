@@ -275,11 +275,11 @@ namespace ZEHOU.PM.Label
             set { _TubeColor = value; if (PropertyChanged == null) return; PropertyChanged(this, new PropertyChangedEventArgs("TubeColor")); }
         }
         /// <summary>
-        /// 贴标状态 0等待贴标 1已发送 10已接受 100已完成 -0xa1到-0xa4（掉管 主辊压空 压辊不到位 压辊不归位） -0xd1到-0xd4（缺管 复核不匹配 无条码 巡边故障） -0xff
+        /// 贴标状态 0等待贴标 1已发送 10已接受 100已完成 -0xa1到-0xa4（掉管 主辊压空 压辊不到位 压辊不归位） -0xd1到-0xd4（缺管 复核不匹配 无条码 巡边故障） -0xff超时
         /// </summary>
         private int _TubeLabelStatus;
         /// <summary>
-        /// 贴标状态 0等待贴标 1已发送 10已接受 100已完成 -0xa1到-0xa4（掉管 主辊压空 压辊不到位 压辊不归位） -0xd1到-0xd4（缺管 复核不匹配 无条码 巡边故障） -0xff
+        /// 贴标状态 0等待贴标 1已发送 10已接受 100已完成 -0xa1到-0xa4（掉管 主辊压空 压辊不到位 压辊不归位） -0xd1到-0xd4（缺管 复核不匹配 无条码 巡边故障） -0xff超时
         /// </summary>
         public int TubeLabelStatus
         {

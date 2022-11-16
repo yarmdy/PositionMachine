@@ -25,6 +25,7 @@
                 <ui:TopButton Text="{Binding SysInfo.SysStatus,Converter={StaticResource sysstatus2btntxt}}" Ico="{Binding SysInfo.SysStatus,Converter={StaticResource sysstatus2image}}" Width="85" Height="35" Margin="3" x:Name="tbPause" Click="tbPause_Click" ></ui:TopButton>
                 <ui:TopButton Text="补打回执单" Ico="/Images/工具栏/一键贴标48.ico" Width="140" Height="35" Margin="3" x:Name="tbPrintBack2" Click="tbPrintBack2_Click" ></ui:TopButton>
                 <ui:TopButton Text="关闭" Ico="/Images/工具栏/关闭.ico" Width="85" Height="35" Margin="3" x:Name="tbClose" Click="tbClose_Click" ></ui:TopButton>
+                
             </StackPanel>
             <DockPanel>
                 <Grid DockPanel.Dock="Top" Height="104" Margin="10">
@@ -39,15 +40,15 @@
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
-                        
+
                         <ColumnDefinition Width="0.5*"/>
                         <ColumnDefinition Width="0.5*"/>
-                        
+
                         <ColumnDefinition Width="1*"/>
-                        
+
                         <ColumnDefinition Width="0.5*"/>
                         <ColumnDefinition Width="0.5*"/>
-                        
+
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
@@ -66,7 +67,7 @@
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
                     <Border Grid.Column="0" Grid.ColumnSpan="8" Grid.Row="0" Grid.RowSpan="5" BorderThickness="1" BorderBrush="Black" Margin="0,0,2,0"></Border>
-                    
+
                     <Border Grid.Column="8" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="1" BorderThickness="1" BorderBrush="Black" Margin="1,0,1,0"></Border>
                     <Border Grid.Column="10" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="1" BorderThickness="1" BorderBrush="Black" Margin="1,0,1,0"></Border>
                     <Border Grid.Column="13" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="1" BorderThickness="1" BorderBrush="Black" Margin="1,0,1,0"></Border>
@@ -82,7 +83,7 @@
                     <Label VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="5" Grid.ColumnSpan="1" Grid.Row="0" Grid.RowSpan="2">年龄</Label>
                     <Label VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="2" Grid.RowSpan="3">姓名</Label>
                     <Label VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="5" Grid.ColumnSpan="1" Grid.Row="2" Grid.RowSpan="3">性别</Label>
-                    
+
 
                     <TextBox IsReadOnly="True" Margin="10" VerticalAlignment="Center"  Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="0" Grid.RowSpan="2" Height="26" Text="{Binding LocalPatient.ID}" Name="txtId"></TextBox>
                     <TextBox IsReadOnly="True" Margin="10" VerticalAlignment="Center"  Grid.Column="6" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="2" Height="26" Text="{Binding LocalPatient.Age}"></TextBox>
@@ -133,15 +134,17 @@
                             <DockPanel Margin="10">
                                 <DockPanel DockPanel.Dock="Top">
                                     <DockPanel DockPanel.Dock="Right" Margin="10">
-                                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsChecked}"></CheckBox>
-                                        <Label VerticalAlignment="Center">选取</Label>
+                                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsChecked}">
+                                            <Label VerticalAlignment="Center" Padding="0">选取</Label>
+                                        </CheckBox>
+                                        
                                     </DockPanel>
                                     <Grid>
                                         <Border  Width="128" Height="128" CornerRadius="64" BorderThickness="1" BorderBrush="#550088ff">
                                             <Border.Background>
                                                 <SolidColorBrush Color="{Binding TubeColor,Mode=OneWay,Converter={StaticResource colorint2color}}"></SolidColorBrush>
                                             </Border.Background>
-                                            <Image Source="/Images/试管/tube.png"></Image>
+                                            <Image Source="/Images/试管/tube.png" MouseLeftButtonDown="Image_MouseLeftButtonDown" ></Image>
                                         </Border>
                                     </Grid>
                                 </DockPanel>

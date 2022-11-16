@@ -102,5 +102,18 @@ namespace ZEHOU.PM.Label
         {
             Global.LabelController.PrintBackOrder();
         }
+
+        private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount != 2)
+            {
+                return;
+            }
+            var data =  (LabelInfoNotify)((Image)sender).DataContext;
+            var dataList = new System.Collections.ObjectModel.ObservableCollection<LabelInfoNotify> { };
+            dataList.Add(data);
+            data.IsChecked = true;
+            Global.LabelController.AddToQueue(dataList);
+        }
     }
 }
