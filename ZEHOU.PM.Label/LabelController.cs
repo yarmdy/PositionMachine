@@ -728,9 +728,17 @@ namespace ZEHOU.PM.Label
                 {
                     Global.BindingInfo.Queues.Where(a => (a.Status == 0 || a.Status == 254)&& a.CreateTime.AddSeconds(3)<DateTime.Now).OrderBy(a => a.CreateTime).ToList().ForEach(a => {
                         a.CreateTime = DateTime.Now;
-                        var commid = Global.LPM.StartLabelList(a.Id, a.Nums, 0, null);
-                        a.CommId = commid;
-                        UILog.Info($"未回应重新发送【{a.Id}】");
+                        if(Global.BindingInfo.LabelQueue.Count(b=> b.TubeLabelStatus >= 0 && b.TubeLabelStatus < 10) > 0)
+                        {
+                            var commid = Global.LPM.StartLabelList(a.Id, a.Nums, 0, null);
+                            a.CommId = commid;
+                            UILog.Info($"未回应重新发送【{a.Id}】");
+                        }
+                        else
+                        {
+                            CancelLabelListSingle(a.Id,false);
+                        }
+                        
                     });
 
                     Global.BindingInfo.Queues.Where(a => a.Status == 1).ToList().ForEach(a => {
@@ -738,10 +746,18 @@ namespace ZEHOU.PM.Label
                         {
                             return;
                         }
-                        a.Status = 254;
-                        var commid = Global.LPM.StartLabelList(a.Id, a.Nums, 0, null);
-                        a.CommId = commid;
-                        UILog.Info($"超时重新发送【{a.Id}】");
+                        if (Global.BindingInfo.LabelQueue.Count(b => b.TubeLabelStatus >= 0 && b.TubeLabelStatus < 10) > 0)
+                        {
+                            a.Status = 254;
+                            var commid = Global.LPM.StartLabelList(a.Id, a.Nums, 0, null);
+                            a.CommId = commid;
+                            UILog.Info($"超时重新发送【{a.Id}】");
+                        }
+                        else
+                        {
+                            CancelLabelListSingle(a.Id, false);
+                        }
+                        
                     });
                 }
                 var working = Global.BindingInfo.Queues.FirstOrDefault(a => a.Status == 2);
