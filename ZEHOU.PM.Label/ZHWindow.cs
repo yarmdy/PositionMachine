@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,12 @@ namespace ZEHOU.PM.Label
         public override void EndInit()
         {
             base.EndInit();
-            Icon= new BitmapImage(new Uri(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "favicon.ico")));
+            var fileName = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "favicon.ico");
+            if (!File.Exists(fileName))
+            {
+                return;
+            }
+            Icon = new BitmapImage(new Uri(fileName));
         }
     }
 }
