@@ -110,15 +110,20 @@ namespace ZEHOU.PM.Label
         /// </summary>
         private void intBarcodeGun()
         {
+            Global.InputingBox = new InputingBox();
             if (Config.Configs.Settings["BarCodeGunTime"] != "")
             {
                 BarCodeScan.HookHelper.KeyPressTimeout = double.Parse(Config.Configs.Settings["BarCodeGunTime"]);
             }
-            BarCodeScan.HookHelper.IsOpened = true;
+            BarCodeScan.HookHelper.IsOpened = false;
 
             BarCodeScan.HookHelper.OnScan = new Action<string>(a => {
+                Global.InputingBox.Complete();
                 UILog.Info("扫码：" + a);
                 Global.LabelController.GetABarCode(a);
+            });
+            BarCodeScan.HookHelper.OnScaning = new Action<string>(a => {
+                Global.InputingBox.SetCode(a);
             });
             BarCodeScan.HookHelper.Hook_Start();
         }

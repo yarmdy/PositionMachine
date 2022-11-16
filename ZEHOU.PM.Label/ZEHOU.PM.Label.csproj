@@ -15,6 +15,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -146,6 +147,9 @@
     <Compile Include="NewInterface.cs" />
     <Compile Include="UILog.cs" />
     <Compile Include="UIModels.cs" />
+    <Compile Include="UI\InputingBox.xaml.cs">
+      <DependentUpon>InputingBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\PopupMessage.xaml.cs">
       <DependentUpon>PopupMessage.xaml</DependentUpon>
     </Compile>
@@ -235,7 +239,6 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    
     <Page Include="Pages\TestLabel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -253,6 +256,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\MachineSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\InputingBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

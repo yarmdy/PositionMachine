@@ -1,0 +1,12 @@
+﻿<Window x:Class="ZEHOU.PM.Label.UI.InputingBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ZEHOU.PM.Label.UI"
+        mc:Ignorable="d"
+        Title="PopupMessage" Height="0" Width="0" Background="White" WindowStyle="None" WindowStartupLocation="CenterScreen" Topmost="True" ShowInTaskbar="False" ResizeMode="NoResize" FontSize="16">
+    <Grid>
+        <TextBox IsReadOnly="True" BorderThickness="0" TextAlignment="Center" FontSize="36" VerticalContentAlignment="Center" Foreground="Blue" Name="inpCode"></TextBox>
+    </Grid>
+</Window>

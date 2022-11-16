@@ -28,6 +28,7 @@ namespace ZEHOU.PM.BarCodeScan
         static HookProc KeyBoardHookProcedure;
 
         public static Action<string> OnScan;
+        public static Action<string> OnScaning;
 
         //设置钩子 
         [DllImport("user32.dll")]
@@ -90,7 +91,7 @@ namespace ZEHOU.PM.BarCodeScan
             if (!(kbh.vkCode >= 0x41 && kbh.vkCode <= 0x5A || kbh.vkCode >= 0x30 && kbh.vkCode <= 0x39 || kbh.vkCode==0x0D)) {
                 goto result;
             }
-
+            
             var now = DateTime.Now;
             
             if((now- lastTime).TotalMilliseconds > KeyPressTimeout)
@@ -103,6 +104,10 @@ namespace ZEHOU.PM.BarCodeScan
             if (kbh.vkCode != 13)
             {
                 _barcode.Append((char)((byte)kbh.vkCode));
+                if (OnScaning != null && _barcode.Length>=2)
+                {
+                    OnScaning(_barcode.ToString());
+                }
                 goto result;
             }
 

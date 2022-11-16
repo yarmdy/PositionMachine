@@ -33,6 +33,7 @@ namespace ZEHOU.PM.Label
             InitializeComponent();
             Global.AutoLabel = this;
             DataContext = Global.BindingInfo;
+            BarCodeScan.HookHelper.IsOpened = true;
         }
 
         private void tbClose_Click(object sender, RoutedEventArgs e)
@@ -85,6 +86,7 @@ namespace ZEHOU.PM.Label
         public void PageClose()
         {
             Global.AutoLabel.DataContext = null;
+            BarCodeScan.HookHelper.IsOpened = false;
         }
 
 
@@ -110,6 +112,8 @@ namespace ZEHOU.PM.Label
                 return;
             }
             var data =  (LabelInfoNotify)((Image)sender).DataContext;
+            data.TubeLabelStatus = -0xa1;
+            return;
             var dataList = new System.Collections.ObjectModel.ObservableCollection<LabelInfoNotify> { };
             dataList.Add(data);
             data.IsChecked = true;

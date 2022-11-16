@@ -169,5 +169,7 @@ namespace ZEHOU.PM.Label
         public static LabelPrinter BackOrderPrinter { get; set; }
 
         public static PassiveClass PassiveClass { get; set; }
+
+        public static UI.InputingBox InputingBox { get; set; }
     }
 }
