@@ -17,6 +17,8 @@
         <local:ColorInt2Color x:Key="colorint2color"></local:ColorInt2Color>
         <local:SysStatus2BtnTxt x:Key="sysstatus2btntxt"></local:SysStatus2BtnTxt>
         <local:SysStatus2Image x:Key="sysstatus2image"></local:SysStatus2Image>
+        <local:EmptyBoolConvert x:Key="emptyboolconvert"></local:EmptyBoolConvert>
+        <local:IsVisibleConvert x:Key="isvisibleconvert"></local:IsVisibleConvert>
     </Page.Resources>
     <Grid>
         <DockPanel LastChildFill="True">
@@ -25,7 +27,31 @@
                 <ui:TopButton Text="{Binding SysInfo.SysStatus,Converter={StaticResource sysstatus2btntxt}}" Ico="{Binding SysInfo.SysStatus,Converter={StaticResource sysstatus2image}}" Width="85" Height="35" Margin="3" x:Name="tbPause" Click="tbPause_Click" ></ui:TopButton>
                 <ui:TopButton Text="补打回执单" Ico="/Images/工具栏/一键贴标48.ico" Width="140" Height="35" Margin="3" x:Name="tbPrintBack2" Click="tbPrintBack2_Click" ></ui:TopButton>
                 <ui:TopButton Text="关闭" Ico="/Images/工具栏/关闭.ico" Width="85" Height="35" Margin="3" x:Name="tbClose" Click="tbClose_Click" ></ui:TopButton>
-                
+
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Top">
+                <ListView ItemsSource="{Binding BinsList,Mode=OneWay}" Name="lvBins" BorderThickness="0">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"></WrapPanel>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Width="50" Height="50" Visibility="{Binding IsEmpty,Converter={StaticResource isvisibleconvert}}">
+                                <Ellipse>
+                                    <Ellipse.Fill>
+                                        <SolidColorBrush Color="{Binding TubeColor,Mode=OneWay,Converter={StaticResource colorint2color}}"></SolidColorBrush>
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                                <TextBlock FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center" Background="White" Text="{Binding BinId,Mode=OneWay,StringFormat=补{0}}">
+                                </TextBlock>
+                                <Button Opacity="0" BorderThickness="0" Click="Button_Click_2">
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </StackPanel>
             <DockPanel>
                 <Grid DockPanel.Dock="Top" Height="104" Margin="10">
@@ -137,7 +163,7 @@
                                         <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsChecked}">
                                             <Label VerticalAlignment="Center" Padding="0">选取</Label>
                                         </CheckBox>
-                                        
+
                                     </DockPanel>
                                     <Grid>
                                         <Border  Width="128" Height="128" CornerRadius="64" BorderThickness="1" BorderBrush="#550088ff">

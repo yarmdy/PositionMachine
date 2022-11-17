@@ -119,5 +119,17 @@ namespace ZEHOU.PM.Label
             data.IsChecked = true;
             Global.LabelController.AddToQueue(dataList);
         }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            var btn = (Button)sender;
+
+            if (!(btn.DataContext is BinStatusInfo))
+            {
+                return;
+            }
+            var obj = (BinStatusInfo)btn.DataContext;
+            obj.CommId = Global.LPM.FillBin(obj.BinId);
+        }
     }
 }

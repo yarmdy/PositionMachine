@@ -19,17 +19,20 @@ namespace ZEHOU.PM.Label.UI
     /// </summary>
     public partial class PopupMessage : Window
     {
-        LabelInfoNotify _label = null;
-        public PopupMessage(string title,string content,LabelInfoNotify label =null)
+        Action _action = null;
+        public PopupMessage(string title,string content,string btn1Name="确定",string btn2Name=null,Action action = null)
         {
             InitializeComponent();
             Title = title;
             lbContent.Content = content;
-            _label = label;
-            if (_label != null)
-            {
-                btnRetry.Visibility = Visibility.Visible;
-            }
+
+            btnOK.Content = btn1Name;
+            btnRetry.Content = btn2Name;
+
+            btnOK.Visibility = btnOK.Content==null? Visibility.Collapsed: Visibility.Visible;
+            btnRetry.Visibility = btnRetry.Content==null? Visibility.Collapsed: Visibility.Visible;
+
+            _action = action;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -40,8 +43,12 @@ namespace ZEHOU.PM.Label.UI
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            _label.TubeLabelStatus = 0;
-            Global.LabelController.SendLabelList();
+            if (_action != null)
+            {
+                //_label.TubeLabelStatus = 0;
+                //Global.LabelController.SendLabelList();
+                _action();
+            }
             Close();
         }
     }

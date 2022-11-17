@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         Title="PopupMessage" Height="450" Width="800" Background="AliceBlue" WindowStyle="None" WindowStartupLocation="CenterScreen" Topmost="True" ShowInTaskbar="False" ResizeMode="NoResize" FontSize="16">
     <Grid>
-        <Label Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Name="lbContent">富士康的肌肤刚开始大家分工</Label>
+        <Label Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Name="lbContent"></Label>
         <Button Content="重试" HorizontalAlignment="Left" Margin="541,353,0,0" VerticalAlignment="Top" Width="96" Height="36" IsDefault="True" Click="Button_Click_1" Visibility="Collapsed" Name="btnRetry" />
-        <Button Content="确定" HorizontalAlignment="Left" Margin="667,353,0,0" VerticalAlignment="Top" Width="96" Height="36" IsDefault="True" Click="Button_Click"/>
+        <Button Content="确定" HorizontalAlignment="Left" Margin="667,353,0,0" VerticalAlignment="Top" Width="96" Height="36" IsDefault="True" Click="Button_Click" Name="btnOK"/>
     </Grid>
 </Window>
