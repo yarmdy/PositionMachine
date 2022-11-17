@@ -20,6 +20,7 @@ using ZEHOU.PM.Config;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 using ZEHOU.PM.DB.dbLabelInfo;
 using ZEHOU.PM.Label.UI;
+using System.Threading;
 
 namespace ZEHOU.PM.Label
 {
@@ -873,11 +874,16 @@ namespace ZEHOU.PM.Label
                     var popmsg = new PopupMessage("操作提示", $"【{localLabel.TubeInfo.BarCode}】下位机缺管", "忽略", "补管重试", () => {
                         var lackNoList = localLabel.BinId.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(byte.Parse).ToList();
                         lackNoList.ForEach(a => {
-                            Global.BindingInfo.BinsList.FirstOrDefault(b=>b.BinId==a).CommId = Global.LPM.FillBin(a);
+                            var binobj = Global.BindingInfo.BinsList.FirstOrDefault(b => b.BinId == a);
+                            binobj.CommId = Global.LPM.FillBin(a);
                         });
                         localLabel.TubeLabelStatus = 0;
                         lackList.ForEach(a=>a.TubeLabelStatus=0);
-                        Global.LabelController.SendLabelList();
+                        Task.Run(() => {
+                            Thread.Sleep(500);
+                            Global.LabelController.SendLabelList();
+                        });
+                        
                     });
                     popmsg.Show();
                 });
