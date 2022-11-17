@@ -871,7 +871,7 @@ namespace ZEHOU.PM.Label
                 UILog.Error($"检测到贴标列队其它缺管${lackCount}条", null);
 
                 Dispatcher.Invoke(() => {
-                    var popmsg = new PopupMessage("操作提示", $"【{localLabel.TubeInfo.BarCode}】下位机缺管", "忽略", "补管重试", () => {
+                    var popmsg = new PopupMessage("操作提示", $"【{localLabel.TubeInfo.BarCode}】{(string.Join("", lackList.Select(a => $"【{a.TubeInfo.BarCode}】")))}下位机缺管", "忽略", "补管重试", () => {
                         var lackNoList = localLabel.BinId.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(byte.Parse).ToList();
                         lackNoList.ForEach(a => {
                             var binobj = Global.BindingInfo.BinsList.FirstOrDefault(b => b.BinId == a);

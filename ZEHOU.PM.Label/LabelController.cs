@@ -20,6 +20,9 @@ namespace ZEHOU.PM.Label
         /// </summary>
         /// <param name="barCode"></param>
         public async Task GetABarCode(string barCode) {
+            //清除失败的数据
+            BarCodeScan.HookHelper.IsOpened = false;
+            Global.BindingInfo.LabelQueue.Where(a => a.TubeLabelStatus < 0 || a.TubeLabelStatus == 100).ToList().ForEach(a=> Global.BindingInfo.LabelQueue.Remove(a));
             Global.AutoLabel?.layerMsg("正在获取贴标数据");
             var labelBll = new Bll.Label();
             var backInfo = "";
@@ -119,10 +122,12 @@ namespace ZEHOU.PM.Label
 
 
         finish:
+            BarCodeScan.HookHelper.IsOpened = true;
             Global.AutoLabel?.layerClose();
             return;
         error:
             UILog.Error(backInfo, null);
+            BarCodeScan.HookHelper.IsOpened = true;
             Global.AutoLabel?.layerClose();
             UI.Popup.Error(Global.MainWindow,backInfo);
         }
