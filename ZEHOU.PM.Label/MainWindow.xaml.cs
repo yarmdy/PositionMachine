@@ -47,6 +47,7 @@ namespace ZEHOU.PM.Label
             Global.LabelController.StartRemainingTimer();
             initPrinter();
             initPassiveClass();
+
         }
 
         
@@ -784,9 +785,15 @@ namespace ZEHOU.PM.Label
                 Global.BindingInfo.SysInfo.SysStatus = 0;
                 return;
             }
-            if (obj.Data[0] == 1)
+            if (obj.Data[0] == 1 || obj.Data[0] == 2)
             {
-                UILog.Info($"【{finishiOne.TubeInfo.BarCode}】贴标完成，添加贴标记录");
+                string succMsg = null;
+                if (obj.Data[0] == 2)
+                {
+                    succMsg = "复核屏蔽";
+                }
+
+                UILog.Info($"【{finishiOne.TubeInfo.BarCode}】贴标完成{(string.IsNullOrEmpty(succMsg)?"":$"（{succMsg}）")}，添加贴标记录");
                 
                 finishiOne.TubeLabelStatus = 100;
                 if (almostDoneLabel == null)
@@ -868,7 +875,7 @@ namespace ZEHOU.PM.Label
                     //Global.LabelController.removeAPos();
                     lackCount++;
                 }
-                UILog.Error($"检测到贴标列队其它缺管${lackCount}条", null);
+                UILog.Error($"检测到贴标列队其它缺管{lackCount}条", null);
 
                 Dispatcher.Invoke(() => {
                     var popmsg = new PopupMessage("操作提示", $"【{localLabel.TubeInfo.BarCode}】{(string.Join("", lackList.Select(a => $"【{a.TubeInfo.BarCode}】")))}下位机缺管", "忽略", "补管重试", () => {

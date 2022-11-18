@@ -50,7 +50,7 @@ namespace JSerialPort {
             }
             if (OnBaseReceive != null)
             {
-                OnBaseReceive(data.ToArray());
+                Task.Run(() => OnBaseReceive(data.ToArray()));
             }
             addToBuffer(data);
         }
@@ -63,11 +63,11 @@ namespace JSerialPort {
         private void addToBuffer(byte[] data)
         {
             _bufferAre.WaitOne();
-            if(_buffer.Count>0 && (DateTime.Now- lastReceive).TotalSeconds > 0.1)
-            {
-                prossError(-10,"指令超時，移除错误命令\r\n"+string.Join(" ", _buffer.Select(a=>a.ToString("X2"))),null);
-                _buffer.Clear();
-            }
+            //if(_buffer.Count>0 && (DateTime.Now- lastReceive).TotalSeconds > 0.1)
+            //{
+            //    prossError(-10,"指令超時，移除错误命令\r\n"+string.Join(" ", _buffer.Select(a=>a.ToString("X2"))),null);
+            //    _buffer.Clear();
+            //}
             lastReceive=DateTime.Now;
             _buffer.AddRange(data);
             _bufferAre.Set();
@@ -82,16 +82,25 @@ namespace JSerialPort {
         {
             byte[] data = null;
             _bufferAre.WaitOne();
-            int index=0, count=0;
-            if (_buffer.Count <= 0) goto finish;
-            var res = getCommondPos(_buffer.ToArray(),out index, out count);
-            if (!res) goto finish;
-            data = _buffer.Skip(index).Take(count).ToArray();
-        finish:
-            if (count + index > 0)
-            {
-                _buffer.RemoveRange(0, index + count);
+            if (_buffer.Count <= 0) goto over;
+
+            int index, count;
+            while (true) {
+                var res = getCommondPos(_buffer.ToArray(), out index, out count);
+                if (res)
+                {
+                    data = _buffer.Skip(index).Take(count).ToArray();
+                }
+                if (index + count > 0)
+                {
+                    _buffer.RemoveRange(0, index + count);
+                }
+                if (res || index + count <= 0 || _buffer.Count <= 0)
+                {
+                    goto over;
+                }
             }
+        over:
             _bufferAre.Set();
             return data;
         }
@@ -111,7 +120,9 @@ namespace JSerialPort {
                 try
                 {
                     _lastReceiveTime = DateTime.Now;
-                    var res = prossReceiveFunc(data);
+                    Task.Run(() => {
+                        var res = prossReceiveFunc(data);
+                    });
                 }
                 catch (Exception ex)
                 {
@@ -233,7 +244,7 @@ namespace JSerialPort {
         protected void prossError(int code,string msg,Exception ex) {
             if (OnError == null) return;
 
-            OnError(code, msg, ex);
+            Task.Run(()=> OnError(code, msg, ex));
         }
         /// <summary>
         /// 析构
