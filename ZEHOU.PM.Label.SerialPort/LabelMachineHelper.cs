@@ -130,7 +130,7 @@ namespace ZEHOU.PM.Label.SerialPort
                 dataPackage.Func = arg[5];
                 dataPackage.Comm = arg[6];
                 dataPackage.CommId = arg[7];
-                dataPackage.Len = BitConverter.ToUInt16(arg.Skip(8).Take(2).Reverse().ToArray(), 0);
+                dataPackage.Len = BitConverter.ToUInt16(arg, 8);
                 dataPackage.Data = arg.Skip(10).Take(dataPackage.Len).ToArray();
 
                 if (dataPackage.Func == (byte)EnumFunc.GOWORK)
@@ -428,7 +428,7 @@ namespace ZEHOU.PM.Label.SerialPort
                 return false;
             }
 
-            var len = BitConverter.ToUInt16(data.Skip(headIndex+8).Take(2).Reverse().ToArray(),0);
+            var len = BitConverter.ToUInt16(data, headIndex + 8);
             if(data.Length< headIndex + 8 + 2 + len+2+2)
             {
                 //prossError(-1, "长度不对,等待\r\n" + String.Join(" ", data.Select(a => a.ToString("X2"))), null);
@@ -809,7 +809,7 @@ namespace ZEHOU.PM.Label.SerialPort
             res.Add(commId);
             var len = (ushort)data.Length;
 
-            var blen = BitConverter.GetBytes(len).Reverse().ToArray();
+            var blen = BitConverter.GetBytes(len).ToArray();
             res.AddRange(blen);
             res.AddRange(data);
             var crc = getCRC16(res.ToArray());
@@ -830,7 +830,7 @@ namespace ZEHOU.PM.Label.SerialPort
             data.AddRange(binIds.OrderBy(a=>a).ToArray());
             var codeData = gb2312Data(code);
             var codeLen = (byte)codeData.Length;
-            var printLen = BitConverter.GetBytes((ushort)printData.Length).Reverse().ToArray();
+            var printLen = BitConverter.GetBytes((ushort)printData.Length);
             data.Add(codeLen);
             data.AddRange(codeData);
             data.AddRange(printLen);
@@ -893,7 +893,7 @@ namespace ZEHOU.PM.Label.SerialPort
             data.Add(_c_SpecialBinId);
             var codeData = gb2312Data(code);
             var codeLen = (byte)codeData.Length;
-            var printLen = BitConverter.GetBytes((ushort)printData.Length).Reverse().ToArray();
+            var printLen = BitConverter.GetBytes((ushort)printData.Length);
             data.Add(codeLen);
             data.AddRange(codeData);
             data.AddRange(printLen);
@@ -915,7 +915,7 @@ namespace ZEHOU.PM.Label.SerialPort
             data.Add(_c_BackOrderBinId);
             var codeData = gb2312Data(code);
             var codeLen = (byte)codeData.Length;
-            var printLen = BitConverter.GetBytes((ushort)printData.Length).Reverse().ToArray();
+            var printLen = BitConverter.GetBytes((ushort)printData.Length);
             data.Add(codeLen);
             data.AddRange(codeData);
             data.AddRange(printLen);
@@ -961,7 +961,7 @@ namespace ZEHOU.PM.Label.SerialPort
         public override byte SaveParam(ushort[] array)
         {
             var data = new List<byte>();
-            array.ToList().ForEach(a=>data.AddRange(BitConverter.GetBytes(a).Reverse().ToArray()));
+            array.ToList().ForEach(a=>data.AddRange(BitConverter.GetBytes(a)));
             var commId = getCommId();
             var comm = CreateCommand((byte)EnumFunc.EDITPARAM, (byte)EnumEDITPARAMComm.SAVEPARAM, commId, data.ToArray());
             Send(comm);
@@ -975,7 +975,7 @@ namespace ZEHOU.PM.Label.SerialPort
         public override byte ApplyParam(ushort[] array)
         {
             var data = new List<byte>();
-            array.ToList().ForEach(a => data.AddRange(BitConverter.GetBytes(a).Reverse().ToArray()));
+            array.ToList().ForEach(a => data.AddRange(BitConverter.GetBytes(a)));
             var commId = getCommId();
             var comm = CreateCommand((byte)EnumFunc.EDITPARAM, (byte)EnumEDITPARAMComm.APPLYPARAM, commId, data.ToArray());
             Send(comm);
@@ -1055,7 +1055,7 @@ namespace ZEHOU.PM.Label.SerialPort
         {
             var data = new List<byte>();
             data.Add(act);
-            data.AddRange(BitConverter.GetBytes(val).Reverse().ToArray());
+            data.AddRange(BitConverter.GetBytes(val));
             var commId = getCommId();
             var commdata = CreateCommand((byte)EnumFunc.TEST, (byte)EnumTESTComm.MOTOR, commId, data.ToArray());
             Send(commdata);

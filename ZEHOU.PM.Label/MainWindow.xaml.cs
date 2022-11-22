@@ -996,7 +996,7 @@ namespace ZEHOU.PM.Label
             
             var queue = Global.BindingInfo.Queues.FirstOrDefault(a => a.CommId == obj.CommId);
             if (queue != null) { 
-                queue.Remaining = BitConverter.ToUInt32(obj.Data.Skip(1).Reverse().ToArray(),0);
+                queue.Remaining = BitConverter.ToUInt32(obj.Data,1);
                 queue.AskTime = DateTime.Now;
                 queue.Status = 1;
 
@@ -1017,7 +1017,7 @@ namespace ZEHOU.PM.Label
                 UILog.Info($"下位机返回忙碌");
 
                 //Global.BindingInfo.SysInfo.MachineStatus = -1;
-                //Global.BindingInfo.SysInfo.RemainingTime = Convert.ToUInt32(obj.Data.Skip(1).Reverse().ToArray());
+                //Global.BindingInfo.SysInfo.RemainingTime = Convert.ToUInt32(obj.Data.Skip(1).ToArray());
                 return;
             }
             if (obj.Data[0] == 3)
@@ -1037,7 +1037,7 @@ namespace ZEHOU.PM.Label
                     UI.Popup.Error(this, queueFullMsg);
                 });
                 //Global.BindingInfo.SysInfo.MachineStatus = -1;
-                //Global.BindingInfo.SysInfo.RemainingTime = Convert.ToUInt32(obj.Data.Skip(1).Reverse().ToArray());
+                //Global.BindingInfo.SysInfo.RemainingTime = Convert.ToUInt32(obj.Data.Skip(1).ToArray());
                 return;
             }
             if (obj.Data[0] == 6) {

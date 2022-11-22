@@ -57,7 +57,7 @@ namespace ZEHOU.PM.Label
         }
         private void LPM_OnLightStatus(SerialPort.DataPackage obj)
         {
-            var data = BitConverter.ToUInt32(obj.Data.Reverse().ToArray(), 0);
+            var data = BitConverter.ToUInt32(obj.Data, 0);
             var dic = convertInt2Light(data);
             foreach (var item in dic) {
                 var light = _binding.Lights.SelectMany(a => a.List).FirstOrDefault(a => a.Index == item.Key);
@@ -74,7 +74,7 @@ namespace ZEHOU.PM.Label
             var index = 0;
             var dic = new int[len].Select(a => {
                 var i = index++;
-                var val = BitConverter.ToUInt16(obj.Data.Skip(i * 2).Take(2).Reverse().ToArray(), 0);
+                var val = BitConverter.ToUInt16(obj.Data, i * 2);
                 return new { id = i, val = val };
             }).ToDictionary(a => a.id, b => b.val);
             foreach (var item in dic) {
@@ -101,7 +101,7 @@ namespace ZEHOU.PM.Label
 
         private void LPM_OnUpMotorSteps(SerialPort.DataPackage obj)
         {
-            _binding.MotorSteps = BitConverter.ToInt16(obj.Data.Reverse().ToArray(),0);
+            _binding.MotorSteps = BitConverter.ToInt16(obj.Data,0);
         }
 
         private void LPM_OnBackApplyParams(SerialPort.DataPackage obj)
