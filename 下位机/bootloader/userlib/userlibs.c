@@ -23,6 +23,25 @@ short IndexOfBytes(u8* source,u16 sourceLen, u8* data,u16 dataLen, u16 start){
 	return index;
 }
 
+void RemoveBytes(u8* source,u16 sourceLen,u16 index,u16 len){
+	u16 i=index;
+	while(i<sourceLen){
+		if(i<index+len){
+			source[i]=source[i+len];
+			continue;
+		}
+		source[i]=0;
+		i++;
+	}
+}
+
+void TakeBytes(u8* data,u8* source,u16 index,u16 len){
+	u16 i=0;
+	while(i<len){
+		data[i]=source[index+i];
+	}
+}
+
 void GetCRC16(u8* data,u16 dataLen,u8* res){
 	u8 CRC16Lo;
 	u8 CRC16Hi;   //CRC???           
