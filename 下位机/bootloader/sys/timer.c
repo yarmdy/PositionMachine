@@ -107,39 +107,39 @@ void TIM4_IRQHandler(void)   //TIM4   40us
 	}
 	TIM_ClearITPendingBit(TIM4, TIM_IT_Update); 
 		
-	//串口超时接收
-	if(USART1_REC_TIMEOUT)
-	{
-			USART1_REC_TIMEOUT --;
-			if(USART1_REC_TIMEOUT == 0)
-			{
-					USART1_BUF_Length = USART1_INDEX;       //串口1接收数组长度
-					//USART1_REC.Intput_INDEX = USART1_INDEX;
-					USART1_INDEX = 0;
-					USART1_REC_OK = 1;
-			}
-	}
-	if(USART2_REC_TIMEOUT)
-	{
-			USART2_REC_TIMEOUT --;
-			if(USART2_REC_TIMEOUT == 0)
-			{
-					USART2_BUF_Length = USART2_INDEX;     //串口2接收数组长度
-					USART2_INDEX = 0;
-					USART2_REC_OK = 1;
-			}
-	}
+//	//串口超时接收
+//	if(USART1_REC_TIMEOUT)
+//	{
+//			USART1_REC_TIMEOUT --;
+//			if(USART1_REC_TIMEOUT == 0)
+//			{
+//					USART1_BUF_Length = USART1_INDEX;       //串口1接收数组长度
+//					//USART1_REC.Intput_INDEX = USART1_INDEX;
+//					USART1_INDEX = 0;
+//					USART1_REC_OK = 1;
+//			}
+//	}
+//	if(USART2_REC_TIMEOUT)
+//	{
+//			USART2_REC_TIMEOUT --;
+//			if(USART2_REC_TIMEOUT == 0)
+//			{
+//					USART2_BUF_Length = USART2_INDEX;     //串口2接收数组长度
+//					USART2_INDEX = 0;
+//					USART2_REC_OK = 1;
+//			}
+//	}
 
-	if(USART5_REC_TIMEOUT)
-	{
-			USART5_REC_TIMEOUT --;
-			if(USART5_REC_TIMEOUT == 0)
-			{
-					USART5_BUF_Length = USART5_INDEX;     //串口5接收数组长度
-					USART5_INDEX = 0;
-					USART5_REC_OK = 2;
-			}
-	}		
+//	if(USART5_REC_TIMEOUT)
+//	{
+//			USART5_REC_TIMEOUT --;
+//			if(USART5_REC_TIMEOUT == 0)
+//			{
+//					USART5_BUF_Length = USART5_INDEX;     //串口5接收数组长度
+//					USART5_INDEX = 0;
+//					USART5_REC_OK = 2;
+//			}
+//	}		
 }
 
 
