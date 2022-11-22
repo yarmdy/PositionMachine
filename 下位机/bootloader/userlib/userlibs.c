@@ -28,9 +28,10 @@ void RemoveBytes(u8* source,u16 sourceLen,u16 index,u16 len){
 	while(i<sourceLen){
 		if(i<index+len){
 			source[i]=source[i+len];
-			continue;
+			goto continueLine;
 		}
 		source[i]=0;
+		continueLine:
 		i++;
 	}
 }
@@ -39,6 +40,7 @@ void TakeBytes(u8* data,u8* source,u16 index,u16 len){
 	u16 i=0;
 	while(i<len){
 		data[i]=source[index+i];
+		i++;
 	}
 }
 
@@ -83,6 +85,9 @@ void GetCRC16(u8* data,u16 dataLen,u8* res){
 u8 AnalysisAZHFrame(u8*data,u16 dataLen,u16* index,u16* length){
 	index[0] = 0;
 	length[0] = 0;
+	if(dataLen<15){
+		return 0;
+	}
 	u8 phead[3]="@ZH";
 	u8 ptail[2]="\r\n";
 	short headIndex = IndexOfBytes(data,dataLen, phead,3, 0);

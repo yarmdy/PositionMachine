@@ -408,10 +408,15 @@ namespace ZEHOU.PM.Label.SerialPort
         {
             index = 0;
             length = 0;
+            if (data.Length < 15) {
+                return false;
+            }
             var headIndex = IndexOfBytes(data, phead, 0);
             if (headIndex < 0)
             {
-                //prossError(-1,"找不到头,等待\r\n"+String.Join(" ",data.Select(a=>a.ToString("X2"))),null);
+                prossError(-1,"找不到头,忽略\r\n"+String.Join(" ",data.Select(a=>a.ToString("X2"))),null);
+                index = 0;
+                length = data.Length;
                 return false;
             }
             if (data.Length < headIndex + 15)

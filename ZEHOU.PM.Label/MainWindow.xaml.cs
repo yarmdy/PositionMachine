@@ -47,7 +47,6 @@ namespace ZEHOU.PM.Label
             Global.LabelController.StartRemainingTimer();
             initPrinter();
             initPassiveClass();
-
         }
 
         

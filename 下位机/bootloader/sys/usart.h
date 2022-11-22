@@ -28,6 +28,7 @@ extern USART USART1_REC;
 extern u16 USART1_BUF_Length;     //串口1接收数组长度
 extern u16 USART1_INDEX;
 extern u8 USART1_RX_BUF[USART_BUF_Total];
+extern u8 USART1_RX_BUF2[USART_BUF_Total];
 extern u8 USART1_TX_BUF[40];
 extern u8 USART1_REC_TIMEOUT;
 extern u8 USART1_REC_OK;
