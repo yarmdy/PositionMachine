@@ -63,12 +63,12 @@ namespace JSerialPort {
         private void addToBuffer(byte[] data)
         {
             _bufferAre.WaitOne();
-            //if(_buffer.Count>0 && (DateTime.Now- lastReceive).TotalSeconds > 0.1)
-            //{
-            //    prossError(-10,"指令超時，移除错误命令\r\n"+string.Join(" ", _buffer.Select(a=>a.ToString("X2"))),null);
-            //    _buffer.Clear();
-            //}
-            lastReceive=DateTime.Now;
+            if (_buffer.Count > 0 && (DateTime.Now - lastReceive).TotalSeconds > 0.1)
+            {
+                prossError(-10, "指令超時，移除错误命令\r\n" + string.Join(" ", _buffer.Select(a => a.ToString("X2"))), null);
+                _buffer.Clear();
+            }
+            lastReceive =DateTime.Now;
             _buffer.AddRange(data);
             _bufferAre.Set();
             _prossReceivedAre.Set();
