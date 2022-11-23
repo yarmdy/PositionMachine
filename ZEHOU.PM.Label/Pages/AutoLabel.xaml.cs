@@ -131,5 +131,10 @@ namespace ZEHOU.PM.Label
             var obj = (BinStatusInfo)btn.DataContext;
             obj.CommId = Global.LPM.FillBin(obj.BinId);
         }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            ElementHelper.GetChildren<ScrollViewer>(lvMyTubes).ForEach(a => ElementHelper.UseTheScrollViewerScrolling(a));
+        }
     }
 }

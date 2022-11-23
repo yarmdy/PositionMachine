@@ -14,7 +14,9 @@
 #define CH444G_Printer1  0x00
 #define CH444G_Printer2  0x01
 #define CH444G_Printer   0x02
-#define USART_BUF_Total  1024*2   //接收数组大小
+#define USART_BUF_Total  100   //接收数组大小
+#define USART_BUF_Total1  1024*2   //接收数组大小
+#define USART_BUF_Total2  1024*4   //接收数组大小
 typedef struct 
 {
 	 u16 Intput_INDEX;   //输入指针
@@ -27,8 +29,10 @@ extern USART USART1_REC;
 
 extern u16 USART1_BUF_Length;     //串口1接收数组长度
 extern u16 USART1_INDEX;
-extern u8 USART1_RX_BUF[USART_BUF_Total];
-extern u8 USART1_RX_BUF2[USART_BUF_Total];
+extern u16 USART1_INDEX2;
+extern u16 USART1_R_INDEX;
+extern u8 USART1_RX_BUF[USART_BUF_Total1];
+extern u8 USART1_RX_BUF2[USART_BUF_Total2];
 extern u8 USART1_TX_BUF[40];
 extern u8 USART1_REC_TIMEOUT;
 extern u8 USART1_REC_OK;
@@ -78,6 +82,7 @@ extern void UART3_Send(u8 *Buffer, u32 Length);
 extern void UART4_Send(u8 *Buffer, u32 Length);
 extern void UART5_Send(u8 adder,u8 *Buffer, u32 Length);
 
+extern void GetUSART1AllBuff(void);
 #endif
 
 

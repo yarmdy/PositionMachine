@@ -43,9 +43,11 @@ namespace ZEHOU.PM.Label
 
             Global.LPM.StartLightTest(SerialPort.LabelMachineHelper.EnumOpenClose.OPEN);
 
+            
             //Global.LPM.
         }
 
+        
         private Dictionary<int, bool> convertInt2Light(uint val) {
             var index = 0;
             return new int[32].Select(a => {
@@ -315,12 +317,12 @@ namespace ZEHOU.PM.Label
         private void ParamTestButton_Click(object sender, RoutedEventArgs e)
         {
             var btn = (Button)sender;
-            var sp = getParent<StackPanel>(btn);
+            var sp = ElementHelper.GetParent<StackPanel>(btn);
             if (sp == null)
             {
                 return;
             }
-            var txts = getChildren<TextBox>(sp);
+            var txts = ElementHelper.GetChildren<TextBox>(sp);
             if (txts.Count <= 0)
             {
                 return;
@@ -362,7 +364,7 @@ namespace ZEHOU.PM.Label
 
         private void binReset(MachineAction act) 
         {
-            var btns = getChildren<Button>(lvBins);
+            var btns = ElementHelper.GetChildren<Button>(lvBins);
             btns.ForEach(a => {
                 if (!(a.DataContext is MachineAction)) return;
                 var act2 = a.DataContext as MachineAction;
@@ -371,30 +373,15 @@ namespace ZEHOU.PM.Label
             });
         }
 
-        private List<T> getChildren<T>(DependencyObject obj) where T:class {
-            var res=new List<T>();
-            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++) {
-                var local = VisualTreeHelper.GetChild(obj,i);
-                if (local is T) {
-                    res.Add(local as T);
-                    continue;
-                }
-                res.AddRange(getChildren<T>(local));
-            }
-            return res;
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            ElementHelper.GetChildren<ListView>(sc_sc).ForEach(a => ElementHelper.UseTheScrollViewerScrolling(a));
         }
 
-        private T getParent<T>(DependencyObject obj) where T : class {
-            var parent = VisualTreeHelper.GetParent(obj);
-            if (parent == null)
-            {
-                return null;
-            }
-            if(parent.GetType() == typeof(T))
-            {
-                return parent as T;
-            }
-            return getParent<T>(parent);
+        private void ListView_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 
@@ -454,5 +441,47 @@ namespace ZEHOU.PM.Label
         public byte Action2 { get; set; }
 
         public string After { get; set; }
+    }
+
+    public class ElementHelper {
+        public static List<T> GetChildren<T>(DependencyObject obj) where T : class
+        {
+            var res = new List<T>();
+            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            {
+                var local = VisualTreeHelper.GetChild(obj, i);
+                if (local is T)
+                {
+                    res.Add(local as T);
+                    continue;
+                }
+                res.AddRange(GetChildren<T>(local));
+            }
+            return res;
+        }
+
+        public static T GetParent<T>(DependencyObject obj) where T : class
+        {
+            var parent = VisualTreeHelper.GetParent(obj);
+            if (parent == null)
+            {
+                return null;
+            }
+            if (parent.GetType() == typeof(T))
+            {
+                return parent as T;
+            }
+            return GetParent<T>(parent);
+        }
+        public static void UseTheScrollViewerScrolling(FrameworkElement fElement)
+        {
+            fElement.PreviewMouseWheel += (sender, e) =>
+            {
+                var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
+                eventArg.RoutedEvent = UIElement.MouseWheelEvent;
+                eventArg.Source = sender;
+                fElement.RaiseEvent(eventArg);
+            };
+        }
     }
 }

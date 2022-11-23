@@ -24,9 +24,10 @@ short IndexOfBytes(u8* source,u16 sourceLen, u8* data,u16 dataLen, u16 start){
 }
 
 void RemoveBytes(u8* source,u16 sourceLen,u16 index,u16 len){
+	if(len==0) return;
 	u16 i=index;
 	while(i<sourceLen){
-		if(i<index+len){
+		if(i+len<sourceLen){
 			source[i]=source[i+len];
 			goto continueLine;
 		}

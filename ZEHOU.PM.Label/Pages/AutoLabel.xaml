@@ -7,7 +7,7 @@
       xmlns:ui="clr-namespace:ZEHOU.PM.Label.UI"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="800"
-      Title="AutoLabel" FontSize="16">
+      Title="AutoLabel" FontSize="16" Loaded="Page_Loaded">
     <Page.Resources>
         <local:BoolFalseConvert x:Key="boolfalseconvert"></local:BoolFalseConvert>
         <local:SysStatusConvert x:Key="sysstatusconvert"></local:SysStatusConvert>

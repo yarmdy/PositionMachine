@@ -31,7 +31,8 @@
   * @retval None
   */
 void JTAG_Init(void);
-void ProssPortMessage(void);
+void GetPortMessage(void);
+void ProssPortMessage(u16);
 int main(void)
 {
   /* Infinite loop */
@@ -43,7 +44,7 @@ int main(void)
 	GPIOX_Init();		  	 	    //输入输出端口初始化	 
 	Run_Led=~Run_Led;
 	while (1){
-		ProssPortMessage();
+		GetPortMessage();
 	}
 }
 
@@ -56,27 +57,29 @@ void JTAG_Init(void)
 	GPIO_PinRemapConfig(GPIO_Remap_SWJ_Disable, ENABLE);
 	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable , ENABLE);
 }
-void ProssPortMessage(void){
-	if(USART1_INDEX<15){
+void GetPortMessage(void){
+	GetUSART1AllBuff();
+	if(USART1_INDEX2<15){
 		return;
 	}
 	u16 index;
 	u16 length;
 	u8 res=0;
 	while(1){
-		res=AnalysisAZHFrame(USART1_RX_BUF,USART1_INDEX,&index,&length);
+		res=AnalysisAZHFrame(USART1_RX_BUF2,USART1_INDEX2,&index,&length);
 		
 		if (res)
 		{
-			TakeBytes(USART1_RX_BUF2,USART1_RX_BUF,index,length);
+			RemoveBytes(USART1_RX_BUF2,USART_BUF_Total2,0,index);
+			USART1_INDEX2-=index;
 		}
 		
-		if (index + length > 0)
+		if (res == 0 && index + length > 0)
 		{
-			RemoveBytes(USART1_RX_BUF,USART_BUF_Total,0,index + length);
-			USART1_INDEX-=index + length;
+			RemoveBytes(USART1_RX_BUF2,USART_BUF_Total2,0,index + length);
+			USART1_INDEX2-=index + length;
 		}
-		if (res || index + length <= 0 || USART1_INDEX <= 0)
+		if (res || index + length <= 0 || USART1_INDEX2 <= 0)
 		{
 			break;
 		}
@@ -84,6 +87,14 @@ void ProssPortMessage(void){
 	if(res==0){
 		return;
 	}
+	
+	
+	ProssPortMessage(length);
+	
+	RemoveBytes(USART1_RX_BUF2,USART_BUF_Total2,0,length);
+	USART1_INDEX2-=length;
+}
+void ProssPortMessage(u16 length){
 	USART1_RX_BUF2[3]^=USART1_RX_BUF2[4];
 	USART1_RX_BUF2[4]^=USART1_RX_BUF2[3];
 	USART1_RX_BUF2[3]^=USART1_RX_BUF2[4];
