@@ -135,6 +135,14 @@ namespace ZEHOU.PM.Label.SerialPort
         /// 接收前
         /// </summary>
         public abstract event Action<byte[]> AfterReceive;
+        /// <summary>
+        /// 返回刷写固件
+        /// </summary>
+        public abstract event Action<DataPackage> OnBackWriteBin;
+        /// <summary>
+        /// 请求进入系统
+        /// </summary>
+        public abstract event Action<DataPackage> OnEnterSystem;
 
 
         #endregion
@@ -254,6 +262,8 @@ namespace ZEHOU.PM.Label.SerialPort
         /// <param name="act"></param>
         public abstract byte FillBin(byte binno);
 
+        public abstract byte EnterSystem(byte sysNo);
+        public abstract byte WriteBin(uint addr, byte[] binData);
     }
     /// <summary>
     /// 传输数据包

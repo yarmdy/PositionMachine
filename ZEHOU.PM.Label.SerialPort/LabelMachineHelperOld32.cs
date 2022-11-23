@@ -44,6 +44,8 @@ namespace ZEHOU.PM.Label.SerialPort
         public override event Action<DataPackage> OnBackDropTubeConfirm;
         public override event Action<DataPackage> OnBackFillBin;
         public override event Action<DataPackage> OnUpMotorSteps;
+        public override event Action<DataPackage> OnBackWriteBin;
+        public override event Action<DataPackage> OnEnterSystem;
 
         public override byte ApplyParam(ushort[] array)
         {
@@ -51,6 +53,11 @@ namespace ZEHOU.PM.Label.SerialPort
         }
 
         public override byte CancelLabelList(byte orderId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override byte EnterSystem(byte sysNo)
         {
             throw new NotImplementedException();
         }
@@ -111,6 +118,11 @@ namespace ZEHOU.PM.Label.SerialPort
         }
 
         public override byte TestMotor(byte act, short val)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override byte WriteBin(uint addr, byte[] binData)
         {
             throw new NotImplementedException();
         }

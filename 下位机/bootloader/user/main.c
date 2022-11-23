@@ -33,6 +33,8 @@
 void JTAG_Init(void);
 void GetPortMessage(void);
 void ProssPortMessage(u16);
+void EnterSystemReq(void);
+u16 CreateCommand(u8 comm,u8*data,u16 len,u8* res);
 int main(void)
 {
   /* Infinite loop */
@@ -45,11 +47,22 @@ int main(void)
 	Run_Led=~Run_Led;
 	while (1){
 		GetPortMessage();
+		
+		EnterSystemReq();
 	}
 }
 
 
-
+void EnterSystemReq(void){
+	if(SendEnterSystemTimeSpan>0){
+		return;
+	}
+	u8 commLine[14+1];
+	u8 data[1]={1};
+	u16 len = CreateCommand(1,data,1,commLine);
+	UART1_Send(commLine,len);
+	SendEnterSystemTimeSpan=100;
+}
 void JTAG_Init(void)
 {
 	
@@ -94,13 +107,49 @@ void GetPortMessage(void){
 	RemoveBytes(USART1_RX_BUF2,USART_BUF_Total2,0,length);
 	USART1_INDEX2-=length;
 }
+DATAPACKAGE GetDATAPACKAGE(void){
+	DATAPACKAGE package = *(DATAPACKAGE*)(USART1_RX_BUF2+5);
+	package.Data=USART1_RX_BUF2+sizeof(DATAPACKAGE)-sizeof(u8*);
+	return package;
+}
+void ProssEnterSystem(DATAPACKAGE* package){}
+void ProssWriteBin(DATAPACKAGE* package){}
+//void ProssWriteFinish(DATAPACKAGE* package){}
 void ProssPortMessage(u16 length){
-	USART1_RX_BUF2[3]^=USART1_RX_BUF2[4];
-	USART1_RX_BUF2[4]^=USART1_RX_BUF2[3];
-	USART1_RX_BUF2[3]^=USART1_RX_BUF2[4];
+	DATAPACKAGE package=GetDATAPACKAGE();
+	if(package.Func!=0xff)return;
+	switch(package.Comm){
+		case 0x01://enter system
+			ProssEnterSystem(&package);
+			break;
+		case 0x02://write bin
+			ProssWriteBin(&package);
+			break;
+//		case 0x03://write finish
+//			ProssWriteFinish(&package);
+//			break;
+	}
+}
+
+u16 CreateCommand(u8 comm,u8*data,u16 len,u8* res){
+	u16 i=0;
+	res[i++]='@';
+	res[i++]='Z';
+	res[i++]='H';
+	res[i++]=0x01;
+	res[i++]=0x50;
+	res[i++]=0xFF;
+	res[i++]=comm;
+	res[i++]=0x01;
+	*(u16*)&res[i]=len;
+	i+=2;
+	TakeBytes(&res[i],data,0,len);
+	i+=len;
 	u8 crc[2];
-	GetCRC16(USART1_RX_BUF2,length-4,crc);
-	USART1_RX_BUF2[length-4]=crc[0];
-	USART1_RX_BUF2[length-3]=crc[1];
-	UART1_Send(USART1_RX_BUF2,length);
+	GetCRC16(res,len+10,crc);
+	res[i++]=crc[0];
+	res[i++]=crc[1];
+	res[i++]='\r';
+	res[i++]='\n';
+	return 14+len;
 }

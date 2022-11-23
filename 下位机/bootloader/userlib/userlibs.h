@@ -1,5 +1,9 @@
 #include "sys.h"
 
+
+
+typedef struct DataPackage{u8 Func;u8 Comm;u8 CommId;u16 Length;u8* Data;}DATAPACKAGE;
+
 short IndexOfByte(u8* source,u16 sourceLen, u8 data,u16 start);
 	
 short IndexOfBytes(u8* source,u16 sourceLen, u8* data,u16 dataLen, u16 start);

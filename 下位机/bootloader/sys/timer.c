@@ -2,7 +2,7 @@
 #include "usart.h"
 
 u16 Run_Timer;
-
+u16 SendEnterSystemTimeSpan=0;
 
 void TIM_Init(void)
 {		
@@ -97,6 +97,10 @@ void TIM3_IRQHandler(void)   //TIM3   5ms
 	}
 	TIM_ClearITPendingBit(TIM3, TIM_IT_Update); 
 	if(Run_Timer) {Run_Timer --;}          //系统运行计时
+	
+	if(SendEnterSystemTimeSpan){
+		SendEnterSystemTimeSpan--;
+	}
 	
 }
 void TIM4_IRQHandler(void)   //TIM4   40us

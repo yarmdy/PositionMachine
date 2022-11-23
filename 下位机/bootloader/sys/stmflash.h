@@ -16,7 +16,7 @@
 
 
 
-#define FLASH_SAVE_ADDR  0X08020000 	//设置FLASH 保存地址(必须为偶数，且其值要大于本代码所占用FLASH的大小+0X08000000) 
+#define FLASH_SAVE_ADDR  0X08004000 	//设置FLASH 保存地址(必须为偶数，且其值要大于本代码所占用FLASH的大小+0X08000000) 
  
 
 u16 STMFLASH_ReadHalfWord(u32 faddr);		  //读出半字  

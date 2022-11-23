@@ -385,6 +385,28 @@ namespace ZEHOU.PM.Label.SerialPort
                             break;
                     }
                 }
+                else if (dataPackage.Func == (byte)EnumFunc.BOOT)
+                {
+                    switch (dataPackage.Comm)
+                    {
+                        case (byte)EnumBootComm.ENTERSYSTEM:
+                            {
+                                if (OnEnterSystem != null)
+                                {
+                                    OnEnterSystem(dataPackage);
+                                }
+                            }
+                            break;
+                        case (byte)EnumBootComm.WRITEBIN:
+                            {
+                                if (OnBackWriteBin != null)
+                                {
+                                    OnBackWriteBin(dataPackage);
+                                }
+                            }
+                            break;
+                    }
+                }
                 else
                 {
                     //do nothing
@@ -513,7 +535,11 @@ namespace ZEHOU.PM.Label.SerialPort
             /// <summary>
             /// 上传状态
             /// </summary>
-            UPSTATUS=0XD3
+            UPSTATUS=0XD3,
+            /// <summary>
+            /// 启动
+            /// </summary>
+            BOOT = 0XFF
         }
         /// <summary>
         /// 工作命令
@@ -662,6 +688,21 @@ namespace ZEHOU.PM.Label.SerialPort
             LIGHT = 0X01,
         }
 
+        /// <summary>
+        /// 启动
+        /// </summary>
+        private enum EnumBootComm : byte
+        {
+            /// <summary>
+            /// 进入系统
+            /// </summary>
+            ENTERSYSTEM = 0X01,
+            /// <summary>
+            /// 刷写固件
+            /// </summary>
+            WRITEBIN = 0X02
+        }
+
         #endregion
 
         #region 事件
@@ -773,8 +814,14 @@ namespace ZEHOU.PM.Label.SerialPort
         /// 空仓
         /// </summary>
         public override event Action<DataPackage> OnEmptyBin;
-        
-
+        /// <summary>
+        /// 请求进入系统
+        /// </summary>
+        public override event Action<DataPackage> OnEnterSystem;
+        /// <summary>
+        /// 返回刷写固件
+        /// </summary>
+        public override event Action<DataPackage> OnBackWriteBin;
 
         #endregion
 
@@ -1063,6 +1110,27 @@ namespace ZEHOU.PM.Label.SerialPort
             data.AddRange(BitConverter.GetBytes(val));
             var commId = getCommId();
             var commdata = CreateCommand((byte)EnumFunc.TEST, (byte)EnumTESTComm.MOTOR, commId, data.ToArray());
+            Send(commdata);
+            return commId;
+        }
+
+        public override byte EnterSystem(byte sysNo)
+        {
+            var data = new List<byte>();
+            data.Add(sysNo);
+            var commId = getCommId();
+            var commdata = CreateCommand((byte)EnumFunc.BOOT, (byte)EnumBootComm.ENTERSYSTEM, commId, data.ToArray());
+            Send(commdata);
+            return commId;
+        }
+        public override byte WriteBin(uint addr, byte[] binData)
+        {
+            var data = new List<byte>();
+            data.AddRange(BitConverter.GetBytes(addr));
+            data.AddRange(BitConverter.GetBytes((ushort)binData.Length));
+            data.AddRange(binData);
+            var commId = getCommId();
+            var commdata = CreateCommand((byte)EnumFunc.BOOT, (byte)EnumBootComm.WRITEBIN, commId, data.ToArray());
             Send(commdata);
             return commId;
         }

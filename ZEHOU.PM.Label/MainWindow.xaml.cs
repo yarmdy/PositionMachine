@@ -168,6 +168,8 @@ namespace ZEHOU.PM.Label
             Global.LPM.OnBackFillBin += LPM_OnBackFillBin;
             Global.LPM.OnBackDropTubeConfirm += LPM_OnBackDropTubeConfirm;
 
+            Global.LPM.OnEnterSystem += LPM_OnEnterSystem;
+
             //Global.LPM.TestAddSend(new byte[] {0x40,0x5A,0x48,0x01,0x50,0xD2,0x01,0x10,0x00,0x12,0x00,0x3C,0x21,0x34,0x05,0x78,0x22,0xF6,0x22,0x2E,0x05,0xDC,0x1D,0x1A,0x1C,0x52,0x00,0x14,0xFC,0x3B,0x0D,0x0A
             //});
             //Global.LPM.TestAddSend(new byte[] {0x40,0x5A,0x48,0x01,0x50,0xD2,0x01,0x02,0x00,0x12,0x00,0x3C,0x21,0x34
@@ -178,6 +180,14 @@ namespace ZEHOU.PM.Label
             //System.Threading.Thread.Sleep(100);
             //Global.LPM.TestAddSend(new byte[] {0xCD,0x48,0x0D,0x0A
             //});
+        }
+
+        private void LPM_OnEnterSystem(SerialPort.DataPackage obj)
+        {
+            if (Config.Configs.Settings["fix"] == "on") {
+                return;
+            }
+            Global.LPM.EnterSystem(0);
         }
 
         private void LPM_OnBackDropTubeConfirm(SerialPort.DataPackage obj)
