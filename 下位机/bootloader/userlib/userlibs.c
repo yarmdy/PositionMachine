@@ -108,8 +108,8 @@ u8 AnalysisAZHFrame(u8*data,u16 dataLen,u16* index,u16* length){
 	if (data[headIndex + 3]!= 0x50)
 	{
 		//prossError(-1, "??????,????\r\n" + String.Join(" ", data.Select(a => a.ToString("X2"))), null);
-		index[0] = headIndex;
-		length[0] = 3;
+		index[0] = 0;
+		length[0] = headIndex+3+1;
 		return 0;
 	}
 
@@ -124,14 +124,14 @@ u8 AnalysisAZHFrame(u8*data,u16 dataLen,u16* index,u16* length){
 	if (IndexOfBytes(data,dataLen, crc,2, headIndex + 10 + len) != headIndex + 10 + len)
 	{
 		//prossError(-1, "????,????\r\n" + String.Join(" ", data.Select(a => a.ToString("X2"))), null);
-		index[0] = headIndex;
-		length[0] = 3;
+		index[0] = 0;
+		length[0] = headIndex + 10 + len+2;
 		return 0;
 	}
 	if (IndexOfBytes(data,dataLen, ptail,2, headIndex + 10 + len + 2) != headIndex + 10 + len + 2) {
 		//prossError(-1, "?????,????\r\n" + String.Join(" ", data.Select(a => a.ToString("X2"))), null);
-		index[0] = headIndex;
-		length[0] = 3;
+		index[0] = 0;
+		length[0] = headIndex + 10 + len + 2+2;
 		return 0;
 	}
 

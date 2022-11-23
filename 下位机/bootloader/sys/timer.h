@@ -29,6 +29,7 @@
 //#define TIM_PWM_GPIO_CLK_EN() __HAL_RCC_GPIOB_CLK_ENABLE()
 extern u16 Run_Timer;
 extern u16 SendEnterSystemTimeSpan;
+extern u16 ReceiveTimeSpan;
 
 void TIM2_Int_Init(u16 arr,u16 psc);
 void TIM3_Int_Init(u16 arr,u16 psc); 

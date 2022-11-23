@@ -3,6 +3,7 @@
 
 u16 Run_Timer;
 u16 SendEnterSystemTimeSpan=0;
+u16 ReceiveTimeSpan=20;
 
 void TIM_Init(void)
 {		
@@ -100,6 +101,9 @@ void TIM3_IRQHandler(void)   //TIM3   5ms
 	
 	if(SendEnterSystemTimeSpan){
 		SendEnterSystemTimeSpan--;
+	}
+	if(ReceiveTimeSpan){
+		ReceiveTimeSpan--;
 	}
 	
 }

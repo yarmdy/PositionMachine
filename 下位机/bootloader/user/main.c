@@ -52,16 +52,16 @@ int main(void)
 	}
 }
 
-
+u8 DisabledEnterSystemReq=0;
 void EnterSystemReq(void){
-	if(SendEnterSystemTimeSpan>0){
+	if(SendEnterSystemTimeSpan>0 && DisabledEnterSystemReq==0){
 		return;
 	}
 	u8 commLine[14+1];
 	u8 data[1]={1};
 	u16 len = CreateCommand(1,data,1,commLine);
 	UART1_Send(commLine,len);
-	SendEnterSystemTimeSpan=100;
+	SendEnterSystemTimeSpan=1000;
 }
 void JTAG_Init(void)
 {
@@ -72,9 +72,14 @@ void JTAG_Init(void)
 }
 void GetPortMessage(void){
 	GetUSART1AllBuff();
+	if(USART1_INDEX2>0 && ReceiveTimeSpan<=0){
+		USART1_INDEX2=0;
+	}
+	ReceiveTimeSpan=20;
 	if(USART1_INDEX2<15){
 		return;
 	}
+	
 	u16 index;
 	u16 length;
 	u8 res=0;
@@ -92,6 +97,7 @@ void GetPortMessage(void){
 			RemoveBytes(USART1_RX_BUF2,USART_BUF_Total2,0,index + length);
 			USART1_INDEX2-=index + length;
 		}
+		
 		if (res || index + length <= 0 || USART1_INDEX2 <= 0)
 		{
 			break;
@@ -101,22 +107,32 @@ void GetPortMessage(void){
 		return;
 	}
 	
-	
 	ProssPortMessage(length);
 	
 	RemoveBytes(USART1_RX_BUF2,USART_BUF_Total2,0,length);
 	USART1_INDEX2-=length;
 }
 DATAPACKAGE GetDATAPACKAGE(void){
-	DATAPACKAGE package = *(DATAPACKAGE*)(USART1_RX_BUF2+5);
-	package.Data=USART1_RX_BUF2+sizeof(DATAPACKAGE)-sizeof(u8*);
+	//DATAPACKAGE package = *(DATAPACKAGE*)(USART1_RX_BUF2+5);
+	DATAPACKAGE package;
+	package.Func = *(USART1_RX_BUF2+5);
+	package.Comm = *(USART1_RX_BUF2+6);
+	package.CommId = *(USART1_RX_BUF2+7);
+	package.Length = *(u16*)(USART1_RX_BUF2+8);
+	package.Data=USART1_RX_BUF2+sizeof(DATAPACKAGE)-sizeof(void*);
 	return package;
 }
-void ProssEnterSystem(DATAPACKAGE* package){}
+void ProssEnterSystem(DATAPACKAGE* package){
+	u8 commLine[14+1];
+	u8 data[1]={1};
+	u16 len = CreateCommand(1,data,1,commLine);
+	UART1_Send(commLine,len);
+}
 void ProssWriteBin(DATAPACKAGE* package){}
 //void ProssWriteFinish(DATAPACKAGE* package){}
 void ProssPortMessage(u16 length){
 	DATAPACKAGE package=GetDATAPACKAGE();
+	
 	if(package.Func!=0xff)return;
 	switch(package.Comm){
 		case 0x01://enter system
