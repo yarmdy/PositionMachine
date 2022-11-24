@@ -115,7 +115,7 @@ void GetUSART1AllBuff(void){
 	u16 len=USART1_BUF_Length;
 	while(len--){
 		GetUSART1ABuffChar(&USART1_RX_BUF2[USART1_INDEX2++]);
-		if(USART1_INDEX2>USART_BUF_Total1-1){
+		if(USART1_INDEX2>USART_BUF_Total2-1){
 			USART1_INDEX2=0;
 		}
 	}

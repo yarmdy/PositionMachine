@@ -156,6 +156,9 @@
     <Compile Include="UI\UIBarCode.xaml.cs">
       <DependentUpon>UIBarCode.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\BinUpdate.xaml.cs">
+      <DependentUpon>BinUpdate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\PrintBackOrder.xaml.cs">
       <DependentUpon>PrintBackOrder.xaml</DependentUpon>
     </Compile>
@@ -268,6 +271,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\UIBarCode.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\BinUpdate.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

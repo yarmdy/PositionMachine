@@ -3,6 +3,7 @@
 short IndexOfByte(u8* source,u16 sourceLen, u8 data,u16 start){
 	while(start<sourceLen){
 		if(source[start]!=data){
+			start++;
 			continue;
 		}
 		return start;
@@ -102,6 +103,8 @@ u8 AnalysisAZHFrame(u8*data,u16 dataLen,u16* index,u16* length){
 	if (dataLen < headIndex + 15)
 	{
 		//prossError(-1, "?????,??\r\n" + String.Join(" ", data.Select(a => a.ToString("X2"))), null);
+		index[0]=0;
+		length[0]=headIndex;
 		return 0;
 	}
 
@@ -117,6 +120,11 @@ u8 AnalysisAZHFrame(u8*data,u16 dataLen,u16* index,u16* length){
 	if(dataLen< headIndex + 8 + 2 + len+2+2)
 	{
 		//prossError(-1, "????,??\r\n" + String.Join(" ", data.Select(a => a.ToString("X2"))), null);
+		return 0;
+	}
+	if(len>1024+512){
+		index[0] = 0;
+		length[0] = headIndex+8+2;
 		return 0;
 	}
 	u8 crc[2];

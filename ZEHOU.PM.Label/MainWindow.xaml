@@ -50,6 +50,7 @@
                     <MenuItem Header="注册" Click="MenuItem_Click" Tag="Register|1"></MenuItem>
                     <Separator></Separator>
                     <MenuItem Header="关于" Click="MenuItem_Click" Tag="About|1"></MenuItem>
+                    <MenuItem Header="固件升级" Click="MenuItem_Click" Tag="BinUpdate|1"></MenuItem>
                 </MenuItem>
 
             </Menu>

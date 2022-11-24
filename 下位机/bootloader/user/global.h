@@ -6,6 +6,7 @@
 #include "usart.h"
 #include "timer.h"
 #include "gpio.h"
+#include "stmflash.h"
 #include "userlibs.h"
 #endif
 

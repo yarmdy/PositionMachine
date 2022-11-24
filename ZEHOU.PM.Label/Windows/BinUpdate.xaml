@@ -1,0 +1,36 @@
+﻿<local:ZHWindow x:Class="ZEHOU.PM.Label.BinUpdate"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ZEHOU.PM.Label"
+        mc:Ignorable="d"
+        Title="固件升级" Height="400" Width="600" WindowStartupLocation="CenterScreen">
+    <Grid Unloaded="Grid_Unloaded">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="8*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock VerticalAlignment="Center" Height="30" Padding="0 7 0 0">选择文件</TextBlock>
+                <TextBox Width="250" Height="28" Padding="6 6 6 0" Margin="10 0 0 0" Name="txt_filename" IsReadOnly="True"></TextBox>
+                <Button Height="28" Width="70" Click="Button_Click">浏览..</Button>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Button Width="100" Height="40" Click="Button_Click_1">升级</Button>
+            </StackPanel>
+        </Grid>
+        <ProgressBar Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" VerticalAlignment="Center" Margin="30" Name="proBar" Maximum="100" Value="50"></ProgressBar>
+    </Grid>
+</local:ZHWindow>
