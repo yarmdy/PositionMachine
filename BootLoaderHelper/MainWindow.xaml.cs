@@ -33,6 +33,7 @@ namespace BootLoaderHelper
             InitializeComponent();
             _lpm = new LabelMachineHelper(System.Configuration.ConfigurationManager.AppSettings["PortName"]+"");
             _lpm.OnBackWriteBin += _lpm_OnBackWriteBin;
+            _lpm.MachineId = 1;
         }
 
         private void _lpm_OnBackWriteBin(DataPackage obj)
