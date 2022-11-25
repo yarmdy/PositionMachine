@@ -901,7 +901,7 @@ namespace ZEHOU.PM.Label
                         Global.LabelController.SaveLR(finishiOne);
                     }
                 }
-                if (obj.Data[0] >= 0xd2)
+                if (obj.Data[0] >= 0xd2 && obj.Data[0]<0xe0)
                 {
                     UILog.Info($"【{finishiOne.TubeInfo.BarCode}】下位机“{msg}”");
                     finishiOne.TubeLabelStatus = -obj.Data[0];
@@ -1058,6 +1058,15 @@ namespace ZEHOU.PM.Label
                 dropGuanResualt:;
                     //Global.BindingInfo.LocalLabel = null;
 
+                }
+                if (obj.Data[0] == 0xE1)
+                {
+                    if (localLabel == null)
+                    {
+                        UILog.Info($"下位机“{msg}”，但是无法定位试管编号");
+                        return;
+                    }
+                    UILog.Info($"【{localLabel.TubeInfo.BarCode}】下位机“{msg}”");
                 }
                 if (Global.BindingInfo.SysInfo.SysStatus < 0 || Global.BindingInfo.SysInfo.SysStatus == 1)
                 {

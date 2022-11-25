@@ -868,6 +868,10 @@ namespace ZEHOU.PM.Label
             {
                 return "压辊不归位";
             }
+            if ((int)value == -0xe1)
+            {
+                return "巡边故障";
+            }
             if ((int)value == -0xff)
             {
                 return "超时";
