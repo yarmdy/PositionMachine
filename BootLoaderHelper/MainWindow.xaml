@@ -1,12 +1,12 @@
-﻿<local:ZHWindow x:Class="ZEHOU.PM.Label.BinUpdate"
+﻿<Window x:Class="BootLoaderHelper.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ZEHOU.PM.Label"
+        xmlns:local="clr-namespace:BootLoaderHelper"
         mc:Ignorable="d"
-        Title="固件升级" Height="400" Width="600" WindowStartupLocation="CenterScreen">
-    <Grid Unloaded="Grid_Unloaded">
+        Title="下位机升级助手" Height="400" Width="600" WindowStartupLocation="CenterScreen">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"></ColumnDefinition>
             <ColumnDefinition Width="8*"></ColumnDefinition>
@@ -32,6 +32,6 @@
                 <Button Width="100" Height="40" Click="Button_Click_1">升级</Button>
             </StackPanel>
         </Grid>
-        <ProgressBar Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" VerticalAlignment="Center" Margin="30" Name="proBar" Maximum="100" Value="50"></ProgressBar>
+        <ProgressBar Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" VerticalAlignment="Center" Margin="30" Name="proBar" Maximum="100" Value="50" Height="30"></ProgressBar>
     </Grid>
-</local:ZHWindow>
+</Window>

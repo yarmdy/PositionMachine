@@ -264,6 +264,7 @@ namespace ZEHOU.PM.Label.SerialPort
 
         public abstract byte EnterSystem(byte sysNo);
         public abstract byte WriteBin(uint addr, byte[] binData);
+        public abstract byte EnterBoot();
     }
     /// <summary>
     /// 传输数据包

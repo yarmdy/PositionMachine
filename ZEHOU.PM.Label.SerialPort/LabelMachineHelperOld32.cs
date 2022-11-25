@@ -57,6 +57,11 @@ namespace ZEHOU.PM.Label.SerialPort
             throw new NotImplementedException();
         }
 
+        public override byte EnterBoot()
+        {
+            throw new NotImplementedException();
+        }
+
         public override byte EnterSystem(byte sysNo)
         {
             throw new NotImplementedException();

@@ -700,7 +700,11 @@ namespace ZEHOU.PM.Label.SerialPort
             /// <summary>
             /// 刷写固件
             /// </summary>
-            WRITEBIN = 0X02
+            WRITEBIN = 0X02,
+            /// <summary>
+            /// 进入引导
+            /// </summary>
+            ENTERBOOT = 0XFF
         }
 
         #endregion
@@ -1131,6 +1135,15 @@ namespace ZEHOU.PM.Label.SerialPort
             data.AddRange(binData);
             var commId = getCommId();
             var commdata = CreateCommand((byte)EnumFunc.BOOT, (byte)EnumBootComm.WRITEBIN, commId, data.ToArray());
+            Send(commdata);
+            return commId;
+        }
+        public override byte EnterBoot()
+        {
+            var data = new List<byte>();
+            data.Add(1);
+            var commId = getCommId();
+            var commdata = CreateCommand((byte)EnumFunc.BOOT, (byte)EnumBootComm.ENTERBOOT, commId, data.ToArray());
             Send(commdata);
             return commId;
         }
