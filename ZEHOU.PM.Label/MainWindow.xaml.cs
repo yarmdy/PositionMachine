@@ -21,6 +21,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 using ZEHOU.PM.DB.dbLabelInfo;
 using ZEHOU.PM.Label.UI;
 using System.Threading;
+using System.Runtime.Remoting.Contexts;
 
 namespace ZEHOU.PM.Label
 {
@@ -49,7 +50,8 @@ namespace ZEHOU.PM.Label
             initPassiveClass();
         }
 
-        
+        private List<PopLayer> _popLayers = new List<PopLayer>();
+
         #region 初始化
         /// <summary>
         /// 设置菜单权限
@@ -719,6 +721,78 @@ namespace ZEHOU.PM.Label
             }
             UI.Popup.Error(Global.MainWindow, $"没有需要重试的贴标记录");
         }
+
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+            Global.BindingInfo.IsHideLeft = !Global.BindingInfo.IsHideLeft;
+        }
+
+        private void Button_Click_9(object sender, RoutedEventArgs e)
+        {
+            var btn = (Button)sender;
+
+            if (!(btn.DataContext is BinStatusInfo))
+            {
+                return;
+            }
+            var obj = (BinStatusInfo)btn.DataContext;
+            obj.CommId = Global.LPM.FillBin(obj.BinId);
+        }
+
+        private void Button_Click_10(object sender, RoutedEventArgs e)
+        {
+            lock (Global.BindingInfo.SysLogLocker)
+            {
+                Global.BindingInfo.SysLog.Clear();
+            }
+        }
+
+        private void Button_Click_11(object sender, RoutedEventArgs e)
+        {
+            lock (Global.BindingInfo.DebugLogLocker)
+            {
+                Global.BindingInfo.DebugLog.Clear();
+            }
+        }
+
+        private void showLayer(PopLayer layer)
+        {
+            lock (_popLayers)
+            {
+                _popLayers.Add(layer);
+                showLayerFirst();
+            }
+        }
+        private void removeFirstLayer()
+        {
+            lock (_popLayers)
+            {
+                if (_popLayers.Count <= 0)
+                {
+                    goto finish;
+                }
+                _popLayers.RemoveAt(0);
+                finish:
+                showLayerFirst();
+            }
+        }
+        private void showLayerFirst() {
+            var layer = _popLayers.FirstOrDefault();
+            if (layer == null)
+            {
+                gdPop.Visibility=Visibility.Collapsed;
+                return;
+            }
+            //Title = title;
+            lbContent.Content = layer.Content;
+
+            btnOK.Content = layer.Btn1Name;
+            btnRetry.Content = layer.Btn2Name;
+
+            btnOK.Visibility = btnOK.Content == null ? Visibility.Collapsed : Visibility.Visible;
+            btnRetry.Visibility = btnRetry.Content == null ? Visibility.Collapsed : Visibility.Visible;
+            gdPop.Visibility = Visibility.Visible;
+        }
         #endregion
 
         #region 下位机事件
@@ -742,189 +816,35 @@ namespace ZEHOU.PM.Label
             //throw new NotImplementedException();
             //需要处理 开关状态
         }
+
+        private object _labelStatusLocker=new object();
         /// <summary>
         /// 反馈贴标状态
         /// </summary>
         /// <param name="obj"></param>
         private void LPM_OnLabelStatus(SerialPort.DataPackage obj)
         {
-            var localLabel = Global.BindingInfo.LocalLabel;
-            var almostDoneLabel = Global.BindingInfo.AlmostDoneLabel;
-            var finishiOne = almostDoneLabel ?? localLabel;
-
-            var converter = new TubeStatusConvert();
-            var msg = converter.Convert(-(int)obj.Data[0],null,null,null);
-
-            if (obj.Data[0] == 0xa4)
+            lock (_labelStatusLocker)
             {
-                UILog.Info($"下位机“{msg}”，点击【确定】继续，点击【取消】停止所有贴标任务");
-                MessageBoxResult diaresault = MessageBoxResult.None;
-                Dispatcher.Invoke(() => {
-                    diaresault = UI.Popup.Confirm(Global.MainWindow, $"下位机“{msg}”，点击【确定】继续，点击【取消】停止所有贴标任务");
-                });
-                if (diaresault != MessageBoxResult.OK)
-                {
-                    UILog.Info($"下位机“{msg}”，选择【取消】");
-                    Global.LPM.FaultConfirm(2);
+                var localLabel = Global.BindingInfo.LocalLabel;
+                var almostDoneLabel = Global.BindingInfo.AlmostDoneLabel;
+                var finishiOne = almostDoneLabel ?? localLabel;
 
-                    foreach (var tube in Global.BindingInfo.LabelQueue)
-                    {
-                        if (tube.TubeLabelStatus < 0 || tube.TubeLabelStatus > 10)
-                        {
-                            continue;
-                        }
-                        tube.TubeLabelStatus = -obj.Data[0];
-                    }
-                    Global.LabelController.CancelLabelList();
-                    return;
-                }
-                UILog.Info($"下位机“{msg}”，选择【确定】");
-                Global.LPM.FaultConfirm(1);
-                return;
-            }
+                var converter = new TubeStatusConvert();
+                var msg = converter.Convert(-(int)obj.Data[0], null, null, null);
 
-            //需要处理 贴标状态
-            if (finishiOne == null)
-            {
-                UILog.Error($"当前没有贴标任务", null);
-                if (Global.BindingInfo.SysInfo.SysStatus < 0 || Global.BindingInfo.SysInfo.SysStatus == 0)
+                if (obj.Data[0] == 0xa4)
                 {
-                    return;
-                }
-                Global.BindingInfo.SysInfo.SysStatus = 0;
-                return;
-            }
-            if (obj.Data[0] == 1 || obj.Data[0] == 2)
-            {
-                string succMsg = null;
-                if (obj.Data[0] == 2)
-                {
-                    succMsg = "复核屏蔽";
-                }
-
-                UILog.Info($"【{finishiOne.TubeInfo.BarCode}】贴标完成{(string.IsNullOrEmpty(succMsg)?"":$"（{succMsg}）")}，添加贴标记录");
-                
-                finishiOne.TubeLabelStatus = 100;
-                if (almostDoneLabel == null)
-                {
-                    Global.BindingInfo.LocalLabel = null;
-                }
-                else {
-                    Global.BindingInfo.AlmostDoneLabel = null;
-                }
-                Dispatcher.Invoke(() => {
-                    Global.BindingInfo.LabelQueue.Remove(finishiOne);
-                });
-                //Global.BindingInfo.LabelQueue.Remove(finishiOne);
-                //Global.LabelController.removeAPos();
-                if (!finishiOne.IsTest)
-                {
-                    Global.LabelController.SaveLR(finishiOne);
-                }
-            }
-            if (obj.Data[0] >= 0xd2)
-            {
-                UILog.Info($"【{finishiOne.TubeInfo.BarCode}】下位机“{msg}”");
-                finishiOne.TubeLabelStatus = -obj.Data[0];
-                Dispatcher.Invoke(() => {
-                    var popmsg = new PopupMessage("操作提示", $"【{finishiOne.TubeInfo.BarCode}】下位机“{msg}”", "忽略", "重试", () => {
-                        finishiOne.TubeLabelStatus = 0;
-                        Global.LabelController.SendLabelList();
+                    UILog.Info($"下位机“{msg}”，点击【确定】继续，点击【取消】停止所有贴标任务");
+                    MessageBoxResult diaresault = MessageBoxResult.None;
+                    Dispatcher.Invoke(() => {
+                        diaresault = UI.Popup.Confirm(Global.MainWindow, $"下位机“{msg}”，点击【确定】继续，点击【取消】停止所有贴标任务");
                     });
-                    popmsg.Show();
-                });
-                
-                if (almostDoneLabel != null)
-                {
-                    Global.BindingInfo.AlmostDoneLabel = null;
-                }
-                else {
-                    Global.BindingInfo.LocalLabel = null;
-                }
-                //Global.LabelController.removeAPos();
-                
-            }
-            if (obj.Data[0] == 0xd1)
-            {
-                if (localLabel == null)
-                {
-                    UILog.Error($"没有待贴标的试管", null);
-                    return;
-                }
-                UILog.Error($"【{localLabel.TubeInfo.BarCode}】下位机缺管", null);
-                
-                var tubeTypes = localLabel.BinId.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToArray();
-                byte tmpbinid;
-                tubeTypes.Where(a=>byte.TryParse(a,out tmpbinid)).Select(byte.Parse).ToList().ForEach(a => {
-                    var tmpbin = Global.BindingInfo.BinsList.FirstOrDefault(b=>b.BinId==a);
-                    if (tmpbin == null) return;
-                    tmpbin.Nums = 0;
-                });
-                localLabel.TubeLabelStatus = -obj.Data[0];
-                Global.BindingInfo.LocalLabel = null;
-                //Global.LabelController.removeAPos();
-
-
-
-                var lackCount = 0;
-                var lackList = new List<LabelInfoNotify>();
-                foreach (var tube in Global.BindingInfo.LabelQueue)
-                {
-                    if (tube.TubeLabelStatus != 0)
+                    if (diaresault != MessageBoxResult.OK)
                     {
-                        continue;
-                    }
-                    var itemTubeTypes = tube.BinId.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToArray();
-                    if (!itemTubeTypes.All(a => tubeTypes.Contains(a)))
-                    {
-                        continue;
-                    }
-                    tube.TubeLabelStatus = -obj.Data[0];
-                    lackList.Add(tube);
-                    //Global.LabelController.removeAPos();
-                    lackCount++;
-                }
-                UILog.Error($"检测到贴标列队其它缺管{lackCount}条", null);
+                        UILog.Info($"下位机“{msg}”，选择【取消】");
+                        Global.LPM.FaultConfirm(2);
 
-                Dispatcher.Invoke(() => {
-                    var popmsg = new PopupMessage("操作提示", $"【{localLabel.TubeInfo.BarCode}】{(string.Join("", lackList.Select(a => $"【{a.TubeInfo.BarCode}】")))}下位机缺管", "忽略", "补管重试", () => {
-                        var lackNoList = localLabel.BinId.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(byte.Parse).ToList();
-                        lackNoList.ForEach(a => {
-                            var binobj = Global.BindingInfo.BinsList.FirstOrDefault(b => b.BinId == a);
-                            binobj.CommId = Global.LPM.FillBin(a);
-                        });
-                        localLabel.TubeLabelStatus = 0;
-                        lackList.ForEach(a=>a.TubeLabelStatus=0);
-                        Task.Run(() => {
-                            Thread.Sleep(500);
-                            Global.LabelController.SendLabelList();
-                        });
-                        
-                    });
-                    popmsg.Show();
-                });
-            }
-            if (obj.Data[0] >= 0xa1 && obj.Data[0] < 0xd0)
-            {
-                if (localLabel == null )
-                {
-                    UILog.Info($"下位机“{msg}”，但是无法定位试管编号");
-                    return;
-                }
-                UILog.Info($"【{localLabel.TubeInfo.BarCode}】下位机“{msg}”，点击【确定】重试");
-                MessageBoxResult diaresault = MessageBoxResult.None;
-                Dispatcher.Invoke(() => {
-                    diaresault = UI.Popup.Confirm(Global.MainWindow, $"{localLabel.TubeInfo.BarCode}下位机“{msg}”，点击【确定】重试");
-                });
-                
-                if (diaresault != MessageBoxResult.OK)
-                {
-                    UILog.Info($"【{localLabel.TubeInfo.BarCode}】下位机“{msg}”，选择【取消】");
-                    localLabel.TubeLabelStatus = -obj.Data[0];
-                    localLabel = null;
-                    Global.LPM.FaultConfirm(2);
-                    if (obj.Data[0] == 0xa1 || obj.Data[0] == 0xa2 || obj.Data[0] == 0xa3 )
-                    {
                         foreach (var tube in Global.BindingInfo.LabelQueue)
                         {
                             if (tube.TubeLabelStatus < 0 || tube.TubeLabelStatus > 10)
@@ -934,23 +854,218 @@ namespace ZEHOU.PM.Label
                             tube.TubeLabelStatus = -obj.Data[0];
                         }
                         Global.LabelController.CancelLabelList();
+                        return;
                     }
-                    goto dropGuanResualt;
+                    UILog.Info($"下位机“{msg}”，选择【确定】");
+                    Global.LPM.FaultConfirm(1);
+                    return;
                 }
-                UILog.Info($"【{localLabel.TubeInfo.BarCode}】下位机“{msg}”，选择【确定】");
-                localLabel.SendTime = DateTime.Now;
-                Global.LPM.FaultConfirm(1);
 
-            dropGuanResualt:;
-                //Global.BindingInfo.LocalLabel = null;
-                
+                //需要处理 贴标状态
+                if (finishiOne == null)
+                {
+                    UILog.Error($"当前没有贴标任务", null);
+                    if (Global.BindingInfo.SysInfo.SysStatus < 0 || Global.BindingInfo.SysInfo.SysStatus == 0)
+                    {
+                        return;
+                    }
+                    Global.BindingInfo.SysInfo.SysStatus = 0;
+                    return;
+                }
+                if (obj.Data[0] == 1 || obj.Data[0] == 2)
+                {
+                    string succMsg = null;
+                    if (obj.Data[0] == 2)
+                    {
+                        succMsg = "复核屏蔽";
+                    }
+
+                    UILog.Info($"【{finishiOne.TubeInfo.BarCode}】贴标完成{(string.IsNullOrEmpty(succMsg) ? "" : $"（{succMsg}）")}，添加贴标记录");
+
+                    finishiOne.TubeLabelStatus = 100;
+                    if (almostDoneLabel == null)
+                    {
+                        Global.BindingInfo.LocalLabel = null;
+                    }
+                    else
+                    {
+                        Global.BindingInfo.AlmostDoneLabel = null;
+                    }
+                    Dispatcher.Invoke(() => {
+                        Global.BindingInfo.LabelQueue.Remove(finishiOne);
+                    });
+                    //Global.BindingInfo.LabelQueue.Remove(finishiOne);
+                    //Global.LabelController.removeAPos();
+                    if (!finishiOne.IsTest)
+                    {
+                        Global.LabelController.SaveLR(finishiOne);
+                    }
+                }
+                if (obj.Data[0] >= 0xd2)
+                {
+                    UILog.Info($"【{finishiOne.TubeInfo.BarCode}】下位机“{msg}”");
+                    finishiOne.TubeLabelStatus = -obj.Data[0];
+                    Dispatcher.Invoke(() => {
+                        //var popmsg = new PopupMessage("操作提示", $"【{finishiOne.TubeInfo.BarCode}】下位机“{msg}”", "忽略", "重试", () => {
+                        //    finishiOne.TubeLabelStatus = 0;
+                        //    Global.LabelController.SendLabelList();
+                        //});
+                        //popmsg.Show();
+
+                        showLayer(new PopLayer
+                        {
+                            Title = "操作提示",
+                            Content = $"【{finishiOne.TubeInfo.BarCode}】下位机“{msg}”",
+                            Btn1Name = "忽略",
+                            Btn2Name = "重试",
+                            Action = () =>
+                            {
+                                finishiOne.TubeLabelStatus = 0;
+                                Global.LabelController.SendLabelList();
+                            }
+                        });
+                    });
+
+                    if (almostDoneLabel != null)
+                    {
+                        Global.BindingInfo.AlmostDoneLabel = null;
+                    }
+                    else
+                    {
+                        Global.BindingInfo.LocalLabel = null;
+                    }
+                    //Global.LabelController.removeAPos();
+
+                }
+                if (obj.Data[0] == 0xd1)
+                {
+                    if (localLabel == null)
+                    {
+                        UILog.Error($"没有待贴标的试管", null);
+                        return;
+                    }
+                    UILog.Error($"【{localLabel.TubeInfo.BarCode}】下位机缺管", null);
+
+                    var tubeTypes = localLabel.BinId.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToArray();
+                    byte tmpbinid;
+                    tubeTypes.Where(a => byte.TryParse(a, out tmpbinid)).Select(byte.Parse).ToList().ForEach(a => {
+                        var tmpbin = Global.BindingInfo.BinsList.FirstOrDefault(b => b.BinId == a);
+                        if (tmpbin == null) return;
+                        tmpbin.Nums = 0;
+                    });
+                    localLabel.TubeLabelStatus = -obj.Data[0];
+                    Global.BindingInfo.LocalLabel = null;
+                    //Global.LabelController.removeAPos();
+
+
+
+                    var lackCount = 0;
+                    var lackList = new List<LabelInfoNotify>();
+                    foreach (var tube in Global.BindingInfo.LabelQueue)
+                    {
+                        if (tube.TubeLabelStatus != 0)
+                        {
+                            continue;
+                        }
+                        var itemTubeTypes = tube.BinId.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToArray();
+                        if (!itemTubeTypes.All(a => tubeTypes.Contains(a)))
+                        {
+                            continue;
+                        }
+                        tube.TubeLabelStatus = -obj.Data[0];
+                        lackList.Add(tube);
+                        //Global.LabelController.removeAPos();
+                        lackCount++;
+                    }
+                    UILog.Error($"检测到贴标列队其它缺管{lackCount}条", null);
+
+                    Dispatcher.Invoke(() => {
+                        //var popmsg = new PopupMessage("操作提示", $"【{localLabel.TubeInfo.BarCode}】{(string.Join("", lackList.Select(a => $"【{a.TubeInfo.BarCode}】")))}下位机缺管", "忽略", "补管重试", () => {
+                        //    var lackNoList = localLabel.BinId.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(byte.Parse).ToList();
+                        //    lackNoList.ForEach(a => {
+                        //        var binobj = Global.BindingInfo.BinsList.FirstOrDefault(b => b.BinId == a);
+                        //        binobj.CommId = Global.LPM.FillBin(a);
+                        //    });
+                        //    localLabel.TubeLabelStatus = 0;
+                        //    lackList.ForEach(a => a.TubeLabelStatus = 0);
+                        //    Task.Run(() => {
+                        //        Thread.Sleep(500);
+                        //        Global.LabelController.SendLabelList();
+                        //    });
+
+                        //});
+                        //popmsg.Show();
+                        showLayer(new PopLayer
+                        {
+                            Title = "操作提示",
+                            Content = $"【{localLabel.TubeInfo.BarCode}】{(string.Join("", lackList.Select(a => $"【{a.TubeInfo.BarCode}】")))}下位机缺管",
+                            Btn1Name = "忽略",
+                            Btn2Name = "补管重试",
+                            Action = () =>
+                            {
+                                var lackNoList = localLabel.BinId.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(byte.Parse).ToList();
+                                lackNoList.ForEach(a => {
+                                    var binobj = Global.BindingInfo.BinsList.FirstOrDefault(b => b.BinId == a);
+                                    binobj.CommId = Global.LPM.FillBin(a);
+                                });
+                                localLabel.TubeLabelStatus = 0;
+                                lackList.ForEach(a => a.TubeLabelStatus = 0);
+                                Task.Run(() => {
+                                    Thread.Sleep(500);
+                                    Global.LabelController.SendLabelList();
+                                });
+                            }
+                        });
+                    });
+                }
+                if (obj.Data[0] >= 0xa1 && obj.Data[0] < 0xd0)
+                {
+                    if (localLabel == null)
+                    {
+                        UILog.Info($"下位机“{msg}”，但是无法定位试管编号");
+                        return;
+                    }
+                    UILog.Info($"【{localLabel.TubeInfo.BarCode}】下位机“{msg}”，点击【确定】重试");
+                    MessageBoxResult diaresault = MessageBoxResult.None;
+                    Dispatcher.Invoke(() => {
+                        diaresault = UI.Popup.Confirm(Global.MainWindow, $"{localLabel.TubeInfo.BarCode}下位机“{msg}”，点击【确定】重试");
+                    });
+
+                    if (diaresault != MessageBoxResult.OK)
+                    {
+                        UILog.Info($"【{localLabel.TubeInfo.BarCode}】下位机“{msg}”，选择【取消】");
+                        localLabel.TubeLabelStatus = -obj.Data[0];
+                        localLabel = null;
+                        Global.LPM.FaultConfirm(2);
+                        if (obj.Data[0] == 0xa1 || obj.Data[0] == 0xa2 || obj.Data[0] == 0xa3)
+                        {
+                            foreach (var tube in Global.BindingInfo.LabelQueue)
+                            {
+                                if (tube.TubeLabelStatus < 0 || tube.TubeLabelStatus > 10)
+                                {
+                                    continue;
+                                }
+                                tube.TubeLabelStatus = -obj.Data[0];
+                            }
+                            Global.LabelController.CancelLabelList();
+                        }
+                        goto dropGuanResualt;
+                    }
+                    UILog.Info($"【{localLabel.TubeInfo.BarCode}】下位机“{msg}”，选择【确定】");
+                    localLabel.SendTime = DateTime.Now;
+                    Global.LPM.FaultConfirm(1);
+
+                dropGuanResualt:;
+                    //Global.BindingInfo.LocalLabel = null;
+
+                }
+                if (Global.BindingInfo.SysInfo.SysStatus < 0 || Global.BindingInfo.SysInfo.SysStatus == 1)
+                {
+                    goto other;
+                }
+                Global.BindingInfo.SysInfo.SysStatus = 0;
+            other:;
             }
-            if (Global.BindingInfo.SysInfo.SysStatus < 0 || Global.BindingInfo.SysInfo.SysStatus == 1)
-            {
-                goto other;
-            }
-            Global.BindingInfo.SysInfo.SysStatus = 0;
-        other:;
         }
         /// <summary>
         /// 断开串口
@@ -1141,33 +1256,24 @@ namespace ZEHOU.PM.Label
         {
             UILog.Error($"({arg1}){arg2}", arg3);
         }
+
         #endregion
 
-        private void Button_Click_7(object sender, RoutedEventArgs e)
+        private void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            Global.BindingInfo.IsHideLeft = !Global.BindingInfo.IsHideLeft;
+            removeFirstLayer();
         }
 
-        private void Button_Click_9(object sender, RoutedEventArgs e)
+        private void btnRetry_Click(object sender, RoutedEventArgs e)
         {
-            var btn = (Button)sender;
-            
-            if(!(btn.DataContext is BinStatusInfo))
+            var layer = _popLayers.FirstOrDefault();
+            if (layer == null)
             {
-                return;
+                goto finish;
             }
-            var obj = (BinStatusInfo)btn.DataContext;
-            obj.CommId = Global.LPM.FillBin(obj.BinId);
-        }
-
-        private void Button_Click_10(object sender, RoutedEventArgs e)
-        {
-            Global.BindingInfo.SysLog.Clear();
-        }
-
-        private void Button_Click_11(object sender, RoutedEventArgs e)
-        {
-            Global.BindingInfo.DebugLog.Clear();
+            layer.Action();
+            finish:
+            removeFirstLayer();
         }
     }
     /// <summary>
@@ -1177,5 +1283,14 @@ namespace ZEHOU.PM.Label
         public string Header { get; set; }
         public string Source { get; set; }
         public string Name { get; set; }
+    }
+
+    public class PopLayer
+    {
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public string Btn1Name { get; set; }
+        public string Btn2Name { get; set; }
+        public Action Action { get; set; }
     }
 }

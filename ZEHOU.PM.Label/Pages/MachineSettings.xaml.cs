@@ -182,7 +182,7 @@ namespace ZEHOU.PM.Label
 
         private (byte len, ushort[] array) getLocalParams() {
             var paramArr = _binding.Params.SelectMany(a=>a.List).ToList();
-            var len = (byte)paramArr.Count;
+            var len = (byte)(paramArr.Max(a=>a.Index)+1);
             var index = 0;
             var array = new ushort[len].Select(a => {
                 var i = index++;

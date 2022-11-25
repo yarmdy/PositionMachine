@@ -21,7 +21,7 @@
         <local:IsHideLeftTextConvert x:Key="ishidelefttextconvert"></local:IsHideLeftTextConvert>
         <local:IsHideLeftVisConvert x:Key="ishideleftvisconvert"></local:IsHideLeftVisConvert>
     </Window.Resources>
-    <Grid>
+    <Grid Name="gdMain">
         <DockPanel LastChildFill="True">
             <Menu DockPanel.Dock="Top" FontSize="16">
                 <MenuItem Header="功能菜单" Name="menuAct">
@@ -364,6 +364,11 @@
                     </ListView>
                 </Grid>
             </DockPanel>
+        </Grid>
+        <Grid Background="AliceBlue" Width="800" Height="450" Name="gdPop" Visibility="Collapsed">
+            <Label Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Name="lbContent"></Label>
+            <Button Content="重试" HorizontalAlignment="Left" Margin="541,353,0,0" VerticalAlignment="Top" Width="96" Height="36" IsDefault="True" Visibility="Collapsed" Name="btnRetry" Click="btnRetry_Click" />
+            <Button Content="确定" HorizontalAlignment="Left" Margin="667,353,0,0" VerticalAlignment="Top" Width="96" Height="36" IsDefault="True" Name="btnOK" Click="btnOK_Click"/>
         </Grid>
     </Grid>
 </local:ZHWindow>

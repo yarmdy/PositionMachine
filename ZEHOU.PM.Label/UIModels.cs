@@ -131,6 +131,7 @@ namespace ZEHOU.PM.Label
             set { _IsHideLeft = value; if (PropertyChanged == null) return; PropertyChanged(this, new PropertyChangedEventArgs("IsHideLeft")); }
         }
 
+        public object SysLogLocker { get; set; }=new object();
         /// <summary>
         /// 系统日志
         /// </summary>
@@ -141,9 +142,15 @@ namespace ZEHOU.PM.Label
         public string SysLogStr
         {
             get {
-                return string.Join("\r\n",SysLog);
+                string res;
+                lock (SysLogLocker)
+                {
+                    res= string.Join("\r\n", SysLog);
+                }
+                return res;
             }
         }
+        public object DebugLogLocker { get; set; } = new object();
         /// <summary>
         /// 调试日志
         /// </summary>
@@ -155,7 +162,12 @@ namespace ZEHOU.PM.Label
         {
             get
             {
-                return string.Join("\r\n", DebugLog);
+                string res;
+                lock (DebugLogLocker)
+                {
+                    res= string.Join("\r\n", DebugLog);
+                }
+                return res;
             }
         }
         /// <summary>
@@ -165,7 +177,11 @@ namespace ZEHOU.PM.Label
         {
             get
             {
-                var msg = SysLog.LastOrDefault() ?? "";
+                string msg;
+                lock (SysLogLocker)
+                {
+                    msg = SysLog.LastOrDefault() ?? "";
+                }
 
                 return msg.Length >= 13 ? msg.Substring(13) : msg;
             }
