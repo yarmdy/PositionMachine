@@ -6,7 +6,7 @@
         <StackPanel Orientation="Vertical" Width="6.5cm">
             <Label Height="0.3cm" Padding="0">回执单打印{pat:ID}{pat:Name}</Label>
             <Label HorizontalAlignment="Right" Height="0.3cm" Padding="0">{pat:Name}{oth:Now} {oth:Count}</Label>
-            <ui:UIBarCode PicHeight="2cm" PicWidth="6cm" Code="{pat:ID}"></ui:UIBarCode>
+            <ui:UIBarCode  PicHeight="2cm" PicWidth="6cm" Width="6cm" Height="2cm" Code="{pat:ID}"></ui:UIBarCode>
             <StackPanel Orientation="Vertical">
                 {lst:<Label>{tub:Index}、{tub:BarCode} {tub:LS03} {tub:LS05}</Label>}
             </StackPanel>

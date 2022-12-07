@@ -20,6 +20,12 @@ using System.Windows.Xps.Packaging;
 using System.Windows.Xps;
 using NPOI.SS.Formula.Functions;
 using static System.Net.Mime.MediaTypeNames;
+using System.Drawing.Printing;
+using System.Printing;
+using Spire.Pdf;
+using static NPOI.HSSF.Util.HSSFColor;
+using System.Windows.Forms;
+using Spire.Pdf.Texts;
 
 namespace ZEHOU.PM.Label
 {
@@ -129,7 +135,7 @@ namespace ZEHOU.PM.Label
             Uri DocumentUri = new Uri("pack://InMemoryDocument.xps");
             PackageStore.RemovePackage(DocumentUri);
             PackageStore.AddPackage(DocumentUri, package);
-            XpsDocument xpsDocument = new XpsDocument(package, CompressionOption.Fast, DocumentUri.AbsoluteUri);
+            XpsDocument xpsDocument = new XpsDocument(package, CompressionOption.NotCompressed, DocumentUri.AbsoluteUri);
 
             //将flow document写入基于内存的xps document中去
             XpsDocumentWriter writer = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
@@ -143,9 +149,27 @@ namespace ZEHOU.PM.Label
         }
 
         public void Print() {
-            var pd = new PrintDialog();
-            pd.PrintDocument(((IDocumentPaginatorSource)FlowDoc).DocumentPaginator, "回执单");
+            //var pd = new PrintDialog();
+            //pd.PrintDocument(((IDocumentPaginatorSource)FlowDoc).DocumentPaginator, "回执单");
+
+            var xpsfile = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory,$"{DateTime.Now.Ticks}.xps");
+            if (File.Exists(xpsfile))
+            {
+                File.Delete(xpsfile);
+            }
+            var doc = new XpsDocument(xpsfile, FileAccess.ReadWrite);
+            XpsDocumentWriter writer = XpsDocument.CreateXpsDocumentWriter(doc);
+            writer.Write(((IDocumentPaginatorSource)FlowDoc).DocumentPaginator);
+            doc.Close();
+            
+
+            PdfDocument pdfdoc = new PdfDocument();
+            pdfdoc.LoadFromXPS(xpsfile);
+            //File.Delete(xpsfile);
+            pdfdoc.Print();
+            
         }
+
 
         public class BackOrderOtherInfo
         {

@@ -53,6 +53,7 @@ namespace ZEHOU.PM.Label.UI
             ms.Position = 0;
             ImageSourceConverter imgcvtr = new ImageSourceConverter();
             imgBarCode.Source = (ImageSource)imgcvtr.ConvertFrom(ms);
+            img.Save($"d:\\barcode\\{DateTime.Now.Ticks}.bmp");
         }
 
 

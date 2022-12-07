@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" FontSize="16" SizeChanged="UserControl_SizeChanged">
     <DockPanel LastChildFill="True">
-        <Image x:Name="imgBarCode" Stretch="None"></Image>
+        <Image x:Name="imgBarCode" Stretch="Fill"></Image>
     </DockPanel>
     
 </UserControl>

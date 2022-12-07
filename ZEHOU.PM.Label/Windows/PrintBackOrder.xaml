@@ -15,7 +15,7 @@
                     <StackPanel Orientation="Vertical" Width="6.5cm">
                         <Label Height="0.3cm" Padding="0">回执单打印</Label>
                         <Label HorizontalAlignment="Right" Height="0.3cm" Padding="0">2022-10-10 10:00:01</Label>
-                        <ui:UIBarCode PicHeight="2cm" PicWidth="6cm" Code="202201070012"></ui:UIBarCode>
+                        <ui:UIBarCode  PicHeight="1cm" PicWidth="3cm" Width="6cm" Height="2cm" Code="202201070012"></ui:UIBarCode>
                     </StackPanel>
                 </Paragraph>
             </FlowDocument>
