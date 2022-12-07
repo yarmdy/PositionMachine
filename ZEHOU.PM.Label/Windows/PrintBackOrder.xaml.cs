@@ -152,7 +152,11 @@ namespace ZEHOU.PM.Label
             //var pd = new PrintDialog();
             //pd.PrintDocument(((IDocumentPaginatorSource)FlowDoc).DocumentPaginator, "回执单");
 
-            var xpsfile = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory,$"{DateTime.Now.Ticks}.xps");
+            var dir = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"xps");
+            var xpsfile = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory,$"xps\\{DateTime.Now.Ticks}.xps");
+            if (!Directory.Exists(dir)) { 
+                Directory.CreateDirectory(dir);
+            }
             if (File.Exists(xpsfile))
             {
                 File.Delete(xpsfile);
