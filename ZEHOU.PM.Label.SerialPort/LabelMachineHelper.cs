@@ -187,7 +187,7 @@ namespace ZEHOU.PM.Label.SerialPort
                             break;
                         case (byte)EnumGOWORKComm.DROPTUBECONFIRM:
                             {
-                                if (OnBackLightTest != null)
+                                if (OnBackDropTubeConfirm != null)
                                 {
                                     OnBackDropTubeConfirm(dataPackage);
                                 }
@@ -195,7 +195,7 @@ namespace ZEHOU.PM.Label.SerialPort
                             break;
                         case (byte)EnumGOWORKComm.FILLBIN:
                             {
-                                if (OnBackLightTest != null)
+                                if (OnBackFillBin != null)
                                 {
                                     OnBackFillBin(dataPackage);
                                 }
