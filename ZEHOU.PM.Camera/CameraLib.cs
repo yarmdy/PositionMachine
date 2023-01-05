@@ -22,7 +22,7 @@ namespace ZEHOU.PM.Camera
             var res = new List<CameraDevice>();
             foreach (FilterInfo dev in filter)
             {
-                res.Add(new CameraDeviceSetter ( dev.Name, dev.MonikerString ));
+                res.Add(new CameraDeviceSetter (dev.MonikerString, dev.Name));
             }
             return res;
         }
@@ -37,7 +37,7 @@ namespace ZEHOU.PM.Camera
         protected string _Id;
         protected string _Name;
         private VideoCaptureDevice _Device;
-        public event Action<ImageSource> OnNewFrame;
+        public event Action<Func<ImageSource>> OnNewFrame;
         public string Id
         {
             get { return _Id; }
@@ -68,10 +68,14 @@ namespace ZEHOU.PM.Camera
         private void _Device_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
         {
             if (OnNewFrame == null) return;
-            var intptr = eventArgs.Frame.GetHbitmap();
-            var img = Imaging.CreateBitmapSourceFromHBitmap(intptr, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-            DeleteObject(intptr);
-            OnNewFrame(img);
+            
+            OnNewFrame(() => {
+                var bmp = (Bitmap)eventArgs.Frame.Clone();
+                var intptr = bmp.GetHbitmap();
+                var img = Imaging.CreateBitmapSourceFromHBitmap(intptr, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                DeleteObject(intptr);
+                return img;
+            });
         }
     }
     class CameraDeviceSetter:CameraDevice

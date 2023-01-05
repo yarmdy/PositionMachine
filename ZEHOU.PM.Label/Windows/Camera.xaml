@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZEHOU.PM.Label"
         mc:Ignorable="d"
-        Title="摄像头" Height="524" Width="577" WindowStartupLocation="CenterScreen" Closed="ZHWindow_Closed">
+        Title="摄像头" Height="376" Width="577" WindowStartupLocation="CenterScreen" Closed="ZHWindow_Closed">
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
             <Button DockPanel.Dock="Left" Click="Button_Click">窗口固定</Button>

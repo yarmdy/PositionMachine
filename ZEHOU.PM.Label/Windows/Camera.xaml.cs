@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NPOI.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -58,9 +59,9 @@ namespace ZEHOU.PM.Label
             device.Start();
         }
 
-        private void Device_OnNewFrame(ImageSource obj)
+        private void Device_OnNewFrame(Func<ImageSource> obj)
         {
-            imgCamera.Source = obj;
+            Dispatcher.Invoke(()=>imgCamera.Source=obj());
         }
 
         private class SelectObj

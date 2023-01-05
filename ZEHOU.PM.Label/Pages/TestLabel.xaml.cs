@@ -154,7 +154,7 @@ namespace ZEHOU.PM.Label
                 obj.Add(labelinfo);
             }
             var dlg = new PrintBackOrder(obj);
-            dlg.ShowDialog();
+            dlg.Print();
             dlg.Close();
         }
     }
