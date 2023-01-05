@@ -159,6 +159,9 @@
     <Compile Include="UI\UIBarCode.xaml.cs">
       <DependentUpon>UIBarCode.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Camera.xaml.cs">
+      <DependentUpon>Camera.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\BinUpdate.xaml.cs">
       <DependentUpon>BinUpdate.xaml</DependentUpon>
     </Compile>
@@ -274,6 +277,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\UIBarCode.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\Camera.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -527,6 +534,10 @@
     <ProjectReference Include="..\ZEHOU.PM.Bll\ZEHOU.PM.Bll.csproj">
       <Project>{d04ae38a-8304-4977-9841-aeba8d2db443}</Project>
       <Name>ZEHOU.PM.Bll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ZEHOU.PM.Camera\ZEHOU.PM.Camera.csproj">
+      <Project>{ca024a72-5282-4c80-90a8-4a27b3587dcd}</Project>
+      <Name>ZEHOU.PM.Camera</Name>
     </ProjectReference>
     <ProjectReference Include="..\ZEHOU.PM.Command\ZEHOU.PM.Command.csproj">
       <Project>{6b07dc3f-0ad3-4021-a6e4-9ec26d665241}</Project>

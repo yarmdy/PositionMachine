@@ -103,6 +103,11 @@
                         <TextBlock Text="{Binding SysInfo.MachineStatus,Converter={StaticResource machinestatusconvert}}"></TextBlock>
                     </StackPanel>
                 </StatusBarItem>
+                <StatusBarItem Name="CameraBar" MouseDown="CameraBar_MouseDown" Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock>摄像头</TextBlock>
+                    </StackPanel>
+                </StatusBarItem>
                 <StatusBarItem>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock>排队剩余时间：</TextBlock>

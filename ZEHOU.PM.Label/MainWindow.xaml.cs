@@ -48,6 +48,7 @@ namespace ZEHOU.PM.Label
             Global.LabelController.StartRemainingTimer();
             initPrinter();
             initPassiveClass();
+            initCamera();
         }
 
         private List<PopLayer> _popLayers = new List<PopLayer>();
@@ -407,6 +408,15 @@ namespace ZEHOU.PM.Label
             }
             Global.PassiveClass = new PassiveClass();
             Global.PassiveClass.Start();
+        }
+
+        private void initCamera() {
+            var devList =  ZEHOU.PM.Camera.CameraLib.GetDeviceList();
+            if (devList.Count <= 0)
+            {
+                return;
+            }
+            CameraBar.Visibility = Visibility.Visible;
         }
         #endregion
 
@@ -1283,6 +1293,15 @@ namespace ZEHOU.PM.Label
             layer.Action();
             finish:
             removeFirstLayer();
+        }
+
+        private void CameraBar_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (Global.CameraWindow == null)
+            {
+                Global.CameraWindow = new Camera();
+            }
+            Global.CameraWindow.Show();
         }
     }
     /// <summary>

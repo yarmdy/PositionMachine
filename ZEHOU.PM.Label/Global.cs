@@ -38,6 +38,7 @@ namespace ZEHOU.PM.Label
         public static ZEHOU.PM.DB.dbLabelInfo.Post LocalPost { get; set; }
 
         public static MainWindow MainWindow { get; set; }
+        public static Camera CameraWindow { get; set; }
         public static AutoLabel AutoLabel { get; set; }
 
         public static TabControl TabControl { get; set; }
