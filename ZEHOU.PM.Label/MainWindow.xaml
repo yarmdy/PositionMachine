@@ -374,6 +374,7 @@
             <Label Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Name="lbContent"></Label>
             <Button Content="重试" HorizontalAlignment="Left" Margin="541,353,0,0" VerticalAlignment="Top" Width="96" Height="36" IsDefault="True" Visibility="Collapsed" Name="btnRetry" Click="btnRetry_Click" />
             <Button Content="确定" HorizontalAlignment="Left" Margin="667,353,0,0" VerticalAlignment="Top" Width="96" Height="36" IsDefault="True" Name="btnOK" Click="btnOK_Click"/>
+            <Button Content="帮助" HorizontalAlignment="Right" Margin="0 20 20 0" VerticalAlignment="Top" Background="Transparent" BorderBrush="Blue" BorderThickness="0 0 0 1" Foreground="Blue" Name="btnHelp" Click="btnHelp_Click"/>
         </Grid>
     </Grid>
 </local:ZHWindow>

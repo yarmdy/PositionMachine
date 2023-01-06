@@ -22,6 +22,7 @@ using ZEHOU.PM.DB.dbLabelInfo;
 using ZEHOU.PM.Label.UI;
 using System.Threading;
 using System.Runtime.Remoting.Contexts;
+using System.Windows.Interop;
 
 namespace ZEHOU.PM.Label
 {
@@ -49,6 +50,8 @@ namespace ZEHOU.PM.Label
             initPrinter();
             initPassiveClass();
             initCamera();
+
+            
         }
 
         private List<PopLayer> _popLayers = new List<PopLayer>();
@@ -845,14 +848,17 @@ namespace ZEHOU.PM.Label
 
                 if (obj.Data[0] == 0xa4)
                 {
-                    UILog.Info($"下位机“{msg}”，点击【确定】继续，点击【取消】停止所有贴标任务");
+                    UILog.Info($"下位机“{msg}”，点击【继续】继续贴标，点击【停止】停止所有贴标任务");
                     MessageBoxResult diaresault = MessageBoxResult.None;
                     Dispatcher.Invoke(() => {
-                        diaresault = UI.Popup.Confirm(Global.MainWindow, $"下位机“{msg}”，点击【确定】继续，点击【取消】停止所有贴标任务");
+                        //diaresault = UI.Popup.Confirm(Global.MainWindow, $"下位机“{msg}”，点击【确定】继续，点击【取消】停止所有贴标任务");
+                        PopupMessage pmdia = new PopupMessage("操作提示", $"下位机“{msg}”，点击【继续】继续贴标，点击【停止】停止所有贴标任务", "停止", "继续", obj.Data[0]);
+                        
+                        diaresault = (pmdia.ShowDialog() ?? false)?MessageBoxResult.OK:MessageBoxResult.Cancel;
                     });
                     if (diaresault != MessageBoxResult.OK)
                     {
-                        UILog.Info($"下位机“{msg}”，选择【取消】");
+                        UILog.Info($"下位机“{msg}”，选择【停止】");
                         Global.LPM.FaultConfirm(2);
 
                         foreach (var tube in Global.BindingInfo.LabelQueue)
@@ -866,7 +872,7 @@ namespace ZEHOU.PM.Label
                         Global.LabelController.CancelLabelList();
                         return;
                     }
-                    UILog.Info($"下位机“{msg}”，选择【确定】");
+                    UILog.Info($"下位机“{msg}”，选择【继续】");
                     Global.LPM.FaultConfirm(1);
                     return;
                 }
@@ -932,7 +938,8 @@ namespace ZEHOU.PM.Label
                             {
                                 finishiOne.TubeLabelStatus = 0;
                                 Global.LabelController.SendLabelList();
-                            }
+                            },
+                            Code = obj.Data[0]
                         });
                     });
 
@@ -1024,7 +1031,8 @@ namespace ZEHOU.PM.Label
                                     Thread.Sleep(500);
                                     Global.LabelController.SendLabelList();
                                 });
-                            }
+                            },
+                            Code = obj.Data[0]
                         });
                     });
                 }
@@ -1035,15 +1043,18 @@ namespace ZEHOU.PM.Label
                         UILog.Info($"下位机“{msg}”，但是无法定位试管编号");
                         return;
                     }
-                    UILog.Info($"【{localLabel.TubeInfo.BarCode}】下位机“{msg}”，点击【确定】重试");
+                    UILog.Info($"【{localLabel.TubeInfo.BarCode}】下位机“{msg}”，点击【重试】重新贴标，点击【停止】停止所有贴标任务");
                     MessageBoxResult diaresault = MessageBoxResult.None;
                     Dispatcher.Invoke(() => {
-                        diaresault = UI.Popup.Confirm(Global.MainWindow, $"{localLabel.TubeInfo.BarCode}下位机“{msg}”，点击【确定】重试");
+                        //diaresault = UI.Popup.Confirm(Global.MainWindow, $"{localLabel.TubeInfo.BarCode}下位机“{msg}”，点击【确定】重试");
+                        PopupMessage pmdia = new PopupMessage("操作提示", $"【{localLabel.TubeInfo.BarCode}】下位机“{msg}”，点击【重试】重新贴标，点击【停止】停止所有贴标任务", "停止", "重试", obj.Data[0]);
+
+                        diaresault = (pmdia.ShowDialog() ?? false) ? MessageBoxResult.OK : MessageBoxResult.Cancel;
                     });
 
                     if (diaresault != MessageBoxResult.OK)
                     {
-                        UILog.Info($"【{localLabel.TubeInfo.BarCode}】下位机“{msg}”，选择【取消】");
+                        UILog.Info($"【{localLabel.TubeInfo.BarCode}】下位机“{msg}”，选择【停止】");
                         localLabel.TubeLabelStatus = -obj.Data[0];
                         localLabel = null;
                         Global.LPM.FaultConfirm(2);
@@ -1061,7 +1072,7 @@ namespace ZEHOU.PM.Label
                         }
                         goto dropGuanResualt;
                     }
-                    UILog.Info($"【{localLabel.TubeInfo.BarCode}】下位机“{msg}”，选择【确定】");
+                    UILog.Info($"【{localLabel.TubeInfo.BarCode}】下位机“{msg}”，选择【重试】");
                     localLabel.SendTime = DateTime.Now;
                     Global.LPM.FaultConfirm(1);
 
@@ -1303,6 +1314,16 @@ namespace ZEHOU.PM.Label
             }
             Global.CameraWindow.Show();
         }
+
+        private void btnHelp_Click(object sender, RoutedEventArgs e)
+        {
+            var layer = _popLayers.FirstOrDefault();
+            if (layer == null)
+            {
+                return;
+            }
+            var errCode = layer.Code;
+        }
     }
     /// <summary>
     /// tab源
@@ -1320,5 +1341,7 @@ namespace ZEHOU.PM.Label
         public string Btn1Name { get; set; }
         public string Btn2Name { get; set; }
         public Action Action { get; set; }
+
+        public byte Code { get; set; }
     }
 }
