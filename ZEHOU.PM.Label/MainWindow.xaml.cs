@@ -1323,6 +1323,9 @@ namespace ZEHOU.PM.Label
                 return;
             }
             var errCode = layer.Code;
+            var convertor = new TubeStatusConvert();
+            var desc = convertor.ConvertDesc(-errCode,null,null,null);
+            Popup.Succ(this,desc+"");
         }
     }
     /// <summary>

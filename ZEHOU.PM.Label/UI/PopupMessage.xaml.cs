@@ -49,6 +49,9 @@ namespace ZEHOU.PM.Label.UI
         private void btnHelp_Click(object sender, RoutedEventArgs e)
         {
             var errCode = _code??0;
+            var convertor = new TubeStatusConvert();
+            var desc = convertor.ConvertDesc(-errCode, null, null, null);
+            Popup.Succ(this, desc + "");
         }
     }
 }

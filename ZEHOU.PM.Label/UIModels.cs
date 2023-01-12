@@ -895,6 +895,67 @@ namespace ZEHOU.PM.Label
         {
             return null;
         }
+
+        public object ConvertDesc(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if ((int)value == 0)
+            {
+                return "等待贴标";
+            }
+            if ((int)value == -0xd1)
+            {
+                return "补管后点击【补管重试】重新贴标，点击【忽略】停止相关试管贴标。";
+            }
+            if ((int)value == -0xd2)
+            {
+                return "贴标条码与目标不匹配，点击【重试】重新贴标，点击【忽略】忽略当前试管。";
+            }
+            if ((int)value == -0xd3)
+            {
+                return "贴标试管没有检测到条码，点击【重试】重新贴标，点击【忽略】忽略当前试管。";
+            }
+            if ((int)value == -0xd4)
+            {
+                return "巡边故障";
+            }
+            if ((int)value == -0xa1)
+            {
+                return "检查滑台轨道有无异物阻挡，点击【重试】重新贴标，点击【停止】停止所有贴标任务。";
+            }
+            if ((int)value == -0xa2)
+            {
+                return "贴标位置有无异物阻挡，点击【重试】重新贴标，点击【停止】停止所有贴标任务。";
+            }
+            if ((int)value == -0xa3)
+            {
+                return "贴标位置有无异物阻挡，点击【重试】重新贴标，点击【停止】停止所有贴标任务。";
+            }
+            if ((int)value == -0xa4)
+            {
+                return "贴标位置有无异物阻挡，点击【重试】重新贴标，点击【停止】停止所有贴标任务。";
+            }
+            if ((int)value == -0xe1)
+            {
+                return "巡边故障";
+            }
+            if ((int)value == -0xff)
+            {
+                return "超时";
+            }
+            if ((int)value == 1)
+            {
+                return "已发送";
+            }
+            if ((int)value == 10)
+            {
+                return "已接收";
+            }
+            if ((int)value == 100)
+            {
+                return "贴标完成";
+            }
+            return "未知";
+        }
     }
     /// <summary>
     /// 剩余时间转换
