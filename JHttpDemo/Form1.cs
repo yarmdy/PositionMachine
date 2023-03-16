@@ -23,6 +23,15 @@ namespace JHttpDemo
             var res = http.Get(textBox1.Text);
 
             textBox2.Text = res;
+            var obj = JDynamicObject.Create(res);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var res = http.POST(textBox1.Text, null, new { id="1",name="aa"});
+
+            textBox2.Text = res;
+            var obj = JDynamicObject.Create(res);
         }
     }
 }

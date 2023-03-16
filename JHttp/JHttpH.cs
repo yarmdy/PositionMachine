@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace JHttp
 {
@@ -23,22 +24,28 @@ namespace JHttp
         const string defAccept_Language = "Accept_Language";
         const string defCache_Control = "no-cache";
         const string defConnection = "keep-alive";
+        const string defContent_Type = "application/json; charset=utf-8";
         const string defHost = "";
         const string defPragma = "no-cache";
         const string defUpgrade_Insecure_Requests = "1";
         const string defUser_Agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36";
         #endregion
+
+        #region 头header
         public string Accept { get; set; } = defAccept;
         public string Accept_Encoding { get; set; } = defAccept_Encoding;
         public string Accept_Language { get; set; } = defAccept_Language;
         public string Cache_Control { get; set; } = defCache_Control;
         public string Connection { get; set; } = defConnection;
+        public string Content_Type { get; set; } = defContent_Type;
         public Dictionary<string, string> Cookie { get; set; } = new Dictionary<string, string>();
         public string Host { get; set; } = defHost;
         public string Pragma { get; set; } = defPragma;
         public string Upgrade_Insecure_Requests { get; set; } = defUpgrade_Insecure_Requests;
         public string User_Agent { get; set; } = defUser_Agent;
+        #endregion
 
+        #region GET
         public string Get(string url)
         {
             return Get(url, null, null);
@@ -49,63 +56,129 @@ namespace JHttp
         }
         public string Get(string url, object headers, object bodys)
         {
-            var bodysDic = UnnamedHelper.ObjToDic<string>(bodys);
-            var urlF = $"{url}{(bodysDic.Count > 0 ? "?" : "")}{string.Join("&", bodysDic.Select(a => $"{a.Key}={HttpUtility.UrlEncode(a.Value)}"))}";
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlF);
-            var header = defaultHeader();
-            header.CopyFrom(headers);
-            var headerkv = toHeaderDic(header.ToDic<string>());
-            headerkv.Select(a => {
-                SetHeaderValue(request.Headers, a.Key, a.Value);
-                return 0;
-            }).ToArray();
-            WebResponse req;
+            return Request(enumMethod.GET,url,headers,bodys);
+        }
+        #endregion
+
+        #region POST
+        public string POST(string url)
+        {
+            return POST(url, null, null);
+        }
+        public string POST(string url,  object bodys)
+        {
+            return POST(url, null, bodys);
+        }
+        public string POST(string url, object headers, object bodys)
+        {
+            return Request(enumMethod.POST,url,headers,bodys);
+        }
+        #endregion
+
+        #region request
+        private string Request(enumMethod method,string url, object headers, object bodys)
+        {
             try
             {
-                req = request.GetResponse();
+                var bodysDic = UnnamedHelper.ObjToDic<string>(bodys);
+                var turl = url;
+                if (method == enumMethod.GET)
+                {
+                    turl= $"{url}{(bodysDic.Count > 0 ? "?" : "")}{string.Join("&", bodysDic.Select(a => $"{a.Key}={HttpUtility.UrlEncode(a.Value)}"))}";
+                }
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(turl);
+                var header = defaultHeader();
+                header.CopyFrom(headers);
+                var headerkv = toHeaderDic(header.ToDic<string>());
+                headerkv.Select(a => {
+                    SetHeaderValue(request.Headers, a.Key, a.Value);
+                    return 0;
+                }).ToArray();
+                request.Method = method.ToString();
+                if (method == enumMethod.POST)
+                {
+                    var instream = request.GetRequestStream();
+                    var indata = Encoding.GetEncoding("utf-8").GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(bodys));
+                    instream.Write(indata, 0, indata.Length);
+                }
+                
+                WebResponse req;
+                try
+                {
+                    req = request.GetResponse();
+                }
+                catch (WebException ex)
+                {
+                    req = ex.Response;
+                }
+                processHeader(req);
+                var stream = req.GetResponseStream();
+                var encoding = req.Headers["Content-Encoding"] + "";
+                var data = new byte[0];
+                if (encoding.Contains("gzip"))
+                {
+                    data = decompress(stream);
+                }
+                else
+                {
+                    data = getReqData(req, stream);
+                }
+
+                var contentType = req.Headers["Content-Type"] + "";//text/html; charset=utf-8
+                var reg = new System.Text.RegularExpressions.Regex(@"^\s*(.+?)\s*\/\s*(.+?)\s*(?:;\s*charset\s*=\s*(.+?)){0,1}\s*$");
+                var match = reg.Match(contentType);
+                var textencoding = "utf-8";
+                if (match.Success && match.Groups.Count == 4 && match.Groups[3].Value != "")
+                {
+                    textencoding = match.Groups[3].Value;
+                }
+                return Encoding.GetEncoding(textencoding).GetString(data);
             }
-            catch (WebException ex)
+            catch (Exception ex)
             {
-                req = ex.Response;
-            }
-            processHeader(req);
-            var stream = req.GetResponseStream();
-            var encoding = req.Headers["Content-Encoding"];
-            var data = new byte[0];
-            if (encoding.Contains("gzip"))
-            {
-                data = decompress(stream);
-            }
-            else {
-                data=new byte[stream.Length];
-                stream.Read(data,0,data.Length);
+                return "";
             }
 
-            var contentType = req.Headers["Content-Type"];//text/html; charset=utf-8
-            var reg = new System.Text.RegularExpressions.Regex(@"^\s*(.+?)\s*\/\s*(.+?)\s*(?:;\s*charset\s*=\s*(.+?)){0,1}\s*$");
-            var match = reg.Match(contentType);
-            var textencoding = "utf-8";
-            if (match.Success && match.Groups.Count==4 && match.Groups[3].Value!="") { 
-                textencoding = match.Groups[3].Value;
-            }
-            return Encoding.GetEncoding(textencoding).GetString(data);
+        }
+        #endregion
+
+        private enum enumMethod { 
+            GET=1,
+            POST=2
         }
 
-        private void processHeader(WebResponse req) {
+        #region 私有
+
+
+
+        private byte[] getReqData(WebResponse req,Stream stream) {
+            var listd = new List<byte>();
+            var tmp = new byte[2048];
+            var pos = 0;
+            while (pos < req.ContentLength)
+            {
+                var len = stream.Read(tmp, pos, tmp.Length);
+                pos += len;
+                listd.AddRange(tmp.Take(len));
+            }
+            return listd.ToArray();
+        }
+        private void processHeader(WebResponse req)
+        {
             var hdic = req.Headers.AllKeys.ToDictionary(a => a, a => req.Headers[a]);
             var setCookie = req.Headers["Set-Cookie"] + "";
             var reg = new System.Text.RegularExpressions.Regex(@"(?<!expires\=[A-Z][a-z]{2})\,");
             var cookies = reg.Split(setCookie);
             cookies.ToList().ForEach(a => {
                 var cps = a.Split(';');
-                var cp=cps[0];
+                var cp = cps[0];
                 var findex = cp.IndexOf("=");
                 if (findex < 0)
                 {
                     return;
                 }
-                var key = cp.Substring(0,findex);
-                var value = cp.Substring(findex+1);
+                var key = cp.Substring(0, findex);
+                var value = cp.Substring(findex + 1);
                 if (key == "")
                 {
                     return;
@@ -116,7 +189,7 @@ namespace JHttp
 
         private Dictionary<string, T> toHeaderDic<T>(Dictionary<string, T> dic)
         {
-            return dic.ToDictionary(a=> a.Key.Replace("_", "-"),a=>a.Value);
+            return dic.ToDictionary(a => a.Key.Replace("_", "-"), a => a.Value);
         }
         private object defaultHeader()
         {
@@ -127,6 +200,7 @@ namespace JHttp
                 Accept_Language = Accept_Language,
                 Cache_Control = Cache_Control,
                 Connection = Connection,
+                Content_Type=Content_Type,
                 Cookie = string.Join("; ", Cookie.Select(a => $"{a.Key}={a.Value}")),
                 Host = Host,
                 Pragma = Pragma,
@@ -135,7 +209,7 @@ namespace JHttp
             };
         }
 
-        public void SetHeaderValue(WebHeaderCollection header, string name, string value)
+        private void SetHeaderValue(WebHeaderCollection header, string name, string value)
         {
             var property = typeof(WebHeaderCollection).GetProperty("InnerCollection",
                 System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
@@ -163,6 +237,7 @@ namespace JHttp
                 }
             }
         }
+        #endregion
     }
 
     /// <summary>
