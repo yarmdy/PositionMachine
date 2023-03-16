@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JHttpDemo", "JHttpDemo\JHttpDemo.csproj", "{B8B2AA6E-7EF9-4777-B57B-29CECB1C0F49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JHttp", "JHttp\JHttp.csproj", "{5462AE0B-143C-463D-9645-31B79FB3CDB5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B8B2AA6E-7EF9-4777-B57B-29CECB1C0F49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8B2AA6E-7EF9-4777-B57B-29CECB1C0F49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8B2AA6E-7EF9-4777-B57B-29CECB1C0F49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8B2AA6E-7EF9-4777-B57B-29CECB1C0F49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5462AE0B-143C-463D-9645-31B79FB3CDB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5462AE0B-143C-463D-9645-31B79FB3CDB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5462AE0B-143C-463D-9645-31B79FB3CDB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5462AE0B-143C-463D-9645-31B79FB3CDB5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {95238D9D-157E-43F8-A58E-0F6977DACA13}
+	EndGlobalSection
+EndGlobal
