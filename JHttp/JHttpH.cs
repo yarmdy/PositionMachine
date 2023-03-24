@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Runtime.InteropServices.ComTypes;
+using System.Linq.Expressions;
 
 namespace JHttp
 {
@@ -39,10 +40,13 @@ namespace JHttp
         public string Connection { get; set; } = defConnection;
         public string Content_Type { get; set; } = defContent_Type;
         public Dictionary<string, string> Cookie { get; set; } = new Dictionary<string, string>();
+        
         public string Host { get; set; } = defHost;
         public string Pragma { get; set; } = defPragma;
         public string Upgrade_Insecure_Requests { get; set; } = defUpgrade_Insecure_Requests;
         public string User_Agent { get; set; } = defUser_Agent;
+
+        public Dictionary<string, string> CustomHeader { get; set; } = new Dictionary<string, string>();
         #endregion
 
         #region GET
@@ -90,6 +94,13 @@ namespace JHttp
                 var header = defaultHeader();
                 header.CopyFrom(headers);
                 var headerkv = toHeaderDic(header.ToDic<string>());
+                CustomHeader.Select(a => {
+                    if (headerkv.ContainsKey(a.Key)) {
+                        return 0;
+                    }
+                    headerkv[a.Key] = a.Value;
+                    return 0;
+                }).ToArray();
                 headerkv.Select(a => {
                     SetHeaderValue(request.Headers, a.Key, a.Value);
                     return 0;
@@ -100,16 +111,22 @@ namespace JHttp
                     var instream = request.GetRequestStream();
                     var indata = Encoding.GetEncoding("utf-8").GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(bodys));
                     instream.Write(indata, 0, indata.Length);
+                    instream.Dispose();
                 }
                 
                 WebResponse req;
                 try
                 {
+                    request.Timeout = 1000;
                     req = request.GetResponse();
                 }
                 catch (WebException ex)
                 {
                     req = ex.Response;
+                }
+                if (req == null)
+                {
+                    return "";
                 }
                 processHeader(req);
                 var stream = req.GetResponseStream();
@@ -121,7 +138,7 @@ namespace JHttp
                 }
                 else
                 {
-                    data = getReqData(req, stream);
+                    data = getReqData(stream);
                 }
 
                 var contentType = req.Headers["Content-Type"] + "";//text/html; charset=utf-8
@@ -132,6 +149,8 @@ namespace JHttp
                 {
                     textencoding = match.Groups[3].Value;
                 }
+                stream.Dispose();
+                req.Dispose();
                 return Encoding.GetEncoding(textencoding).GetString(data);
             }
             catch (Exception ex)
@@ -151,16 +170,25 @@ namespace JHttp
 
 
 
-        private byte[] getReqData(WebResponse req,Stream stream) {
+        private byte[] getReqData(Stream stream) {
             var listd = new List<byte>();
             var tmp = new byte[2048];
             var pos = 0;
-            while (pos < req.ContentLength)
+            try
             {
-                var len = stream.Read(tmp, pos, tmp.Length);
-                pos += len;
-                listd.AddRange(tmp.Take(len));
+                while (true)
+                {
+                    var len = stream.Read(tmp, pos, tmp.Length);
+                    if (len <= 0)
+                    {
+                        break;
+                    }
+                    pos += len;
+                    listd.AddRange(tmp.Take(len));
+                }
             }
+            catch { }
+            
             return listd.ToArray();
         }
         private void processHeader(WebResponse req)

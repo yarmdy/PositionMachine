@@ -31,7 +31,7 @@ namespace PN532
             //    return cc;
             //}).ToArray();
 
-            pn532 = new PN532Helper("com5");
+            pn532 = new PN532Helper("com3");
             pn532.OnReceive += Pn532_OnReceive;
             pn532.OnSent += Pn532_OnSent;
             pn532.WakeUp();
