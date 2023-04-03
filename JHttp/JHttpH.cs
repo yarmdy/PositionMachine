@@ -26,7 +26,7 @@ namespace JHttp
         const string defCache_Control = "no-cache";
         const string defConnection = "keep-alive";
         const string defContent_Type = "application/json; charset=utf-8";
-        const string defHost = "";
+        const string defHost = null;
         const string defPragma = "no-cache";
         const string defUpgrade_Insecure_Requests = "1";
         const string defUser_Agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36";
@@ -137,6 +137,15 @@ namespace JHttp
                     data = decompress(stream);
                 }
                 else
+                if (encoding.Contains("deflate"))
+                {
+                    data = decompressDf(stream);
+                }
+                else if (encoding.Contains("br"))
+                {
+                    data = decompressBr(stream);
+                }
+                else
                 {
                     data = getReqData(stream);
                 }
@@ -176,16 +185,16 @@ namespace JHttp
             var pos = 0;
             try
             {
-                while (true)
+                do
                 {
                     var len = stream.Read(tmp, pos, tmp.Length);
                     if (len <= 0)
                     {
                         break;
                     }
-                    pos += len;
+                    //pos += len;
                     listd.AddRange(tmp.Take(len));
-                }
+                } while (true);
             }
             catch { }
             
@@ -257,6 +266,29 @@ namespace JHttp
         private static byte[] decompress(Stream compressStream)
         {
             using (var zipStream = new GZipStream(compressStream, CompressionMode.Decompress))
+            {
+                using (var resultStream = new MemoryStream())
+                {
+                    zipStream.CopyTo(resultStream);
+                    return resultStream.ToArray();
+                }
+            }
+        }
+
+        private static byte[] decompressDf(Stream compressStream)
+        {
+            using (var zipStream = new DeflateStream(compressStream, CompressionMode.Decompress))
+            {
+                using (var resultStream = new MemoryStream())
+                {
+                    zipStream.CopyTo(resultStream);
+                    return resultStream.ToArray();
+                }
+            }
+        }
+        private static byte[] decompressBr(Stream compressStream)
+        {
+            using (var zipStream = new Brotli.BrotliStream(compressStream, CompressionMode.Decompress))
             {
                 using (var resultStream = new MemoryStream())
                 {

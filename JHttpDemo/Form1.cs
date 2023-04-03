@@ -22,7 +22,8 @@ namespace JHttpDemo
         JHttpH http=new JHttpH();
         private void button1_Click(object sender, EventArgs e)
         {
-            var res = http.Get(textBox1.Text);
+            
+            var res = http.Get(textBox1.Text,new{ Accept_Encoding = "br,deflate,gzip" },null);
 
             textBox2.Text = res;
             var obj = JDynamicObject.Create(res);
@@ -30,7 +31,7 @@ namespace JHttpDemo
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var res = http.POST(textBox1.Text, null, new { id="1",name="aa"});
+            var res = http.POST(textBox1.Text, new { Accept_Encoding = "br" }, new { id="1",name="aa"});
 
             textBox2.Text = res;
             var obj = JDynamicObject.Create(res);
@@ -44,7 +45,7 @@ namespace JHttpDemo
         private void button3_Click(object sender, EventArgs e)
         {
             var body = new { username = "admin", password = Md5("admin") };
-            var res = http.Get("http://27.184.149.129:18080/api/user/login", body);
+            var res = http.Get("http://27.184.146.232:18080/api/user/login", body);
             textBox2.Text = res;
             var obj = JDynamicObject.Create(res);
             if (!(obj is string) && obj.code == 0)
@@ -60,7 +61,7 @@ namespace JHttpDemo
         private void button4_Click(object sender, EventArgs e)
         {
             var body = new { page = 1, count = 10 };
-            var res = http.Get("http://27.184.149.129:18080/api/device/query/devices", body);
+            var res = http.Get("http://27.184.146.232:18080/api/device/query/devices", body);
             textBox2.Text = res;
         }
 
@@ -77,13 +78,19 @@ namespace JHttpDemo
 
         private void button5_Click(object sender, EventArgs e)
         {
-            var res = http.Get("http://27.184.149.129:18080/api/device/query/devices/43000000801320000008");
+            var res = http.Get("http://27.184.146.232:18080/api/device/query/devices/43000000801320000008");
             textBox2.Text = res;
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            var res = http.Get("http://27.184.149.129:18080/api/device/query/tree/channel/43000000801320000008");
+            var res = http.Get("http://27.184.146.232:18080/api/device/query/devices/43000000801320000008/channels", new { page=1,count=10});
+            textBox2.Text = res;
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            var res = http.Get("http://27.184.146.232:18080/api/play/start/43000000801320000008/43000000801310000008", new { page=1,count=10});
             textBox2.Text = res;
         }
     }
