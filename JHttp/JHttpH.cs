@@ -25,7 +25,7 @@ namespace JHttp
         const string defAccept_Language = "Accept_Language";
         const string defCache_Control = "no-cache";
         const string defConnection = "keep-alive";
-        const string defContent_Type = "application/json; charset=utf-8";
+        const string defContent_Type = "application/x-www-form-urlencoded; charset=UTF-8";
         const string defHost = null;
         const string defPragma = "no-cache";
         const string defUpgrade_Insecure_Requests = "1";
@@ -86,9 +86,10 @@ namespace JHttp
             {
                 var bodysDic = UnnamedHelper.ObjToDic<string>(bodys);
                 var turl = url;
+                var bodyUrl = string.Join("&", bodysDic.Select(a => $"{a.Key}={HttpUtility.UrlEncode(a.Value)}"));
                 if (method == enumMethod.GET)
                 {
-                    turl= $"{url}{(bodysDic.Count > 0 ? "?" : "")}{string.Join("&", bodysDic.Select(a => $"{a.Key}={HttpUtility.UrlEncode(a.Value)}"))}";
+                    turl= $"{url}{(bodysDic.Count > 0 ? "?" : "")}{bodyUrl}";
                 }
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(turl);
                 var header = defaultHeader();
@@ -109,7 +110,8 @@ namespace JHttp
                 if (method == enumMethod.POST)
                 {
                     var instream = request.GetRequestStream();
-                    var indata = Encoding.GetEncoding("utf-8").GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(bodys));
+                    var indata = Encoding.GetEncoding("utf-8").GetBytes(bodyUrl);
+
                     instream.Write(indata, 0, indata.Length);
                     instream.Dispose();
                 }
@@ -250,7 +252,7 @@ namespace JHttp
         {
             var property = typeof(WebHeaderCollection).GetProperty("InnerCollection",
                 System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-            if (property != null)
+            if (property != null && value!=null)
             {
                 var collection = property.GetValue(header, null) as NameValueCollection;
                 collection[name] = value;

@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -91,6 +92,18 @@ namespace JHttpDemo
         private void button7_Click(object sender, EventArgs e)
         {
             var res = http.Get("http://27.184.146.232:18080/api/play/start/43000000801320000008/43000000801310000008", new { page=1,count=10});
+            textBox2.Text = res;
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            var res = http.POST("http://121.42.8.56:7502/Login/CheckLogin", new { account ="System", password = "4a7d1ed414474e4033ac29ccb8653d9b" });
+            textBox2.Text = res;
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            var res = http.Get("http://121.42.8.56:7502/BasicSettingModule/WaterCompany/LoadData?keywords=&beginTime=2019-01-01&endTime=2023-04-03&_search=false&nd=1680505468708&rows=30&page=1&sidx=&sord=desc");
             textBox2.Text = res;
         }
     }
