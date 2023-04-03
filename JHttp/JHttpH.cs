@@ -252,7 +252,7 @@ namespace JHttp
         {
             var property = typeof(WebHeaderCollection).GetProperty("InnerCollection",
                 System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-            if (property != null && value!=null)
+            if (property != null && !string.IsNullOrWhiteSpace(value))
             {
                 var collection = property.GetValue(header, null) as NameValueCollection;
                 collection[name] = value;

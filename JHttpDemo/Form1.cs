@@ -98,7 +98,12 @@ namespace JHttpDemo
         private void button8_Click(object sender, EventArgs e)
         {
             var res = http.POST("http://121.42.8.56:7502/Login/CheckLogin", new { account ="System", password = "4a7d1ed414474e4033ac29ccb8653d9b" });
-            textBox2.Text = res;
+            var resobj = JHttp.JDynamicObject.Create(res);
+            if(resobj is string)
+            {
+                resobj = JHttp.JDynamicObject.Create("{}");
+            }
+            textBox2.Text = $"{res}\r\n\r\nCode:{resobj.Code}\r\nMessage:{resobj.Message}";
         }
 
         private void button9_Click(object sender, EventArgs e)
