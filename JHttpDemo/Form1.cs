@@ -46,7 +46,7 @@ namespace JHttpDemo
         private void button3_Click(object sender, EventArgs e)
         {
             var body = new { username = "admin", password = Md5("admin") };
-            var res = http.Get("http://27.184.146.232:18080/api/user/login", body);
+            var res = http.Get("http://121.42.8.56:18080/api/user/login", body);
             textBox2.Text = res;
             var obj = JDynamicObject.Create(res);
             if (!(obj is string) && obj.code == 0)
@@ -62,7 +62,7 @@ namespace JHttpDemo
         private void button4_Click(object sender, EventArgs e)
         {
             var body = new { page = 1, count = 10 };
-            var res = http.Get("http://27.184.146.232:18080/api/device/query/devices", body);
+            var res = http.Get("http://121.42.8.56:18080/api/device/query/devices", body);
             textBox2.Text = res;
         }
 
@@ -79,19 +79,19 @@ namespace JHttpDemo
 
         private void button5_Click(object sender, EventArgs e)
         {
-            var res = http.Get("http://27.184.146.232:18080/api/device/query/devices/43000000801320000008");
+            var res = http.Get("http://121.42.8.56:18080/api/device/query/devices/44010200492000000008");
             textBox2.Text = res;
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            var res = http.Get("http://27.184.146.232:18080/api/device/query/devices/43000000801320000008/channels", new { page=1,count=10});
+            var res = http.Get("http://121.42.8.56:18080/api/device/query/devices/44010200492000000008/channels", new { page=1,count=10});
             textBox2.Text = res;
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
-            var res = http.Get("http://27.184.146.232:18080/api/play/start/43000000801320000008/43000000801310000008", new { page=1,count=10});
+            var res = http.Get("http://121.42.8.56:18080/api/play/start/44010200492000000008/44010200491310000008", new { page=1,count=10});
             textBox2.Text = res;
         }
 

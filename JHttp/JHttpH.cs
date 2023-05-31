@@ -119,7 +119,7 @@ namespace JHttp
                 WebResponse req;
                 try
                 {
-                    request.Timeout = 1000;
+                    //request.Timeout = 1000;
                     req = request.GetResponse();
                 }
                 catch (WebException ex)

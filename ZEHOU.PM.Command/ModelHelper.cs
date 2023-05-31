@@ -9,15 +9,16 @@ namespace ZEHOU.PM.Command
 {
     public static class ModelHelper
     {
-        public static void CopyFrom<T1, T2>(this T1 obj,T2 obj2) where T1 : class,new () where T2 : class,new ()
+        public static T1 CopyFrom<T1, T2>(this T1 obj, T2 obj2) where T1 : class, new() where T2 : class, new()
         {
             if (obj2 == null)
             {
-                return;
+                return obj;
             }
-            var t2props = typeof(T2).GetProperties(BindingFlags.Public|BindingFlags.GetProperty|BindingFlags.IgnoreCase|BindingFlags.Instance).ToDictionary(a=>a.Name.ToLower());
-            if (t2props.Count <= 0) {
-                return;
+            var t2props = typeof(T2).GetProperties(BindingFlags.Public | BindingFlags.GetProperty | BindingFlags.IgnoreCase | BindingFlags.Instance).ToDictionary(a => a.Name.ToLower());
+            if (t2props.Count <= 0)
+            {
+                return obj;
             }
             var t1props = typeof(T1).GetProperties(BindingFlags.Public | BindingFlags.SetProperty | BindingFlags.IgnoreCase | BindingFlags.Instance);
             foreach (var prop in t1props)
@@ -25,6 +26,7 @@ namespace ZEHOU.PM.Command
                 try
                 {
                     var name = prop.Name.ToLower();
+                    var pf = obj.GetType().GetField($"<{prop.Name}>i__Field", BindingFlags.NonPublic | BindingFlags.Instance);
                     if (!t2props.ContainsKey(name))
                     {
                         continue;
@@ -36,7 +38,15 @@ namespace ZEHOU.PM.Command
                     var p2v = prop2.GetValue(obj2);
                     if (p1type == p2type)
                     {
-                        prop.SetValue(obj, p2v);
+                        //prop.SetValue(obj, p2v);
+                        if (prop.SetMethod == null && pf != null)
+                        {
+                            pf.SetValue(obj, p2v);
+                        }
+                        else if (prop.SetMethod != null)
+                        {
+                            prop.SetValue(obj, p2v);
+                        }
                         continue;
                     }
                     bool p1null = false;
@@ -59,13 +69,23 @@ namespace ZEHOU.PM.Command
                     {
                         p2v = Activator.CreateInstance(p2type);
                     }
-                    prop.SetValue(obj, p2v);
+                    //prop.SetValue(obj, p2v);
+                    if (prop.SetMethod == null && pf != null)
+                    {
+                        pf.SetValue(obj, p2v);
+                    }
+                    else if (prop.SetMethod != null)
+                    {
+                        prop.SetValue(obj, p2v);
+                    }
                 }
-                catch (Exception ex) {
+                catch (Exception ex)
+                {
                     continue;
                 }
-                
+
             }
-        } 
+            return obj;
+        }
     }
 }
