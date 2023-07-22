@@ -28,6 +28,7 @@ namespace JHttpDemo
 
             textBox2.Text = res;
             var obj = JDynamicObject.Create(res);
+            
         }
 
         private void button2_Click(object sender, EventArgs e)
